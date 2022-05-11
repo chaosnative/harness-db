@@ -22,7 +22,7 @@ litmuschaos/k8s:latest (Temporary, Will be removed)
 chaosnative/litmus-checker:2.8.0
 ```
 
-Sample HelmChart for HCE installation is available [here](hce/)
+Sample HelmChart for HCE installation is available [here](hce-helm-chart/)
 
 ## Resource Requirements for HCE - 
 
