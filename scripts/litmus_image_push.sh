@@ -1,6 +1,6 @@
 #!/bin/bash
 # This script is used to pull litmus images required to run generic experiments
-# using litmus portal and push into your image registry
+# using HCE and push into your image registry
 set -e
 
 declare -a portal_images=("hce-frontend" "hce-server" "hce-event-tracker" "hce-auth-server" "hce-subscriber" "hce-license-module")
@@ -51,7 +51,7 @@ echo
 echo "workflow controller images ..."
 for val in ${workflow_images[@]}; do
   echo "${i}. ${LITMUS_IMAGE_REGISTRY}/chaosnative/${val}"
-  i=$((i+1))echo "workflow controller images ..."
+  i=$((i+1))
 done
 echo
 

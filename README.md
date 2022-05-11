@@ -1,6 +1,6 @@
-# harness-db
+# Harness-DB
 
-List of Images required for HCE Installation
+**List of Images required for HCE Installation**
 
 ```BASH
 chaosnative/chaos-exporter:2.8.0
@@ -21,6 +21,8 @@ chaosnative/k8s:2.8.0
 litmuschaos/k8s:latest (Temporary, Will be removed)
 chaosnative/litmus-checker:2.8.0
 ```
+
+Sample HelmChart for HCE installation is available [here]("./hce/")
 
 ## Resource Requirements for HCE - 
 
