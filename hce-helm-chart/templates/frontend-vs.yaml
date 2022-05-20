@@ -20,7 +20,7 @@ spec:
   http:
     - route:
       - destination:
-          host: litmusportal-frontend-service
+          host: {{ include "hce.fullname" . }}-frontend-service
           port:
             number: {{ .Values.portal.frontend.service.port }}
 {{- end -}}
