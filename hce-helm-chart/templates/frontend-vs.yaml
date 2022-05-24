@@ -18,7 +18,12 @@ spec:
     {{- toYaml . | nindent 4 }}
 {{- end }}
   http:
-    - route:
+    - match:
+      - uri:
+          prefix: /litmuschaos
+      rewrite:
+        uri: "/"
+      route:
       - destination:
           host: {{ include "hce.fullname" . }}-frontend-service
           port:

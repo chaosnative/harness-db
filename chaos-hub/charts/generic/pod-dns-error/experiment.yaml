@@ -58,7 +58,7 @@ spec:
       - apiGroups: ["litmuschaos.io"]
         resources: ["chaosengines","chaosexperiments","chaosresults"]
         verbs: ["create","list","get","patch","update","delete"]
-    image: "litmuschaos/go-runner:2.8.0"
+    image: "artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/chaosnative/go-runner:2.8.0"
     args:
       - -c
       - ./experiments -name pod-dns-error

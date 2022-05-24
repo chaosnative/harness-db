@@ -58,7 +58,7 @@ spec:
       - apiGroups: ["litmuschaos.io"]
         resources: ["chaosengines","chaosexperiments","chaosresults"]
         verbs: ["create","list","get","patch","update","delete"]
-    image: "litmuschaos/go-runner:2.8.0"
+    image: "artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/chaosnative/go-runner:2.8.0"
     imagePullPolicy: Always
     args:
     - -c
@@ -187,7 +187,7 @@ spec:
       - apiGroups: ["litmuschaos.io"]
         resources: ["chaosengines","chaosexperiments","chaosresults"]
         verbs: ["create","list","get","patch","update","delete"]
-    image: "litmuschaos/go-runner:2.8.0"
+    image: "artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/chaosnative/go-runner:2.8.0"
     imagePullPolicy: Always
     args:
     - -c
@@ -314,7 +314,7 @@ spec:
       - apiGroups: ["litmuschaos.io"]
         resources: ["chaosengines","chaosexperiments","chaosresults"]
         verbs: ["create","list","get","patch","update","delete"]
-    image: "litmuschaos/go-runner:2.8.0"
+    image: "artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/chaosnative/go-runner:2.8.0"
     imagePullPolicy: Always
     args:
     - -c
@@ -457,7 +457,7 @@ spec:
       - apiGroups: ["litmuschaos.io"]
         resources: ["chaosengines","chaosexperiments","chaosresults"]
         verbs: ["create","list","get","patch","update","delete"]
-    image: "litmuschaos/go-runner:2.8.0"
+    image: "artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/chaosnative/go-runner:2.8.0"
     args:
       - -c
       - ./experiments -name pod-dns-error
@@ -562,7 +562,7 @@ spec:
       - apiGroups: [""]
         resources: ["nodes"]
         verbs: ["get","list"]
-    image: "litmuschaos/go-runner:2.8.0"
+    image: "artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/chaosnative/go-runner:2.8.0"
     imagePullPolicy: Always
     args:
     - -c
@@ -681,7 +681,7 @@ spec:
       - apiGroups: ["litmuschaos.io"]
         resources: ["chaosengines","chaosexperiments","chaosresults"]
         verbs: ["create","list","get","patch","update","delete"]
-    image: "litmuschaos/go-runner:2.8.0"
+    image: "artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/chaosnative/go-runner:2.8.0"
     imagePullPolicy: Always
     args:
     - -c
@@ -797,7 +797,7 @@ spec:
       - apiGroups: ["litmuschaos.io"]
         resources: ["chaosengines","chaosexperiments","chaosresults"]
         verbs: ["create","list","get","patch","update","delete"]
-    image: "litmuschaos/go-runner:2.8.0"
+    image: "artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/chaosnative/go-runner:2.8.0"
     imagePullPolicy: Always
     args:
     - -c
@@ -911,7 +911,7 @@ spec:
       - apiGroups: ["litmuschaos.io"]
         resources: ["chaosengines","chaosexperiments","chaosresults"]
         verbs: ["create","list","get","patch","update","delete"]
-    image: "litmuschaos/go-runner:2.8.0"
+    image: "artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/chaosnative/go-runner:2.8.0"
     imagePullPolicy: Always
     args:
     - -c
@@ -1050,7 +1050,7 @@ spec:
       - apiGroups: ["litmuschaos.io"]
         resources: ["chaosengines","chaosexperiments","chaosresults"]
         verbs: ["create","list","get","patch","update","delete"]
-    image: "litmuschaos/go-runner:2.8.0"
+    image: "artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/chaosnative/go-runner:2.8.0"
     imagePullPolicy: Always
     args:
     - -c
@@ -1166,7 +1166,7 @@ spec:
       - apiGroups: ["litmuschaos.io"]
         resources: ["chaosengines","chaosexperiments","chaosresults"]
         verbs: ["create","list","get","patch","update","delete"]
-    image: "litmuschaos/go-runner:2.8.0"
+    image: "artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/chaosnative/go-runner:2.8.0"
     imagePullPolicy: Always
     args:
     - -c
@@ -1246,7 +1246,7 @@ spec:
       - apiGroups: [""]
         resources: ["nodes"]
         verbs: ["get","list"]
-    image: "litmuschaos/go-runner:2.8.0"
+    image: "artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/chaosnative/go-runner:2.8.0"
     imagePullPolicy: Always
     args:
     - -c
@@ -1332,7 +1332,7 @@ spec:
       - apiGroups: [""]
         resources: ["nodes"]
         verbs: ["get","list"]
-    image: "litmuschaos/go-runner:2.8.0"
+    image: "artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/chaosnative/go-runner:2.8.0"
     imagePullPolicy: Always
     args:
     - -c
@@ -1440,7 +1440,7 @@ spec:
       - apiGroups: ["litmuschaos.io"]
         resources: ["chaosengines","chaosexperiments","chaosresults"]
         verbs: ["create","list","get","patch","update","delete"]
-    image: "litmuschaos/go-runner:2.8.0"
+    image: "artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/chaosnative/go-runner:2.8.0"
     imagePullPolicy: Always
     args:
     - -c
@@ -1580,7 +1580,7 @@ spec:
       - apiGroups: ["litmuschaos.io"]
         resources: ["chaosengines","chaosexperiments","chaosresults"]
         verbs: ["create","list","get","patch","update","delete"]
-    image: "litmuschaos/go-runner:2.8.0"
+    image: "artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/chaosnative/go-runner:2.8.0"
     imagePullPolicy: Always
     args:
     - -c
@@ -1689,7 +1689,7 @@ spec:
       - apiGroups: ["litmuschaos.io"]
         resources: ["chaosengines","chaosexperiments","chaosresults"]
         verbs: ["create","list","get","patch","update","delete"]
-    image: "litmuschaos/go-runner:2.8.0"
+    image: "artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/chaosnative/go-runner:2.8.0"
     imagePullPolicy: Always
     args:
     - -c
@@ -1796,7 +1796,7 @@ spec:
       - apiGroups: ["litmuschaos.io"]
         resources: ["chaosengines","chaosexperiments","chaosresults"]
         verbs: ["create","list","get","patch","update","delete"]
-    image: "litmuschaos/go-runner:2.8.0"
+    image: "artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/chaosnative/go-runner:2.8.0"
     args:
       - -c
       - ./experiments -name pod-dns-spoof
@@ -1897,7 +1897,7 @@ spec:
       - apiGroups: [""]
         resources: ["nodes"]
         verbs: ["get","list"]
-    image: "litmuschaos/go-runner:2.8.0"
+    image: "artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/chaosnative/go-runner:2.8.0"
     imagePullPolicy: Always
     args:
     - -c
@@ -2027,7 +2027,7 @@ spec:
       - apiGroups: ["litmuschaos.io"]
         resources: ["chaosengines","chaosexperiments","chaosresults"]
         verbs: ["create","list","get","patch","update","delete"]
-    image: "litmuschaos/go-runner:2.8.0"
+    image: "artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/chaosnative/go-runner:2.8.0"
     imagePullPolicy: Always
     args:
     - -c
@@ -2164,7 +2164,7 @@ spec:
       - apiGroups: ["litmuschaos.io"]
         resources: ["chaosengines","chaosexperiments","chaosresults"]
         verbs: ["create","list","get","patch","update","delete"]
-    image: "litmuschaos/go-runner:2.8.0"
+    image: "artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/chaosnative/go-runner:2.8.0"
     imagePullPolicy: Always
     args:
     - -c
@@ -2259,7 +2259,7 @@ spec:
       - apiGroups: [""]
         resources: ["nodes"]
         verbs: ["get","list"]
-    image: "litmuschaos/go-runner:2.8.0"
+    image: "artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/chaosnative/go-runner:2.8.0"
     imagePullPolicy: Always
     args:
     - -c
@@ -2363,7 +2363,7 @@ spec:
       - apiGroups: [""]
         resources: ["nodes"]
         verbs: ["get","list","patch"]
-    image: "litmuschaos/go-runner:2.8.0"
+    image: "artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/chaosnative/go-runner:2.8.0"
     imagePullPolicy: Always
     args:
     - -c
@@ -2535,7 +2535,7 @@ spec:
       - apiGroups: [""]
         resources: ["nodes"]
         verbs: ["get","list","patch","update"]
-    image: "litmuschaos/go-runner:2.8.0"
+    image: "artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/chaosnative/go-runner:2.8.0"
     imagePullPolicy: Always
     args:
     - -c
@@ -2622,7 +2622,7 @@ spec:
       - apiGroups: [""]
         resources: ["nodes"]
         verbs: ["get","list"]
-    image: "litmuschaos/go-runner:2.8.0"
+    image: "artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/chaosnative/go-runner:2.8.0"
     imagePullPolicy: Always
     args:
     - -c
@@ -2744,7 +2744,7 @@ spec:
       - apiGroups: ["litmuschaos.io"]
         resources: ["chaosengines","chaosexperiments","chaosresults"]
         verbs: ["create","list","get","patch","update","delete"]
-    image: "litmuschaos/go-runner:2.8.0"
+    image: "artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/chaosnative/go-runner:2.8.0"
     imagePullPolicy: Always
     args:
     - -c
@@ -2867,7 +2867,7 @@ spec:
       - apiGroups: [""]
         resources: ["nodes"]
         verbs: ["get","list"]
-    image: "litmuschaos/go-runner:2.8.0"
+    image: "artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/chaosnative/go-runner:2.8.0"
     imagePullPolicy: Always
     args:
     - -c

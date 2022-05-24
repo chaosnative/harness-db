@@ -22,8 +22,8 @@ adminConfig:
 image:
   imageRegistryName: chaosnative
   # Optional pod imagePullSecrets
-  imagePullSecrets:
-    - name: regcred
+  # imagePullSecrets:
+  #   - name: regcred
 
 ingress:
   enabled: false
@@ -70,7 +70,7 @@ portal:
     ##       maxSurge: 1
     ##       maxUnavailable: 25%
     image:
-      repository: hce-frontend
+      repository: hce-frontend-path-litmuschaos
       tag: 2.8.0
       pullPolicy: "Always"
     containerPort: 8080
