@@ -130,3 +130,11 @@ These resources are getting monitored continuously and the information below wil
     <td>300M</td>
    </tr>
 </table>
+
+**Workflow Anotations for Istio Setup**
+
+```YAML
+podMetadata:
+   annotations:
+      sidecar.istio.io/inject: "false"
+```
