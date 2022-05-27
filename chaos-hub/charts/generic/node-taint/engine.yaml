@@ -23,6 +23,8 @@ spec:
           # secret name for the experiment image, if using private registry
           experimentImagePullSecrets:
           - name: regcred
+          experimentAnnotations:
+            sidecar.istio.io/inject: "false"
         # nodeSelector: 
         #   # provide the node labels
         #   kubernetes.io/hostname: 'node02'        

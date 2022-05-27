@@ -24,6 +24,8 @@ spec:
           # secret name for the experiment image, if using private registry
           experimentImagePullSecrets:
           - name: regcred
+          experimentAnnotations:
+            sidecar.istio.io/inject: "false"
           env:
             # set chaos namespace
             - name: NAME_SPACE

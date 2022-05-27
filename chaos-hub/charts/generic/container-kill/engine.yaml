@@ -25,6 +25,8 @@ spec:
           # secret name for the experiment image, if using private registry
           experimentImagePullSecrets:
           - name: regcred
+          experimentAnnotations:
+            sidecar.istio.io/inject: "false"
           env:
             # provide the total chaos duration
             - name: TOTAL_CHAOS_DURATION
