@@ -3,6 +3,11 @@ kind: ChaosEngine
 metadata:
   name: nginx-chaos
 spec:
+  components:
+    runner:
+      # secret name for the runner image, if using private registry
+      imagePullSecrets:
+      - name: regcred
   # It can be active/stop
   engineState: 'active'
   chaosServiceAccount: azure-disk-loss-sa

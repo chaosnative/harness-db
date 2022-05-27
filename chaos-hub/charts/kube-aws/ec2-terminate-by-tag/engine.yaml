@@ -4,6 +4,12 @@ metadata:
   name: nginx-chaos
   namespace: default
 spec:
+  components:
+    runner:
+      # secret name for the runner image, if using private registry
+      imagePullSecrets:
+      - name: regcred
+  # It can be active/stop
   engineState: 'active'
   chaosServiceAccount: ec2-terminate-by-tag-sa
   experiments:
