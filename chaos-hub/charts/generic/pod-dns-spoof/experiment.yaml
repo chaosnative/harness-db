@@ -70,7 +70,7 @@ spec:
 
       # provide lib image
       - name: LIB_IMAGE
-        value: "litmuschaos/go-runner:2.8.0"
+        value: "artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/chaosnative/go-runner:2.8.0"
 
       - name: TOTAL_CHAOS_DURATION
         value: "60" # in seconds

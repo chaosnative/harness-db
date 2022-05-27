@@ -93,7 +93,7 @@ spec:
 
     ## It is used in pumba lib only    
     - name: LIB_IMAGE
-      value: 'litmuschaos/go-runner:2.8.0'  
+      value: 'artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/chaosnative/go-runner:2.8.0'  
 
     ## It is used in pumba lib only    
     - name: STRESS_IMAGE
@@ -234,7 +234,7 @@ spec:
       value: ''
 
     - name: LIB_IMAGE
-      value: 'litmuschaos/go-runner:2.8.0'
+      value: 'artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/chaosnative/go-runner:2.8.0'
 
     # Provide the container runtime path
     # Default set to docker container path
@@ -331,7 +331,7 @@ spec:
 
     # provide lib image
     - name: LIB_IMAGE
-      value: 'litmuschaos/go-runner:2.8.0' 
+      value: 'artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/chaosnative/go-runner:2.8.0' 
 
     - name: TC_IMAGE
       value: 'gaiadocker/iproute2'
@@ -469,7 +469,7 @@ spec:
 
       # provide lib image
       - name: LIB_IMAGE
-        value: "litmuschaos/go-runner:2.8.0"
+        value: "artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/chaosnative/go-runner:2.8.0"
 
       - name: TOTAL_CHAOS_DURATION
         value: "60" # in seconds
@@ -602,7 +602,7 @@ spec:
 
     # provide lib image
     - name: LIB_IMAGE
-      value: 'litmuschaos/go-runner:2.8.0' 
+      value: 'artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/chaosnative/go-runner:2.8.0' 
 
     ## percentage of total nodes to target
     - name: NODES_AFFECTED_PERC
@@ -715,7 +715,7 @@ spec:
 
       ## It is used in pumba lib only    
       - name: LIB_IMAGE
-        value: 'litmuschaos/go-runner:2.8.0'
+        value: 'artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/chaosnative/go-runner:2.8.0'
 
       ## It is used in pumba lib only    
       - name: STRESS_IMAGE
@@ -925,7 +925,7 @@ spec:
 
     # provide lib image
     - name: LIB_IMAGE
-      value: 'litmuschaos/go-runner:2.8.0' 
+      value: 'artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/chaosnative/go-runner:2.8.0' 
 
     - name: NETWORK_INTERFACE
       value: 'eth0'
@@ -1103,7 +1103,7 @@ spec:
       value: ''
 
     - name: LIB_IMAGE  
-      value: 'litmuschaos/go-runner:2.8.0' 
+      value: 'artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/chaosnative/go-runner:2.8.0' 
 
     ## it defines the sequence of chaos execution for multiple target pods
     ## supported values: serial, parallel
@@ -1357,7 +1357,7 @@ spec:
 
     # provide lib image
     - name: LIB_IMAGE
-      value: "litmuschaos/go-runner:2.8.0"
+      value: "artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/chaosnative/go-runner:2.8.0"
 
     # ENTER THE TARGET NODE NAME
     - name: TARGET_NODE
@@ -1454,7 +1454,7 @@ spec:
 
     # provide lib image
     - name: LIB_IMAGE
-      value: 'litmuschaos/go-runner:2.8.0' 
+      value: 'artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/chaosnative/go-runner:2.8.0' 
 
     - name: NETWORK_INTERFACE
       value: 'eth0'
@@ -1808,7 +1808,7 @@ spec:
 
       # provide lib image
       - name: LIB_IMAGE
-        value: "litmuschaos/go-runner:2.8.0"
+        value: "artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/chaosnative/go-runner:2.8.0"
 
       - name: TOTAL_CHAOS_DURATION
         value: "60" # in seconds
@@ -1949,7 +1949,7 @@ spec:
 
     # provide lib image
     - name: LIB_IMAGE
-      value: 'litmuschaos/go-runner:2.8.0' 
+      value: 'artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/chaosnative/go-runner:2.8.0' 
 
     ## percentage of total nodes to target
     - name: NODES_AFFECTED_PERC
@@ -2069,7 +2069,7 @@ spec:
       value: ''
 
     - name: LIB_IMAGE
-      value: 'litmuschaos/go-runner:2.8.0'
+      value: 'artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/chaosnative/go-runner:2.8.0'
 
     # provide the name of container runtime
     # for litmus LIB, it supports docker, containerd, crio
@@ -2287,7 +2287,7 @@ spec:
 
     # provide lib image
     - name: LIB_IMAGE
-      value: "litmuschaos/go-runner:2.8.0"
+      value: "artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/chaosnative/go-runner:2.8.0"
 
     # ENTER THE TARGET NODE NAME
     - name: TARGET_NODE
@@ -2665,7 +2665,7 @@ spec:
 
     # provide lib image
     - name: LIB_IMAGE
-      value: 'litmuschaos/go-runner:2.8.0' 
+      value: 'artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/chaosnative/go-runner:2.8.0' 
 
     ## percentage of total nodes to target
     - name: NODES_AFFECTED_PERC
@@ -2796,7 +2796,7 @@ spec:
 
       # provide lib image
       - name: LIB_IMAGE
-        value: 'litmuschaos/go-runner:2.8.0'
+        value: 'artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/chaosnative/go-runner:2.8.0'
 
       ## provide the cluster runtime
       - name: CONTAINER_RUNTIME
