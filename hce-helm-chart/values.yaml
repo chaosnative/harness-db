@@ -22,8 +22,7 @@ adminConfig:
 image:
   imageRegistryName: chaosnative
   # Optional pod imagePullSecrets
-  # imagePullSecrets:
-  #   - name: regcred
+  imagePullSecrets: []
 
 ingress:
   enabled: false
@@ -32,7 +31,7 @@ ingress:
     {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
-  # nginx.ingress.kubernetes.io/rewrite-target: /$1
+    # nginx.ingress.kubernetes.io/rewrite-target: /$1
 
   host:
     # -- This is ingress hostname (ex: my-domain.com)
@@ -70,7 +69,7 @@ portal:
     ##       maxSurge: 1
     ##       maxUnavailable: 25%
     image:
-      repository: hce-frontend-path-litmuschaos
+      repository: hce-frontend
       tag: 2.8.0
       pullPolicy: "Always"
     containerPort: 8080
@@ -109,6 +108,7 @@ portal:
       enabled: false
       hosts: []
       gateways: []
+      pathPrefixEnabled: false
     nodeSelector: {}
     tolerations: []
     affinity: {}
