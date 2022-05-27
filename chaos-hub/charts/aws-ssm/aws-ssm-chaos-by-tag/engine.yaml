@@ -9,6 +9,8 @@ spec:
       # secret name for the runner image, if using private registry
       imagePullSecrets:
       - name: regcred
+      runnerAnnotations:
+        sidecar.istio.io/inject: "false"
   # It can be active/stop
   engineState: 'active'
   chaosServiceAccount: aws-ssm-chaos-by-tag-sa
