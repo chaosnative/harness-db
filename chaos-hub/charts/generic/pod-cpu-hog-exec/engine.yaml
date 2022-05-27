@@ -15,6 +15,9 @@ spec:
     - name: pod-cpu-hog-exec
       spec:
         components:
+          # secret name for the experiment image, if using private registry
+          experimentImagePullSecrets:
+          - name: regcred
           env:
             - name: TOTAL_CHAOS_DURATION
               value: '60' # in seconds

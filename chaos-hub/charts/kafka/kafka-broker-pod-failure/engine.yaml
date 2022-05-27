@@ -16,7 +16,10 @@ spec:
   experiments:
     - name: kafka-broker-pod-failure
       spec:
-        components:  
+        components:
+          # secret name for the experiment image, if using private registry
+          experimentImagePullSecrets:
+          - name: regcred  
           env:
             # set chaos duration (in sec) as desired
             - name: TOTAL_CHAOS_DURATION

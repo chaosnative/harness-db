@@ -13,6 +13,9 @@ spec:
     - name: node-memory-hog
       spec:
         components:
+          # secret name for the experiment image, if using private registry
+          experimentImagePullSecrets:
+          - name: regcred
           env:
             # set chaos duration (in sec) as desired
             - name: TOTAL_CHAOS_DURATION

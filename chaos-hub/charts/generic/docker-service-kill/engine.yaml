@@ -12,6 +12,9 @@ spec:
     - name: docker-service-kill
       spec:
         components:
+          # secret name for the experiment image, if using private registry
+          experimentImagePullSecrets:
+          - name: regcred
         # nodeSelector: 
         #   # provide the node labels
         #   kubernetes.io/hostname: 'node02'

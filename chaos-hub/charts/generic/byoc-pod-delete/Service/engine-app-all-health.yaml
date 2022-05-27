@@ -14,6 +14,9 @@ spec:
     - name: k8-pod-delete
       spec:
         components:
+          # secret name for the experiment image, if using private registry
+          experimentImagePullSecrets:
+          - name: regcred
           env:
             # set chaos namespace
             - name: NAME_SPACE
