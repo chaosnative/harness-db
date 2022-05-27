@@ -11,6 +11,11 @@ on:
       patchImagePullSecret:
         type: boolean
         default: ""
+      CopyChaosHub:
+        type: boolean
+        default: ""
+      ProjectID:
+        default: ""
 
 jobs:
   IMAGE_PULL_SECRET_PATCH_JOB:
@@ -64,4 +69,30 @@ jobs:
           kubectl delete pod $pod_name -n litmus
         env:
           ACCESS_URL: ${{ github.event.inputs.HceAccessUrl }}
+
+
+  COPY_CHAOSHUB:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.CopyChaosHub == 'true' }}
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Authenticate Google Cloud SDK
+        if: always()
+        uses: 'google-github-actions/auth@v0'
+        with:
+          credentials_json: '${{ secrets.GCP_SA_KEY }}'
+
+      - id: 'get-credentials'
+        uses: 'google-github-actions/get-gke-credentials@v0'
+        with:
+          cluster_name: 'vedant-cluster'
+          location: 'us-east5-a'
+
+      - name: Adding Chaoshub 
+        run: |
+          pod_name=$(kubectl get pods --selector="app.kubernetes.io/component=hce-server" --output=jsonpath={.items..metadata.name} -n litmus)
+          kubectl cp ./chaos-hub/. litmus/${pod_name}:/tmp/version/${PROJECT_ID}/"Litmus ChaosHub" -c graphql-server
+        env:
+          PROJECT_ID: ${{ github.event.inputs.ProjectID }}
 
