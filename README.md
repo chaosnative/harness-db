@@ -18,7 +18,7 @@ chaosnative/chaos-operator:2.8.0
 chaosnative/curl:2.8.0
 chaosnative/workflow-controller:v3.2.3
 chaosnative/k8s:2.8.0
-litmuschaos/k8s:latest (Temporary, Will be removed)
+chaosnative/k8s:latest (Temporary, Will be removed)
 chaosnative/litmus-checker:2.8.0
 ```
 
