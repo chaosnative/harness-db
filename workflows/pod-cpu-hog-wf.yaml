@@ -10,6 +10,8 @@ metadata:
     workflow_id: 9f3db854-e28a-4293-92a0-3d20c0027624
     workflows.argoproj.io/controller-instanceid: 06c4f162-579c-4908-8515-08eea80762ed
 spec:
+  imagePullSecrets:
+    - name: regcred
   podMetadata:
     annotations:
       sidecar.istio.io/inject: "false"
