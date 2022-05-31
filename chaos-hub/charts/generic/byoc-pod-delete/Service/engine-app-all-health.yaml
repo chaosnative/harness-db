@@ -20,12 +20,12 @@ spec:
   experiments:
     - name: k8-pod-delete
       spec:
-          components:
-            # secret name for the experiment image, if using private registry
-            experimentImagePullSecrets:
-            - name: regcred
-            experimentAnnotations:
-              sidecar.istio.io/inject: "false"
+        components:
+          # secret name for the experiment image, if using private registry
+          experimentImagePullSecrets:
+          - name: regcred
+          experimentAnnotations:
+            sidecar.istio.io/inject: "false"
           env:
             # set chaos namespace
             - name: NAME_SPACE

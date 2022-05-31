@@ -22,12 +22,12 @@ spec:
   experiments:
     - name: pod-dns-error
       spec:
-          components:
-            # secret name for the experiment image, if using private registry
-            experimentImagePullSecrets:
-            - name: regcred
-            experimentAnnotations:
-              sidecar.istio.io/inject: "false"
+        components:
+          # secret name for the experiment image, if using private registry
+          experimentImagePullSecrets:
+          - name: regcred
+          experimentAnnotations:
+            sidecar.istio.io/inject: "false"
           env:
             - name: TOTAL_CHAOS_DURATION
               value: "60" # in seconds
