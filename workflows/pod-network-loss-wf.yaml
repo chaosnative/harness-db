@@ -234,8 +234,8 @@ spec:
                         sidecar.istio.io/inject: "false"
                   engineState: active
                   appinfo:
-                    appns: default
-                    applabel: app=nginx
+                    appns: app
+                    applabel: app=native
                     appkind: deployment
                   chaosServiceAccount: litmus-admin
                   experiments:
@@ -252,9 +252,9 @@ spec:
                             - name: NETWORK_PACKET_LOSS_PERCENTAGE
                               value: "100"
                             - name: CONTAINER_RUNTIME
-                              value: docker
+                              value: containerd
                             - name: SOCKET_PATH
-                              value: /var/run/docker.sock
+                              value: /run/containerd/containerd.sock
                             - name: PODS_AFFECTED_PERC
                               value: ""
                         probe: []

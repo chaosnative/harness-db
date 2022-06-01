@@ -218,8 +218,8 @@ spec:
                       runnerAnnotations:
                         sidecar.istio.io/inject: "false"
                   appinfo:
-                    appns: default
-                    applabel: app=nginx
+                    appns: app
+                    applabel: app=native
                     appkind: deployment
                   engineState: active
                   chaosServiceAccount: litmus-admin
@@ -233,7 +233,7 @@ spec:
                             sidecar.istio.io/inject: "false"
                           env:
                             - name: TOTAL_CHAOS_DURATION
-                              value: "60"
+                              value: "30"
                             - name: CHAOS_INTERVAL
                               value: "10"
                             - name: FORCE
