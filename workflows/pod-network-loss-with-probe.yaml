@@ -268,7 +268,7 @@ spec:
                               stopOnFailure: false
                             httpProbe/inputs:
                               url: http://34.162.185.52/
-                              insecureSkipVerify: false
+                              insecureSkipVerify: true
                               responseTimeout: 10
                               method:
                                 get:
