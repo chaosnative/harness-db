@@ -1,0 +1,301 @@
+kind: Workflow
+apiVersion: argoproj.io/v1alpha1
+metadata:
+  name: pod-delete-2-probes-1654176905
+  namespace: litmus
+  creationTimestamp: null
+  labels:
+    cluster_id: 7758dc25-db09-41bf-acea-6f7ad0a77ae2
+    subject: pod-delete-2-probes_litmus
+    workflow_id: b177cc99-af21-4885-9622-17b115950c82
+    workflows.argoproj.io/controller-instanceid: 7758dc25-db09-41bf-acea-6f7ad0a77ae2
+spec:
+  imagePullSecrets:
+    - name: regcred
+  podMetadata:
+    annotations:
+      sidecar.istio.io/inject: "false"
+  templates:
+    - name: custom-chaos
+      inputs: {}
+      outputs: {}
+      metadata: {}
+      steps:
+        - - name: install-chaos-experiments
+            template: install-chaos-experiments
+            arguments: {}
+        - - name: pod-delete-1hd
+            template: pod-delete-1hd
+            arguments: {}
+    - name: install-chaos-experiments
+      inputs:
+        artifacts:
+          - name: pod-delete-1hd
+            path: /tmp/pod-delete-1hd.yaml
+            raw:
+              data: >
+                apiVersion: litmuschaos.io/v1alpha1
+
+                description:
+                  message: |
+                    Deletes a pod belonging to a deployment/statefulset/daemonset
+                kind: ChaosExperiment
+
+                metadata:
+                  name: pod-delete
+                  labels:
+                    name: pod-delete
+                    app.kubernetes.io/part-of: litmus
+                    app.kubernetes.io/component: chaosexperiment
+                    app.kubernetes.io/version: 2.8.0
+                spec:
+                  definition:
+                    scope: Namespaced
+                    permissions:
+                      - apiGroups:
+                          - ""
+                        resources:
+                          - pods
+                        verbs:
+                          - create
+                          - delete
+                          - get
+                          - list
+                          - patch
+                          - update
+                          - deletecollection
+                      - apiGroups:
+                          - ""
+                        resources:
+                          - events
+                        verbs:
+                          - create
+                          - get
+                          - list
+                          - patch
+                          - update
+                      - apiGroups:
+                          - ""
+                        resources:
+                          - configmaps
+                        verbs:
+                          - get
+                          - list
+                      - apiGroups:
+                          - ""
+                        resources:
+                          - pods/log
+                        verbs:
+                          - get
+                          - list
+                          - watch
+                      - apiGroups:
+                          - ""
+                        resources:
+                          - pods/exec
+                        verbs:
+                          - get
+                          - list
+                          - create
+                      - apiGroups:
+                          - apps
+                        resources:
+                          - deployments
+                          - statefulsets
+                          - replicasets
+                          - daemonsets
+                        verbs:
+                          - list
+                          - get
+                      - apiGroups:
+                          - apps.openshift.io
+                        resources:
+                          - deploymentconfigs
+                        verbs:
+                          - list
+                          - get
+                      - apiGroups:
+                          - ""
+                        resources:
+                          - replicationcontrollers
+                        verbs:
+                          - get
+                          - list
+                      - apiGroups:
+                          - argoproj.io
+                        resources:
+                          - rollouts
+                        verbs:
+                          - list
+                          - get
+                      - apiGroups:
+                          - batch
+                        resources:
+                          - jobs
+                        verbs:
+                          - create
+                          - list
+                          - get
+                          - delete
+                          - deletecollection
+                      - apiGroups:
+                          - litmuschaos.io
+                        resources:
+                          - chaosengines
+                          - chaosexperiments
+                          - chaosresults
+                        verbs:
+                          - create
+                          - list
+                          - get
+                          - patch
+                          - update
+                          - delete
+                    image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/chaosnative/go-runner:2.8.0
+                    imagePullPolicy: Always
+                    args:
+                      - -c
+                      - ./experiments -name pod-delete
+                    command:
+                      - /bin/bash
+                    env:
+                      - name: TOTAL_CHAOS_DURATION
+                        value: "15"
+                      - name: RAMP_TIME
+                        value: ""
+                      - name: FORCE
+                        value: "true"
+                      - name: CHAOS_INTERVAL
+                        value: "5"
+                      - name: PODS_AFFECTED_PERC
+                        value: ""
+                      - name: LIB
+                        value: litmus
+                      - name: TARGET_PODS
+                        value: ""
+                      - name: NODE_LABEL
+                        value: ""
+                      - name: SEQUENCE
+                        value: parallel
+                    labels:
+                      name: pod-delete
+                      app.kubernetes.io/part-of: litmus
+                      app.kubernetes.io/component: experiment-job
+                      app.kubernetes.io/version: 2.8.0
+      outputs: {}
+      metadata: {}
+      container:
+        name: ""
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/chaosnative/k8s:2.8.0
+        command:
+          - sh
+          - -c
+        args:
+          - kubectl apply -f /tmp/pod-delete-1hd.yaml -n
+            {{workflow.parameters.adminModeNamespace}} |  sleep 30
+        resources: {}
+    - name: pod-delete-1hd
+      inputs:
+        artifacts:
+          - name: pod-delete-1hd
+            path: /tmp/chaosengine-pod-delete-1hd.yaml
+            raw:
+              data: |
+                apiVersion: litmuschaos.io/v1alpha1
+                kind: ChaosEngine
+                metadata:
+                  namespace: "{{workflow.parameters.adminModeNamespace}}"
+                  generateName: pod-delete-1hd
+                  labels:
+                    instance_id: d4c2a8a5-7ca6-4d16-9bb2-ebefe6074fe7
+                    context: pod-delete-1hd_litmus
+                    workflow_name: pod-delete-2-probes-1654176905
+                spec:
+                  components:
+                    runner:
+                      imagePullSecrets:
+                        - name: regcred
+                      runnerAnnotations:
+                        sidecar.istio.io/inject: "false"
+                  appinfo:
+                    appns: app
+                    applabel: app=native
+                    appkind: deployment
+                  engineState: active
+                  chaosServiceAccount: litmus-admin
+                  experiments:
+                    - name: pod-delete
+                      spec:
+                        components:
+                          experimentImagePullSecrets:
+                            - name: regcred
+                          experimentAnnotations:
+                            sidecar.istio.io/inject: "false"
+                          env:
+                            - name: TOTAL_CHAOS_DURATION
+                              value: "30"
+                            - name: CHAOS_INTERVAL
+                              value: "10"
+                            - name: FORCE
+                              value: "false"
+                            - name: PODS_AFFECTED_PERC
+                              value: ""
+                        probe:
+                          - name: pods-check
+                            type: cmdProbe
+                            mode: EOT
+                            runProperties:
+                              probeTimeout: 10
+                              retry: 5
+                              interval: 3
+                              stopOnFailure: false
+                            cmdProbe/inputs:
+                              command: kubectl get pods --selector=app=nginx -n default | grep "Running" | wc
+                                -l
+                              source:
+                                hostNetwork: false
+                                image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/chaosnative/k8s:2.8.0
+                              comparator:
+                                type: int
+                                criteria: ==
+                                value: "3"
+                          - name: k8s-probe
+                            type: k8sProbe
+                            mode: Continuous
+                            runProperties:
+                              probeTimeout: 10
+                              retry: 5
+                              interval: 5
+                              stopOnFailure: false
+                            k8sProbe/inputs:
+                              operation: present
+                              group: ""
+                              version: v1
+                              resource: pods
+                              namespace: default
+                              fieldSelector: status.phase=Running
+                              labelSelector: app=nginx
+                  annotationCheck: "false"
+      outputs: {}
+      metadata:
+        labels:
+          weight: "10"
+      container:
+        name: ""
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/chaosnative/litmus-checker:2.8.0
+        args:
+          - -file=/tmp/chaosengine-pod-delete-1hd.yaml
+          - -saveName=/tmp/engine-name
+        resources: {}
+  entrypoint: custom-chaos
+  arguments:
+    parameters:
+      - name: adminModeNamespace
+        value: litmus
+  serviceAccountName: argo-chaos
+  securityContext:
+    runAsUser: 1000
+    runAsNonRoot: true
+status:
+  ? startedAt
+  ? finishedAt
