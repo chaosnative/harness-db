@@ -1,7 +1,7 @@
 kind: Workflow
 apiVersion: argoproj.io/v1alpha1
 metadata:
-  name: pod-delete-2-probes-1654176905
+  name: pod-delete-probes-1654176905
   namespace: litmus
   creationTimestamp: null
   labels:
@@ -233,7 +233,7 @@ spec:
                             sidecar.istio.io/inject: "false"
                           env:
                             - name: TOTAL_CHAOS_DURATION
-                              value: "30"
+                              value: "60"
                             - name: CHAOS_INTERVAL
                               value: "10"
                             - name: FORCE
@@ -250,7 +250,7 @@ spec:
                               interval: 3
                               stopOnFailure: false
                             cmdProbe/inputs:
-                              command: kubectl get pods --selector=app=nginx -n default | grep "Running" | wc
+                              command: kubectl get pods --selector=app=native -n app | grep "Running" | wc
                                 -l
                               source:
                                 hostNetwork: false
@@ -272,9 +272,9 @@ spec:
                               group: ""
                               version: v1
                               resource: pods
-                              namespace: default
+                              namespace: app
                               fieldSelector: status.phase=Running
-                              labelSelector: app=nginx
+                              labelSelector: app=native
                   annotationCheck: "false"
       outputs: {}
       metadata:
