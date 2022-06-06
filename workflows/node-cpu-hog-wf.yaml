@@ -1,0 +1,262 @@
+kind: Workflow
+apiVersion: argoproj.io/v1alpha1
+metadata:
+  name: custom-chaos-workflow-1654499702
+  namespace: litmus
+  creationTimestamp: null
+  labels:
+    cluster_id: 7758dc25-db09-41bf-acea-6f7ad0a77ae2
+    subject: custom-chaos-workflow_litmus
+    workflow_id: 19314067-fff8-471d-b639-6243be70eb5e
+    workflows.argoproj.io/controller-instanceid: 7758dc25-db09-41bf-acea-6f7ad0a77ae2
+spec:
+  imagePullSecrets:
+    - name: regcred
+  podMetadata:
+    annotations:
+      sidecar.istio.io/inject: "false"
+  templates:
+    - name: custom-chaos
+      inputs: {}
+      outputs: {}
+      metadata: {}
+      steps:
+        - - name: install-chaos-experiments
+            template: install-chaos-experiments
+            arguments: {}
+        - - name: node-cpu-hog-zuq
+            template: node-cpu-hog-zuq
+            arguments: {}
+        - - name: revert-chaos
+            template: revert-chaos
+            arguments: {}
+    - name: install-chaos-experiments
+      inputs:
+        artifacts:
+          - name: node-cpu-hog-zuq
+            path: /tmp/node-cpu-hog-zuq.yaml
+            raw:
+              data: |
+                apiVersion: litmuschaos.io/v1alpha1
+                description:
+                  message: |
+                    Give a cpu spike on a node belonging to a deployment
+                kind: ChaosExperiment
+                metadata:
+                  name: node-cpu-hog
+                  labels:
+                    name: node-cpu-hog
+                    app.kubernetes.io/part-of: litmus
+                    app.kubernetes.io/component: chaosexperiment
+                    app.kubernetes.io/version: 2.8.0
+                spec:
+                  definition:
+                    scope: Cluster
+                    permissions:
+                      - apiGroups:
+                          - ""
+                        resources:
+                          - pods
+                        verbs:
+                          - create
+                          - delete
+                          - get
+                          - list
+                          - patch
+                          - update
+                          - deletecollection
+                      - apiGroups:
+                          - ""
+                        resources:
+                          - events
+                        verbs:
+                          - create
+                          - get
+                          - list
+                          - patch
+                          - update
+                      - apiGroups:
+                          - ""
+                        resources:
+                          - configmaps
+                        verbs:
+                          - get
+                          - list
+                      - apiGroups:
+                          - ""
+                        resources:
+                          - pods/log
+                        verbs:
+                          - get
+                          - list
+                          - watch
+                      - apiGroups:
+                          - ""
+                        resources:
+                          - pods/exec
+                        verbs:
+                          - get
+                          - list
+                          - create
+                      - apiGroups:
+                          - batch
+                        resources:
+                          - jobs
+                        verbs:
+                          - create
+                          - list
+                          - get
+                          - delete
+                          - deletecollection
+                      - apiGroups:
+                          - litmuschaos.io
+                        resources:
+                          - chaosengines
+                          - chaosexperiments
+                          - chaosresults
+                        verbs:
+                          - create
+                          - list
+                          - get
+                          - patch
+                          - update
+                          - delete
+                      - apiGroups:
+                          - ""
+                        resources:
+                          - nodes
+                        verbs:
+                          - get
+                          - list
+                    image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/chaosnative/go-runner:2.8.0
+                    imagePullPolicy: Always
+                    args:
+                      - -c
+                      - ./experiments -name node-cpu-hog
+                    command:
+                      - /bin/bash
+                    env:
+                      - name: TOTAL_CHAOS_DURATION
+                        value: "60"
+                      - name: RAMP_TIME
+                        value: ""
+                      - name: NODE_CPU_CORE
+                        value: ""
+                      - name: CPU_LOAD
+                        value: "100"
+                      - name: TARGET_NODES
+                        value: ""
+                      - name: NODE_LABEL
+                        value: ""
+                      - name: LIB
+                        value: litmus
+                      - name: LIB_IMAGE
+                        value: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/chaosnative/go-runner:2.8.0
+                      - name: NODES_AFFECTED_PERC
+                        value: ""
+                      - name: SEQUENCE
+                        value: parallel
+                    labels:
+                      name: node-cpu-hog
+                      app.kubernetes.io/part-of: litmus
+                      app.kubernetes.io/component: experiment-job
+                      app.kubernetes.io/version: 2.8.0
+      outputs: {}
+      metadata: {}
+      container:
+        name: ""
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/chaosnative/k8s:2.8.0
+        command:
+          - sh
+          - -c
+        args:
+          - kubectl apply -f /tmp/node-cpu-hog-zuq.yaml -n
+            {{workflow.parameters.adminModeNamespace}} |  sleep 30
+        resources: {}
+    - name: node-cpu-hog-zuq
+      inputs:
+        artifacts:
+          - name: node-cpu-hog-zuq
+            path: /tmp/chaosengine-node-cpu-hog-zuq.yaml
+            raw:
+              data: >
+                apiVersion: litmuschaos.io/v1alpha1
+
+                kind: ChaosEngine
+
+                metadata:
+                  namespace: "{{workflow.parameters.adminModeNamespace}}"
+                  generateName: node-cpu-hog-zuq
+                  labels:
+                    instance_id: 6854b42a-f616-4d05-bf84-ff0e2238fb35
+                    context: node-cpu-hog-zuq_litmus
+                    workflow_name: custom-chaos-workflow-1654499702
+                spec:
+                  components:
+                    runner:
+                      imagePullSecrets:
+                        - name: regcred
+                      runnerAnnotations:
+                        sidecar.istio.io/inject: "false"
+                  engineState: active
+                  auxiliaryAppInfo: ""
+                  chaosServiceAccount: litmus-admin
+                  experiments:
+                    - name: node-cpu-hog
+                      spec:
+                        components:
+                          experimentImagePullSecrets:
+                            - name: regcred
+                          experimentAnnotations:
+                            sidecar.istio.io/inject: "false"
+                          env:
+                            - name: TOTAL_CHAOS_DURATION
+                              value: "60"
+                            - name: NODE_CPU_CORE
+                              value: "1"
+                            - name: NODES_AFFECTED_PERC
+                              value: ""
+                            - name: TARGET_NODE
+                              value: gke-vedant-cluster-default-pool-1311ccfb-tdqq
+                        probe: []
+                  annotationCheck: "false"
+      outputs: {}
+      metadata:
+        labels:
+          weight: "10"
+      container:
+        name: ""
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/chaosnative/litmus-checker:2.8.0
+        args:
+          - -file=/tmp/chaosengine-node-cpu-hog-zuq.yaml
+          - -saveName=/tmp/engine-name
+        resources: {}
+    - name: revert-chaos
+      inputs: {}
+      outputs: {}
+      metadata: {}
+      container:
+        name: ""
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/chaosnative/k8s:latest
+        command:
+          - sh
+          - -c
+        args:
+          - "kubectl delete chaosengine -l 'instance_id in
+            (6854b42a-f616-4d05-bf84-ff0e2238fb35, )' -n
+            {{workflow.parameters.adminModeNamespace}} "
+        resources: {}
+  entrypoint: custom-chaos
+  arguments:
+    parameters:
+      - name: adminModeNamespace
+        value: litmus
+  serviceAccountName: argo-chaos
+  podGC:
+    strategy: OnWorkflowCompletion
+  securityContext:
+    runAsUser: 1000
+    runAsNonRoot: true
+status:
+  ? startedAt
+  ? finishedAt
