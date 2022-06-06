@@ -250,11 +250,7 @@ spec:
                               interval: 3
                               stopOnFailure: false
                             cmdProbe/inputs:
-                              command: kubectl get pods --selector=app=native -n app | grep "Running" | wc
-                                -l
-                              source:
-                                hostNetwork: false
-                                image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/chaosnative/k8s:2.8.0
+                              command: kubectl get pods --selector=app=native -n app | grep "Running" | wc -l
                               comparator:
                                 type: int
                                 criteria: ==
