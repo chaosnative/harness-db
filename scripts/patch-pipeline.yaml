@@ -119,5 +119,5 @@ jobs:
 
       - name: Chaos Pods Cleanup
         run: |
-          kubectl delete workflows --all -A
-          kubectl delete chaosengines,chaosexperiments,chaosresults --all -A
+          kubectl delete workflows --all -n litmus
+          kubectl delete chaosengines,chaosexperiments,chaosresults --all -n litmus

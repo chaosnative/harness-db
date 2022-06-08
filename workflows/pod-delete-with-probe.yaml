@@ -254,7 +254,7 @@ spec:
                               comparator:
                                 type: int
                                 criteria: ==
-                                value: "3"
+                                value: "1"
                   annotationCheck: "false"
       outputs: {}
       metadata:

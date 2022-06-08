@@ -254,7 +254,7 @@ spec:
                               comparator:
                                 type: int
                                 criteria: ==
-                                value: "3"
+                                value: "1"
                           - name: k8s-probe
                             type: k8sProbe
                             mode: Continuous
