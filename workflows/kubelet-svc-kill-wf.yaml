@@ -1,0 +1,233 @@
+kind: Workflow
+apiVersion: argoproj.io/v1alpha1
+metadata:
+  name: custom-chaos-workflow-1655376426
+  namespace: litmus
+  creationTimestamp: null
+  labels:
+    cluster_id: cb48f848-12db-4d59-8410-6f2485935424
+    subject: custom-chaos-workflow_litmus
+    workflow_id: 9758fa68-807f-4910-8b41-d919d4727b53
+    workflows.argoproj.io/controller-instanceid: cb48f848-12db-4d59-8410-6f2485935424
+spec:
+  imagePullSecrets:
+    - name: regcred
+  podMetadata:
+    annotations:
+      sidecar.istio.io/inject: "false"
+  templates:
+    - name: custom-chaos
+      inputs: {}
+      outputs: {}
+      metadata: {}
+      steps:
+        - - name: install-chaos-experiments
+            template: install-chaos-experiments
+            arguments: {}
+        - - name: kubelet-service-kill-5p8
+            template: kubelet-service-kill-5p8
+            arguments: {}
+    - name: install-chaos-experiments
+      inputs:
+        artifacts:
+          - name: kubelet-service-kill-5p8
+            path: /tmp/kubelet-service-kill-5p8.yaml
+            raw:
+              data: >
+                apiVersion: litmuschaos.io/v1alpha1
+
+                description:
+                  message: |
+                    Kills the kubelet service on the application node to check the resiliency.
+                kind: ChaosExperiment
+
+                metadata:
+                  name: kubelet-service-kill
+                  labels:
+                    name: kubelet-service-kill
+                    app.kubernetes.io/part-of: litmus
+                    app.kubernetes.io/component: chaosexperiment
+                    app.kubernetes.io/version: 2.8.0
+                spec:
+                  definition:
+                    scope: Cluster
+                    permissions:
+                      - apiGroups:
+                          - ""
+                        resources:
+                          - pods
+                        verbs:
+                          - create
+                          - delete
+                          - get
+                          - list
+                          - patch
+                          - update
+                          - deletecollection
+                      - apiGroups:
+                          - ""
+                        resources:
+                          - events
+                        verbs:
+                          - create
+                          - get
+                          - list
+                          - patch
+                          - update
+                      - apiGroups:
+                          - ""
+                        resources:
+                          - configmaps
+                        verbs:
+                          - get
+                          - list
+                      - apiGroups:
+                          - ""
+                        resources:
+                          - pods/log
+                        verbs:
+                          - get
+                          - list
+                          - watch
+                      - apiGroups:
+                          - ""
+                        resources:
+                          - pods/exec
+                        verbs:
+                          - get
+                          - list
+                          - create
+                      - apiGroups:
+                          - batch
+                        resources:
+                          - jobs
+                        verbs:
+                          - create
+                          - list
+                          - get
+                          - delete
+                          - deletecollection
+                      - apiGroups:
+                          - litmuschaos.io
+                        resources:
+                          - chaosengines
+                          - chaosexperiments
+                          - chaosresults
+                        verbs:
+                          - create
+                          - list
+                          - get
+                          - patch
+                          - update
+                          - delete
+                      - apiGroups:
+                          - ""
+                        resources:
+                          - nodes
+                        verbs:
+                          - get
+                          - list
+                    image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/chaosnative/go-runner:2.8.0
+                    imagePullPolicy: Always
+                    args:
+                      - -c
+                      - ./experiments -name kubelet-service-kill
+                    command:
+                      - /bin/bash
+                    env:
+                      - name: TOTAL_CHAOS_DURATION
+                        value: "60"
+                      - name: RAMP_TIME
+                        value: ""
+                      - name: LIB
+                        value: litmus
+                      - name: NODE_LABEL
+                        value: ""
+                      - name: LIB_IMAGE
+                        value: ubuntu:16.04
+                      - name: TARGET_NODE
+                        value: ""
+                    labels:
+                      name: kubelet-service-kill
+                      app.kubernetes.io/part-of: litmus
+                      app.kubernetes.io/component: experiment-job
+                      app.kubernetes.io/service-kill: "true"
+                      app.kubernetes.io/version: 2.8.0
+      outputs: {}
+      metadata: {}
+      container:
+        name: ""
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/chaosnative/k8s:2.8.0
+        command:
+          - sh
+          - -c
+        args:
+          - kubectl apply -f /tmp/kubelet-service-kill-5p8.yaml -n
+            {{workflow.parameters.adminModeNamespace}} |  sleep 30
+        resources: {}
+    - name: kubelet-service-kill-5p8
+      inputs:
+        artifacts:
+          - name: kubelet-service-kill-5p8
+            path: /tmp/chaosengine-kubelet-service-kill-5p8.yaml
+            raw:
+              data: >
+                apiVersion: litmuschaos.io/v1alpha1
+
+                kind: ChaosEngine
+
+                metadata:
+                  namespace: "{{workflow.parameters.adminModeNamespace}}"
+                  generateName: kubelet-service-kill-5p8
+                  labels:
+                    instance_id: 31965b18-ac08-45e7-bd88-1d732d471d90
+                    context: kubelet-service-kill-5p8_litmus
+                    workflow_name: custom-chaos-workflow-1655376426
+                spec:
+                  components:
+                    runner:
+                      imagePullSecrets:
+                        - name: regcred
+                      runnerAnnotations:
+                        sidecar.istio.io/inject: "false"
+                  engineState: active
+                  auxiliaryAppInfo: ""
+                  chaosServiceAccount: litmus-admin
+                  experiments:
+                    - name: kubelet-service-kill
+                      spec:
+                        components:
+                          experimentImagePullSecrets:
+                            - name: regcred
+                          experimentAnnotations:
+                            sidecar.istio.io/inject: "false"
+                          env:
+                            - name: TOTAL_CHAOS_DURATION
+                              value: "60"
+                            - name: TARGET_NODE
+                              value: gke-vedant-cluster-default-pool-b1033181-qnhd
+                        probe: []
+                  annotationCheck: "false"
+      outputs: {}
+      metadata:
+        labels:
+          weight: "10"
+      container:
+        name: ""
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/chaosnative/litmus-checker:2.8.0
+        args:
+          - -file=/tmp/chaosengine-kubelet-service-kill-5p8.yaml
+          - -saveName=/tmp/engine-name
+        resources: {}
+  entrypoint: custom-chaos
+  arguments:
+    parameters:
+      - name: adminModeNamespace
+        value: litmus
+  serviceAccountName: argo-chaos
+  securityContext:
+    runAsUser: 1000
+    runAsNonRoot: true
+status:
+  ? startedAt
+  ? finishedAt

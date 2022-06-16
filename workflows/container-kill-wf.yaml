@@ -1,0 +1,278 @@
+kind: Workflow
+apiVersion: argoproj.io/v1alpha1
+metadata:
+  name: custom-chaos-workflow-1655377214
+  namespace: litmus
+  creationTimestamp: null
+  labels:
+    cluster_id: cb48f848-12db-4d59-8410-6f2485935424
+    subject: custom-chaos-workflow_litmus
+    workflow_id: 74da55e8-fdcb-4aa0-83b9-d9c20a52396b
+    workflows.argoproj.io/controller-instanceid: cb48f848-12db-4d59-8410-6f2485935424
+spec:
+  imagePullSecrets:
+    - name: regcred
+  podMetadata:
+    annotations:
+      sidecar.istio.io/inject: "false"
+  templates:
+    - name: custom-chaos
+      inputs: {}
+      outputs: {}
+      metadata: {}
+      steps:
+        - - name: install-chaos-experiments
+            template: install-chaos-experiments
+            arguments: {}
+        - - name: container-kill-bov
+            template: container-kill-bov
+            arguments: {}
+    - name: install-chaos-experiments
+      inputs:
+        artifacts:
+          - name: container-kill-bov
+            path: /tmp/container-kill-bov.yaml
+            raw:
+              data: |
+                apiVersion: litmuschaos.io/v1alpha1
+                description:
+                  message: |
+                    Kills a container belonging to an application pod 
+                kind: ChaosExperiment
+                metadata:
+                  name: container-kill
+                  labels:
+                    name: container-kill
+                    app.kubernetes.io/part-of: litmus
+                    app.kubernetes.io/component: chaosexperiment
+                    app.kubernetes.io/version: 2.8.0
+                spec:
+                  definition:
+                    scope: Namespaced
+                    permissions:
+                      - apiGroups:
+                          - ""
+                        resources:
+                          - pods
+                        verbs:
+                          - create
+                          - delete
+                          - get
+                          - list
+                          - patch
+                          - update
+                          - deletecollection
+                      - apiGroups:
+                          - ""
+                        resources:
+                          - events
+                        verbs:
+                          - create
+                          - get
+                          - list
+                          - patch
+                          - update
+                      - apiGroups:
+                          - ""
+                        resources:
+                          - configmaps
+                        verbs:
+                          - get
+                          - list
+                      - apiGroups:
+                          - ""
+                        resources:
+                          - pods/log
+                        verbs:
+                          - get
+                          - list
+                          - watch
+                      - apiGroups:
+                          - ""
+                        resources:
+                          - pods/exec
+                        verbs:
+                          - get
+                          - list
+                          - create
+                      - apiGroups:
+                          - apps
+                        resources:
+                          - deployments
+                          - statefulsets
+                          - replicasets
+                          - daemonsets
+                        verbs:
+                          - list
+                          - get
+                      - apiGroups:
+                          - apps.openshift.io
+                        resources:
+                          - deploymentconfigs
+                        verbs:
+                          - list
+                          - get
+                      - apiGroups:
+                          - ""
+                        resources:
+                          - replicationcontrollers
+                        verbs:
+                          - get
+                          - list
+                      - apiGroups:
+                          - argoproj.io
+                        resources:
+                          - rollouts
+                        verbs:
+                          - list
+                          - get
+                      - apiGroups:
+                          - batch
+                        resources:
+                          - jobs
+                        verbs:
+                          - create
+                          - list
+                          - get
+                          - delete
+                          - deletecollection
+                      - apiGroups:
+                          - litmuschaos.io
+                        resources:
+                          - chaosengines
+                          - chaosexperiments
+                          - chaosresults
+                        verbs:
+                          - create
+                          - list
+                          - get
+                          - patch
+                          - update
+                          - delete
+                    image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/chaosnative/go-runner:2.8.0
+                    imagePullPolicy: Always
+                    args:
+                      - -c
+                      - ./experiments -name container-kill
+                    command:
+                      - /bin/bash
+                    env:
+                      - name: TARGET_CONTAINER
+                        value: ""
+                      - name: RAMP_TIME
+                        value: ""
+                      - name: LIB
+                        value: litmus
+                      - name: TARGET_PODS
+                        value: ""
+                      - name: CHAOS_INTERVAL
+                        value: "10"
+                      - name: SIGNAL
+                        value: SIGKILL
+                      - name: SOCKET_PATH
+                        value: /var/run/docker.sock
+                      - name: CONTAINER_RUNTIME
+                        value: docker
+                      - name: TOTAL_CHAOS_DURATION
+                        value: "20"
+                      - name: PODS_AFFECTED_PERC
+                        value: ""
+                      - name: NODE_LABEL
+                        value: ""
+                      - name: LIB_IMAGE
+                        value: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/chaosnative/go-runner:2.8.0
+                      - name: SEQUENCE
+                        value: parallel
+                    labels:
+                      name: container-kill
+                      app.kubernetes.io/part-of: litmus
+                      app.kubernetes.io/component: experiment-job
+                      app.kubernetes.io/runtime-api-usage: "true"
+                      app.kubernetes.io/version: 2.8.0
+      outputs: {}
+      metadata: {}
+      container:
+        name: ""
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/chaosnative/k8s:2.8.0
+        command:
+          - sh
+          - -c
+        args:
+          - kubectl apply -f /tmp/container-kill-bov.yaml -n
+            {{workflow.parameters.adminModeNamespace}} |  sleep 30
+        resources: {}
+    - name: container-kill-bov
+      inputs:
+        artifacts:
+          - name: container-kill-bov
+            path: /tmp/chaosengine-container-kill-bov.yaml
+            raw:
+              data: |
+                apiVersion: litmuschaos.io/v1alpha1
+                kind: ChaosEngine
+                metadata:
+                  namespace: "{{workflow.parameters.adminModeNamespace}}"
+                  generateName: container-kill-bov
+                  labels:
+                    instance_id: d1bb0442-a3b6-4131-bc91-fd881e2f515e
+                    context: container-kill-bov_litmus
+                    workflow_name: custom-chaos-workflow-1655377214
+                spec:
+                  components:
+                    runner:
+                      imagePullSecrets:
+                        - name: regcred
+                      runnerAnnotations:
+                        sidecar.istio.io/inject: "false"
+                  appinfo:
+                    appns: app
+                    applabel: app=native
+                    appkind: deployment
+                  engineState: active
+                  chaosServiceAccount: litmus-admin
+                  experiments:
+                    - name: container-kill
+                      spec:
+                        components:
+                          experimentImagePullSecrets:
+                            - name: regcred
+                          experimentAnnotations:
+                            sidecar.istio.io/inject: "false"
+                          env:
+                            - name: TOTAL_CHAOS_DURATION
+                              value: "30"
+                            - name: CHAOS_INTERVAL
+                              value: "10"
+                            - name: CONTAINER_RUNTIME
+                              value: containerd
+                            - name: SOCKET_PATH
+                              value: /run/containerd/containerd.sock
+                            - name: PODS_AFFECTED_PERC
+                              value: ""
+                            - name: TARGET_CONTAINER
+                              value: ""
+                        probe: []
+                  annotationCheck: "false"
+      outputs: {}
+      metadata:
+        labels:
+          weight: "10"
+      container:
+        name: ""
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/chaosnative/litmus-checker:2.8.0
+        args:
+          - -file=/tmp/chaosengine-container-kill-bov.yaml
+          - -saveName=/tmp/engine-name
+        resources: {}
+  entrypoint: custom-chaos
+  arguments:
+    parameters:
+      - name: adminModeNamespace
+        value: litmus
+  serviceAccountName: argo-chaos
+  securityContext:
+    runAsUser: 1000
+    runAsNonRoot: true
+status:
+  ? startedAt
+  ? finishedAt
