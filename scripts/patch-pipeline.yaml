@@ -19,6 +19,15 @@ on:
       ChaosCleanUp:
         type: boolean
         default: ""
+      AgentSetup:
+        type: boolean
+        default: ""
+      AgentNamespace:
+        default: ""
+      AgentName:
+        default: ""
+      AgentScope:
+        default: ""
 
 jobs:
   IMAGE_PULL_SECRET_PATCH_JOB:
@@ -121,3 +130,56 @@ jobs:
         run: |
           kubectl delete workflows --all -n litmus
           kubectl delete chaosengines,chaosexperiments,chaosresults --all -n litmus
+
+  AGENT_SETUP:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.AgentSetup == 'true' }}
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Authenticate Google Cloud SDK
+        if: always()
+        uses: 'google-github-actions/auth@v0'
+        with:
+          credentials_json: '${{ secrets.GCP_SA_KEY }}'
+
+      - id: 'get-credentials'
+        uses: 'google-github-actions/get-gke-credentials@v0'
+        with:
+          cluster_name: 'vedant-cluster'
+          location: 'us-east4-b'
+
+      - name: Installing chaosCTL on Agent Cluster
+        run: |
+          curl -O https://chaosctl.chaosnative.com/chaosctl-linux-amd64-v0.2.0.tar.gz
+          tar -zxvf chaosctl-linux-amd64-v0.2.0.tar.gz
+          chmod +x chaosctl
+          sudo mv chaosctl /usr/local/bin/chaosctl
+          chaosctl version
+
+      - name: Connecting External Agent to control-plane (HCE)
+        run: |
+          chaosctl config set-account --endpoint=${ACCESS_URL} --username="admin" --password="litmus"
+          if [[ "$INSTALLATION_MODE" == "namespace" ]];then
+
+            kubectl create ns ${AGENT_NAMESPACE}
+
+            # Installing CRD's, required for namespaced mode
+            kubectl apply -f https://raw.githubusercontent.com/chaosnative/hce-charts/main/k8s-manifests/2.8.0/hce-crds.yaml
+
+            chaosctl create agent --agent-name=${AGENT_NAME} --project-id=${PROJECT_ID} --installation-mode="namespace" --namespace=${AGENT_NAMESPACE} --kubeconfig=$KUBECONFIG --non-interactive
+          
+          elif [[ "$INSTALLATION_MODE" == "cluster" ]];then
+
+            chaosctl create agent --agent-name=${AGENT_NAME} --project-id=${PROJECT_ID} --installation-mode="cluster" --namespace=${AGENT_NAMESPACE} --kubeconfig=$KUBECONFIG --non-interactive
+          else
+            echo "Invalid Installation Scope provided"
+          fi
+        env:
+          AGENT_NAMESPACE: ${{ github.event.inputs.AgentNamespace }}
+          INSTALLATION_MODE: ${{ github.event.inputs.AgentScope }}
+          ACCESS_URL: ${{ github.event.inputs.HceAccessUrl }}
+          AGENT_NAME: ${{ github.event.inputs.AgentName }}
+          PROJECT_ID: ${{ github.event.inputs.ProjectID }}
+
+
