@@ -1,0 +1,3 @@
+GCS - storage.googleapis.com
+Pub/Sub - pubsub.googleapis.com
+CloudSQL - sqladmin.googleapis.com
