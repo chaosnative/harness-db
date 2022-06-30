@@ -256,7 +256,7 @@ spec:
                             - name: SOCKET_PATH
                               value: /run/containerd/containerd.sock
                             - name: DESTINATION_HOSTS
-                              value: google.com
+                              value: pubsub.googleapis.com
                             - name: PODS_AFFECTED_PERC
                               value: ""
                         probe: []
