@@ -1,0 +1,35 @@
+---
+name: Chaos-Cleanup-Pipeline
+on:
+  workflow_dispatch:
+    inputs:
+      AgentNamespace:
+        default: ""
+
+jobs:
+  CHAOS_CLEANUP:
+    runs-on: ubuntu-latest
+    env:
+      AGENT_NAMESPACE: ${{ github.event.inputs.AgentNamespace }}
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Authenticate Google Cloud SDK
+        if: always()
+        uses: 'google-github-actions/auth@v0'
+        with:
+          credentials_json: '${{ secrets.GCP_SA_KEY }}'
+
+      - id: 'get-credentials'
+        uses: 'google-github-actions/get-gke-credentials@v0'
+        with:
+          cluster_name: 'vedant-cluster'
+          location: 'us-east5-a'
+
+      - name: Chaos Pods Cleanup
+        run: |
+          kubectl delete workflows --all -n ${AGENT_NAMESPACE}
+          kubectl delete chaosengines,chaosexperiments,chaosresults --all -n ${AGENT_NAMESPACE}
+
+
+
