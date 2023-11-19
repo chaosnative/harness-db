@@ -1,0 +1,53 @@
+---
+name: Agent-Plane-Setup-Pipeline
+on:
+  workflow_dispatch:
+    inputs:
+      AgentNamespace:
+        default: ""
+
+jobs:
+  AGENT_SETUP:
+    runs-on: ubuntu-latest
+    env:
+      AGENT_NAMESPACE: ${{ github.event.inputs.AgentNamespace }}
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Authenticate Google Cloud SDK
+        if: always()
+        uses: 'google-github-actions/auth@v0'
+        with:
+          credentials_json: '${{ secrets.GCP_SA_KEY }}'
+
+      - id: 'get-credentials'
+        uses: 'google-github-actions/get-gke-credentials@v0'
+        with:
+          cluster_name: 'vedant-cluster'
+          location: 'us-east5-a'
+
+      - name: Adding ImagePullSecrets in Execution plane components
+        run: |
+          deployments=( chaos-exporter chaos-operator-ce subscriber workflow-controller )
+          for i in "${deployments[@]}"
+          do
+            kubectl patch deploy $i -p '{ "spec": { "template": { "spec": { "imagePullSecrets": [{"name": "regcred"}] } } } }' -n ${AGENT_NAMESPACE}
+          done
+          sleep 10
+
+      - name: Updating the configMap with imagePullSecret for pulling images
+        run: |
+          kubectl patch configmap workflow-controller-configmap -n ${AGENT_NAMESPACE} --type merge -p '{"data":{"workflowDefaults":"|\n  spec:\n    imagePullSecrets:\n    - name: regcred"}}'
+          pod_name=$(kubectl get pods --selector="app=workflow-controller" --output=jsonpath={.items..metadata.name} -n ${AGENT_NAMESPACE})
+          kubectl delete pod $pod_name -n ${AGENT_NAMESPACE}
+
+      - name: Updating subscriber to read TLS_CERT from secret
+        run: |
+          kubectl patch deployment subscriber \
+          --type=json \
+          -p='[{"op": "add", "path": "/spec/template/spec/containers/1/env/-", "value": {"name": "CUSTOM_TLS_CERT", "valueFrom": {"secretKeyRef": {"name": "tls-cert", "key": "CUSTOM_TLS_CERT"}}}}]'
+
+
+      - name: Waiting for all components to be ready
+        run: |
+          kubectl wait --for=condition=Ready pods --all --namespace ${AGENT_NAMESPACE} --timeout=720s
