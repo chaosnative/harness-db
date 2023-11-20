@@ -45,3 +45,7 @@ jobs:
       - name: Waiting for all components to be ready
         run: |
           kubectl wait --for=condition=Ready pods --all --namespace ${AGENT_NAMESPACE} --timeout=720s
+
+     - name: Deleting Upgrader Job
+       run: |
+         kubectl delete cronjobs --all -n ${AGENT_NAMESPACE}
