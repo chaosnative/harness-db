@@ -37,15 +37,9 @@ jobs:
 
       - name: Updating the configMap with imagePullSecret for pulling images
         run: |
-          kubectl patch configmap workflow-controller-configmap -n ${AGENT_NAMESPACE} --type merge -p '{"data":{"workflowDefaults":"|\n  spec:\n    imagePullSecrets:\n    - name: regcred"}}'
+          kubectl patch configmap workflow-controller-configmap -n ${AGENT_NAMESPACE} --type merge -p '{"data":{"workflowDefaults":"spec:\n  imagePullSecrets:\n  - name: regcred"}}'
           pod_name=$(kubectl get pods --selector="app=workflow-controller" --output=jsonpath={.items..metadata.name} -n ${AGENT_NAMESPACE})
           kubectl delete pod $pod_name -n ${AGENT_NAMESPACE}
-
-      - name: Updating subscriber to read TLS_CERT from secret
-        run: |
-          kubectl patch deployment subscriber \
-          --type=json \
-          -p='[{"op": "add", "path": "/spec/template/spec/containers/1/env/-", "value": {"name": "CUSTOM_TLS_CERT", "valueFrom": {"secretKeyRef": {"name": "tls-cert", "key": "CUSTOM_TLS_CERT"}}}}]'
 
 
       - name: Waiting for all components to be ready
