@@ -5,12 +5,15 @@ on:
     inputs:
       AgentNamespace:
         default: ""
+      SmpUrl:
+        default: ""
 
 jobs:
   AGENT_SETUP:
     runs-on: ubuntu-latest
     env:
       AGENT_NAMESPACE: ${{ github.event.inputs.AgentNamespace }}
+      SMP_URL: ${{ github.event.inputs.SmpUrl }}
     steps:
       - uses: actions/checkout@v2
 
@@ -27,6 +30,7 @@ jobs:
           location: 'us-east5-a'
 
       - name: Adding ImagePullSecrets in Execution plane components
+        shell: bash
         run: |
           deployments=( chaos-exporter chaos-operator-ce subscriber workflow-controller )
           for i in "${deployments[@]}"
@@ -36,16 +40,19 @@ jobs:
           sleep 10
 
       - name: Updating the configMap with imagePullSecret for pulling images
+        shell: bash
         run: |
           kubectl patch configmap workflow-controller-configmap -n ${AGENT_NAMESPACE} --type merge -p '{"data":{"workflowDefaults":"spec:\n  imagePullSecrets:\n  - name: regcred"}}'
           pod_name=$(kubectl get pods --selector="app=workflow-controller" --output=jsonpath={.items..metadata.name} -n ${AGENT_NAMESPACE})
           kubectl delete pod $pod_name -n ${AGENT_NAMESPACE}
 
-
-      - name: Waiting for all components to be ready
+      - name: Patching Readiness Probe to skip SSL Check
+        shell: bash
         run: |
-          kubectl wait --for=condition=Ready pods --all --namespace ${AGENT_NAMESPACE} --timeout=720s
+          export URL="${SMP_URL}"
+          kubectl patch deployment subscriber -p '{"spec":{"template":{"spec":{"containers":[{"name":"subscriber","readinessProbe":{"exec":{"command":["/bin/sh","-c","curl --fail -s -k '"${URL}"'/chaos/kserver/api/status -o /dev/null"]}}}]}}}}' -n <namespace>
 
-     - name: Deleting Upgrader Job
-       run: |
-         kubectl delete cronjobs --all -n ${AGENT_NAMESPACE}
+      - name: Deleting Upgrader Job
+        shell: bash
+        run: |
+          kubectl delete cronjobs --all -n ${AGENT_NAMESPACE}
