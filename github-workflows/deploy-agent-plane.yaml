@@ -50,7 +50,7 @@ jobs:
         shell: bash
         run: |
           export URL="${SMP_URL}"
-          kubectl patch deployment subscriber -p '{"spec":{"template":{"spec":{"containers":[{"name":"subscriber","readinessProbe":{"exec":{"command":["/bin/sh","-c","curl --fail -s -k '"${URL}"'/chaos/kserver/api/status -o /dev/null"]}}}]}}}}' -n <namespace>
+          kubectl patch deployment subscriber -p '{"spec":{"template":{"spec":{"containers":[{"name":"subscriber","readinessProbe":{"exec":{"command":["/bin/sh","-c","curl --fail -s -k '"${URL}"'/chaos/kserver/api/status -o /dev/null"]}}}]}}}}' -n ${AGENT_NAMESPACE}
 
       - name: Deleting Upgrader Job
         shell: bash
