@@ -38,13 +38,3 @@ data:
     done < pdb_namespace_originalMinimalAvailable_list.txt
 
     echo "Done"
----
-apiVersion: policy/v1
-kind: PodDisruptionBudget
-metadata:
-  name: sample-pdb
-spec:
-  minAvailable: 2
-  selector:
-    matchLabels:
-      app: zookeeper
