@@ -1,27 +1,22 @@
 # Running Node Drain Chaos Experiment on an Autopilot Cluster having Composer deployed
 
-- Add permissions to list, get and patch the PDB's by experiment pods to `litmus-admin` cluster-role - 
-```bash
-kubectl edit clusterrole litmus-admin
-```
+### Chaos Infrastructure Deployment
+- Autopilot doesn't allow resources without minimum resources - 512Mi Memory & 250m CPU. So need to adjust the same in Chaos Infrastructure's manifest.
 
-and add below rule under `rules` at the end - 
+- Add permissions to list, get and patch the PDB's by experiment pods to `litmus-admin` cluster-role - 
 
 ```yaml
-- apiGroups:
-  - policy
-  resources:
-  - poddisruptionbudgets
-  verbs:
-  - get
-  - list
-  - patch
+  - apiGroups: [ "policy" ]
+    resources: [ "poddisruptionbudgets" ]
+    verbs: [ "get", "list", "patch" ]
 ```
 
 - Apply the configmap containing script to take backup of existing PDBs, patch them & then revert them back once chaos is completed - 
 ```bash
 kubectl apply -f composer-scripts-cm.yaml -n <namespace of chaos infrastructure>
 ```
+
+### Chaos Experiment Tuning
 
 - Update your experiment to use above scripts & trigger them using probes - 
   - Add volume mount in chaos-engine under spec.experiments[0].spec.components.configMaps
@@ -78,3 +73,10 @@ kubectl apply -f composer-scripts-cm.yaml -n <namespace of chaos infrastructure>
   ```
 
 - Now you can run Node Drain experiments on an Autopilot cluster where composer/airflow is deployed.
+
+## Notes (Not Tested Yet) - 
+
+- For Running Pod-Network-Loss Experiments on Autopilot/Composer based cluster, we need to add capability for `SYS_ADMIN` - 
+```bash
+gcloud container clusters update <cluster-name> --workload-policies=allow-net-admin --location <location>
+```
