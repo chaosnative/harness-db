@@ -44,6 +44,13 @@ Due to many restrictions provided below via GCP Autopilot clusters, we cannot ru
 
 To reduce the flakiness, Healthcheck will have to be inline probes.
 
+Remove below source part from healthcheck probes
+```yaml
+    source:
+      image: docker.io/harness/chaos-go-runner:1.35.0
+      inheritInputs: true
+```
+
 
 
 
