@@ -40,7 +40,7 @@ kubectl apply -f composer-scripts-cm.yaml -n <namespace of chaos infrastructure>
 
   - Add probes to trigger the scripts in SOT & EOT modes
   ```yaml
-    # Running pre-script to patch PDBs to 0
+  # Running pre-script to patch PDBs to 0
   - name: pdb-update
     type: cmdProbe
     mode: SOT
@@ -73,10 +73,3 @@ kubectl apply -f composer-scripts-cm.yaml -n <namespace of chaos infrastructure>
   ```
 
 - Now you can run Node Drain experiments on an Autopilot cluster where composer/airflow is deployed.
-
-## Notes (Not Tested Yet) - 
-
-- For Running Pod-Network-Loss Experiments on Autopilot/Composer based cluster, we need to add capability for `SYS_ADMIN` - 
-```bash
-gcloud container clusters update <cluster-name> --workload-policies=allow-net-admin --location <location>
-```
