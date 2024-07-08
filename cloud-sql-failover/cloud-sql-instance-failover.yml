@@ -1,0 +1,166 @@
+kind: Workflow
+apiVersion: argoproj.io/v1alpha1
+metadata:
+  name: cloud-sql-instance-failover
+  namespace: gcp-infra
+  creationTimestamp: null
+  labels:
+    infra_id: 8d9e4571-9c0c-4121-b2a6-b27852204e8b
+    revision_id: 3382c249-13d0-4c8c-a080-74a7921e9128
+    workflow_id: 1c13e765-ee05-4454-973f-9a4849d0ac58
+    workflows.argoproj.io/controller-instanceid: 8d9e4571-9c0c-4121-b2a6-b27852204e8b
+spec:
+  templates:
+    - name: sql-byoc
+      inputs: {}
+      outputs: {}
+      metadata: {}
+      steps:
+        - - name: byoc-injector-mv0
+            template: byoc-injector-mv0
+            arguments: {}
+        - - name: cleanup-chaos-resources
+            template: cleanup-chaos-resources
+            arguments: {}
+    - name: cleanup-chaos-resources
+      inputs: {}
+      outputs: {}
+      metadata: {}
+      container:
+        name: ""
+        image: docker.io/harness/chaos-go-runner:1.39.0
+        command:
+          - sh
+          - -c
+        args:
+          - kubectl delete chaosengine -l workflow_run_id={{workflow.uid}} -n
+            {{workflow.parameters.adminModeNamespace}}
+        resources: {}
+    - name: byoc-injector-mv0
+      inputs:
+        artifacts:
+          - name: byoc-injector-mv0
+            path: /tmp/chaosengine-byoc-injector-mv0.yaml
+            raw:
+              data: >
+                apiVersion: litmuschaos.io/v1alpha1
+
+                kind: ChaosEngine
+
+                metadata:
+                  annotations:
+                    probeRef: '[{"mode":"Edge","probeID":"cloud-sql-healthcheck"}]'
+                  creationTimestamp: null
+                  generateName: byoc-injector-mv0
+                  labels:
+                    app.kubernetes.io/component: experiment-job
+                    app.kubernetes.io/part-of: litmus
+                    app.kubernetes.io/version: ci
+                    name: byoc-injector
+                    workflow_name: cloud-sql-instance-failover
+                    workflow_run_id: "{{ workflow.uid }}"
+                  namespace: "{{workflow.parameters.adminModeNamespace}}"
+                spec:
+                  appinfo: {}
+                  chaosServiceAccount: litmus-admin
+                  components:
+                    runner:
+                      nodeSelector:
+                        iam.gke.io/gke-metadata-server-enabled: "true"
+                      resources: {}
+                  engineState: active
+                  experiments:
+                    - args:
+                        - -c
+                        - ./experiments -name byoc-injector
+                      command:
+                        - /bin/bash
+                      image: docker.io/harness/chaos-go-runner:1.39.0
+                      imagePullPolicy: Always
+                      name: byoc-injector
+                      spec:
+                        probe:
+                          - name: sql-healthcheck
+                            type: cmdProbe
+                            cmdProbe/inputs:
+                              command: gcloud sql instances describe "${CLOUD_SQL_INSTANCE_NAME}" --project
+                                "${CLOUD_SQL_PROJECT}" --format="get(state)"
+                              comparator:
+                                type: string
+                                criteria: contains
+                                value: RUNNABLE
+                            mode: Edge
+                            runProperties:
+                              probeTimeout: 20s
+                              interval: 2s
+                              attempt: 2
+                              probePollingInterval: 2s
+                              initialDelay: 2s
+                              verbosity: debug
+                        components:
+                          env:
+                            - name: TOTAL_CHAOS_DURATION
+                              value: "120"
+                            - name: LIB_IMAGE
+                              value: docker.io/harness/chaos-go-runner:1.39.0
+                            - name: COMMAND
+                              value: /bin/bash, -c
+                            - name: CLOUD_SQL_INSTANCE_NAME
+                              value: ""
+                            - name: CLOUD_SQL_PROJECT
+                              value: ""
+                            - name: ARGS
+                              value: before_zone=$(gcloud sql instances describe "${CLOUD_SQL_INSTANCE_NAME}"
+                                --project "${CLOUD_SQL_PROJECT}" --format="get(gceZone)") &&
+                                echo -e "Zone for the primary replica before failover
+                                ${before_zone}\n" && gcloud sql instances failover
+                                "${CLOUD_SQL_INSTANCE_NAME}" --project="${CLOUD_SQL_PROJECT}" -q
+                                && after_zone=$(gcloud sql instances describe
+                                "${CLOUD_SQL_INSTANCE_NAME}" --project "${CLOUD_SQL_PROJECT}"
+                                --format="get(gceZone)") && echo -e "\nZone for the primary
+                                replica after failover ${after_zone}"
+                          nodeSelector:
+                            iam.gke.io/gke-metadata-server-enabled: "true"
+                          resources: {}
+                          securityContext:
+                            containerSecurityContext: {}
+                            podSecurityContext:
+                              runAsGroup: 0
+                              runAsUser: 2000
+                          statusCheckTimeouts: {}
+                        rank: 0
+                  jobCleanUpPolicy: delete
+                  terminationGracePeriodSeconds: 30
+                status:
+                  engineStatus: ""
+                  experiments: null
+      outputs: {}
+      metadata:
+        labels:
+          weight: "10"
+      container:
+        name: ""
+        image: docker.io/harness/chaos-go-runner:1.39.0
+        command:
+          - ./chaos-checker
+        args:
+          - -file=/tmp/chaosengine-byoc-injector-mv0.yaml
+          - -saveName=/tmp/engine-name
+        resources: {}
+  entrypoint: sql-byoc
+  arguments:
+    parameters:
+      - name: adminModeNamespace
+        value: gcp-infra
+  serviceAccountName: argo-chaos
+  nodeSelector:
+    iam.gke.io/gke-metadata-server-enabled: "true"
+  podGC:
+    strategy: OnWorkflowCompletion
+  securityContext:
+    runAsUser: 1000
+    runAsGroup: 0
+    runAsNonRoot: true
+status:
+  startedAt: null
+  finishedAt: null
