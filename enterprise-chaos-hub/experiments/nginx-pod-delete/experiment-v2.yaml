@@ -1,0 +1,47 @@
+---
+kind: KubernetesChaosExperiment
+apiVersion: litmuschaos.io/v1alpha1
+metadata:
+  name: nginx-pod-delete
+  namespace: litmus
+spec:
+  tasks:
+    - name: pod-delete-qgr2u
+      definition:
+        targets:
+          appinfo:
+          selectors:
+            workloads:
+              - kind: deployment
+                namespace: default
+                names: nginx
+                labels: ""
+            pods:
+        chaos:
+          cleanupPolicy: ""
+          experiment: pod-delete
+          image: docker.io/harness/chaos-ddcr-faults:main-latest
+          imagePullPolicy: Always
+          labels:
+          annotations:
+          command:
+          args:
+          serviceAccountName: litmus-admin
+          defaultHealthCheck: false
+          env:
+            - name: TOTAL_CHAOS_DURATION
+              value: "30"
+            - name: CHAOS_INTERVAL
+              value: "10"
+            - name: FORCE
+              value: "false"
+          probes:
+          components:
+            resources: {}
+  experimentId: ""
+  experimentRunId: ""
+  steps:
+    - - name: pod-delete-qgr2u
+        status: ""
+  serviceAccountName: litmus
+  cleanupPolicy: ""

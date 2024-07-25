@@ -1,0 +1,29 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: linux-dns-spoof
+  version: 0.1.0
+  annotations:
+    categories: linux-dns-spoof
+    chartDescription: Injects DNS spoof chaos into a Linux machine.
+spec:
+  displayName: Linux DNS Spoof
+  categoryDescription: >-
+    This fault injects DNS spoof to a Linux machine.
+
+    - Resolves DNS target host names (or domains) to other IPs provided as user input.
+  faults:
+    - name: linux-dns-spoof
+      description: Injects DNS spoof chaos into a Linux machine.
+  keywords:
+    - Linux
+    - GCP
+    - Azure
+  plan:
+    - team
+  platforms:
+    - Linux
+  icon:
+    - url:
+      mediatype: ""

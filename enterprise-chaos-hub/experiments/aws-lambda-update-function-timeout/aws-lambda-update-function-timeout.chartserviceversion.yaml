@@ -1,0 +1,25 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: aws-lambda-update-function-timeout
+  version: 0.1.0
+  annotations:
+    categories: aws-lambda-update-function-timeout
+    chartDescription: Causes the timeout of a lambda function to be updated to specified value.
+spec:
+  displayName: AWS Lambda Update Function Timeout
+  categoryDescription: |
+    This fault causes the timeout of a lambda function to be updated to specified value.
+  keywords:
+    - AWS
+  plan:
+    - enterprise
+  platforms:
+    - AWS
+  faults:
+    - name: lambda-update-function-timeout
+      description: This fault causes the timeout of a lambda function to be updated to specified value.
+  icon:
+    - url:
+      mediatype: ""

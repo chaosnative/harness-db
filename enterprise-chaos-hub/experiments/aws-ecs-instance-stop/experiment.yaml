@@ -1,0 +1,134 @@
+---
+kind: Workflow
+apiVersion: argoproj.io/v1alpha1
+metadata:
+  name: ecs-instance-stop-1658150276
+  namespace: litmus
+
+spec:
+  templates:
+    - name: custom-chaos
+      steps:
+        - - name: ecs-instance-stop-ol7
+            template: ecs-instance-stop-ol7
+        - - name: cleanup-chaos-resources
+            template: cleanup-chaos-resources
+    - name: ecs-instance-stop-ol7
+      inputs:
+        artifacts:
+          - name: ecs-instance-stop-ol7
+            path: /tmp/chaosengine-ecs-instance-stop-ol7.yaml
+            raw:
+              data: |
+                apiVersion: litmuschaos.io/v1alpha1
+                kind: ChaosEngine
+                metadata:
+                  namespace: "{{workflow.parameters.adminModeNamespace}}"
+                  generateName: ecs-instance-stop-ol7
+                  labels:
+                    name: ecs-instance-stop
+                    app.kubernetes.io/part-of: litmus
+                    app.kubernetes.io/component: experiment-job
+                    app.kubernetes.io/enableAWSAccessViaSecrets: disable
+                    app.kubernetes.io/version: ci
+                spec:
+                  engineState: active
+                  chaosServiceAccount: litmus-admin
+                  experiments:
+                    - name: ecs-instance-stop
+                      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                      imagePullPolicy: Always
+                      args:
+                        - -c
+                        - ./experiments -name ecs-instance-stop
+                      command:
+                        - /bin/bash
+                      spec:
+                        components:
+                          env:
+                            - name: TOTAL_CHAOS_DURATION
+                              value: "30"
+                            - name: RAMP_TIME
+                              value: ""
+                            - name: CHAOS_INTERVAL
+                              value: "10"
+                            - name: MANAGED_NODEGROUP
+                              value: enable
+                            - name: AWS_SHARED_CREDENTIALS_FILE
+                              value: /tmp/cloud_config.yml
+                            - name: DEFAULT_HEALTH_CHECK
+                              value: 'false'
+                            - name: CLUSTER_NAME
+                              value: ''
+                            - name: REGION
+                              value: ''
+                            - name: EC2_INSTANCE_ID
+                              value: ''
+                            - name: SEQUENCE
+                              value: 'parallel'
+                          secrets:
+                            - name: cloud-secret
+                              mountPath: /tmp/
+                        probe:
+                          - name: healthcheck
+                            type: cmdProbe
+                            mode: SOT
+                            runProperties:
+                              probeTimeout: 5s
+                              retry: 0
+                              interval: 1s
+                              stopOnFailure: false
+                            cmdProbe/inputs:
+                              command: ./healthcheck -name aws-ecs-instance-stop
+                              source:
+                                image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                                inheritInputs: true
+                                volumeMount:
+                                  - mountPath: /var/run/secrets/eks.amazonaws.com/serviceaccount
+                                    name: aws-iam-token
+                                    readOnly: true
+                                volumes:
+                                  - name: aws-iam-token
+                                    projected:
+                                      defaultMode: 420
+                                      sources:
+                                        - serviceAccountToken:
+                                            audience: sts.amazonaws.com
+                                            expirationSeconds: 86400
+                                            path: token
+                              comparator:
+                                type: string
+                                criteria: contains
+                                value: "[P000]"
+                  annotationCheck: "false"
+      metadata:
+        labels:
+          weight: "10"
+      container:
+        name: ""
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+        command:
+          - ./chaos-checker
+        args:
+          - -file=/tmp/chaosengine-ecs-instance-stop-ol7.yaml
+          - -saveName=/tmp/engine-name
+    - name: cleanup-chaos-resources
+      container:
+        name: ""
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+        command:
+          - sh
+          - -c
+        args:
+          - "kubectl delete chaosengine -l 'instance_id in
+            (422b11be-5be6-4a79-b431-734c6b05cc29, )' -n
+            {{workflow.parameters.adminModeNamespace}} "
+  entrypoint: custom-chaos
+  arguments:
+    parameters:
+      - name: adminModeNamespace
+        value: litmus
+  serviceAccountName: argo-chaos
+  securityContext:
+    runAsUser: 1000
+    runAsNonRoot: true

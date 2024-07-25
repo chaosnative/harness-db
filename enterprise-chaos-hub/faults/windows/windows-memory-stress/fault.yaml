@@ -1,0 +1,18 @@
+---
+apiVersion: litmuchaos.io/v1alpha1
+kind: MachineFault
+metadata:
+  name: windows-memory-stress
+  labels:
+    name: memory-stress
+spec:
+  infraType: windows
+  env:
+    - name: MEMORY_CONSUMPTION
+      value: ""
+    - name: MEMORY_PERCENTAGE
+      value: "50"
+    - name: DURATION
+      value: "30s"
+    - name: RAMP_TIME
+      value: ""

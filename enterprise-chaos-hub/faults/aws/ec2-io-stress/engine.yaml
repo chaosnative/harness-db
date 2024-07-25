@@ -1,0 +1,77 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChaosEngine
+metadata:
+  name: ec2-io-stress
+  namespace: default
+  labels:
+    name: ec2-io-stress
+    app.kubernetes.io/part-of: litmus
+    app.kubernetes.io/component: experiment-job
+    app.kubernetes.io/version: ci
+    app.kubernetes.io/enableAWSAccessViaSecrets: disable
+spec:
+  engineState: "active"
+  terminationGracePeriodSeconds: 30
+  chaosServiceAccount: litmus-admin
+  experiments:
+    - name: ec2-io-stress
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+      imagePullPolicy: Always
+      args:
+        - -c
+        - ./experiments -name ec2-io-stress
+      command:
+        - /bin/bash
+      spec:
+        components:
+          env:
+            - name: TOTAL_CHAOS_DURATION
+              value: "30"
+            - name: RAMP_TIME
+              value: ""
+            - name: REGION
+              value: ""
+            - name: EC2_INSTANCE_ID
+              value: ""
+            - name: FILESYSTEM_UTILIZATION_BYTES
+              value: "2"
+            - name: FILESYSTEM_UTILIZATION_PERCENTAGE
+              value: "0"
+            - name: NUMBER_OF_WORKERS
+              value: "1"
+            - name: DEFAULT_HEALTH_CHECK
+              value: "false"
+            - name: AWS_SHARED_CREDENTIALS_FILE
+              value: /tmp/cloud_config.yml
+        probe:
+          - name: healthcheck
+            type: cmdProbe
+            mode: Edge
+            runProperties:
+              probeTimeout: 5s
+              retry: 0
+              interval: 1s
+              stopOnFailure: false
+            cmdProbe/inputs:
+              command: ./healthcheck -name aws-ec2
+              source:
+                image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                inheritInputs: true
+                volumeMount:
+                  - mountPath: /var/run/secrets/eks.amazonaws.com/serviceaccount
+                    name: aws-iam-token
+                    readOnly: true
+                volumes:
+                  - name: aws-iam-token
+                    projected:
+                      defaultMode: 420
+                      sources:
+                        - serviceAccountToken:
+                            audience: sts.amazonaws.com
+                            expirationSeconds: 86400
+                            path: token
+              comparator:
+                type: string
+                criteria: contains
+                value: "[P000]"

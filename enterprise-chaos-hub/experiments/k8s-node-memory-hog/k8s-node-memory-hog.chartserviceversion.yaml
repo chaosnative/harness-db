@@ -1,0 +1,27 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: k8s-node-memory-hog
+  version: 0.1.0
+  annotations:
+    categories: k8s-node-memory-hog
+    chartDescription: Injects memory hog (resource exhaustion) on the target Kubernetes node(s)
+spec:
+  displayName: Kubernetes Node Memory Hog
+  categoryDescription: >
+    Injects memory hog (resource exhaustion) on the target Kubernetes node(s)
+  faults:
+    - name: node-memory-hog
+      description: Injects memory hog (resource exhaustion) on the target Kubernetes node(s)
+  keywords:
+    - Kubernetes
+  plan:
+    - free
+  platforms:
+    - GKE
+    - Minikube
+    - AKS
+  icon:
+    - url:
+      mediatype: ""

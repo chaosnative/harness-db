@@ -1,0 +1,147 @@
+---
+kind: Workflow
+apiVersion: argoproj.io/v1alpha1
+metadata:
+  name: vmware-http-latency
+  namespace: litmus
+
+spec:
+  templates:
+    - name: custom-chaos
+      steps:
+        - - name: vmware-http-latency-vrh
+            template: vmware-http-latency-vrh
+
+        - - name: cleanup-chaos-resources
+            template: cleanup-chaos-resources
+
+    - name: vmware-http-latency-vrh
+      inputs:
+        artifacts:
+          - name: vmware-http-latency-vrh
+            path: /tmp/chaosengine-vmware-http-latency-vrh.yaml
+            raw:
+              data: |
+                apiVersion: litmuschaos.io/v1alpha1
+                kind: ChaosEngine
+                metadata:
+                  namespace: "{{workflow.parameters.adminModeNamespace}}"
+                  generateName: vmware-http-latency-vrh
+                  labels:
+                    name: vmware-http-latency
+                    app.kubernetes.io/part-of: litmus
+                    app.kubernetes.io/component: experiment-job
+                    app.kubernetes.io/version: ci
+                spec:
+                  engineState: active
+                  chaosServiceAccount: litmus-admin
+                  experiments:
+                    - name: vmware-http-latency
+                      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                      imagePullPolicy: Always
+                      args:
+                        - -c
+                        - ./experiments -name vmware-http-latency
+                      command:
+                        - /bin/bash
+                      spec:
+                        components:
+                          env:
+                            - name: LIB_IMAGE
+                              value: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                            - name: LATENCY
+                              value: "2000"
+                            - name: TARGET_SERVICE_PORT
+                              value: "80"
+                            - name: PROXY_PORT
+                              value: "8080"
+                            - name: TOXICITY
+                              value: "100"
+                            - name: TOTAL_CHAOS_DURATION
+                              value: "60"
+                            - name: CHAOS_INTERVAL
+                              value: '60'
+                            - name: RAMP_TIME
+                              value: ""
+                            - name: VM_NAME
+                              value: ""
+                            - name: VM_USER_NAME
+                              value: ""
+                            - name: VM_PASSWORD
+                              value: ""
+                            - name: NETWORK_INTERFACE
+                              value: ens160
+                            - name: GOVC_URL
+                              valueFrom:
+                                secretKeyRef:
+                                  name: vcenter-secret
+                                  key: VCENTERSERVER
+                            - name: GOVC_USERNAME
+                              valueFrom:
+                                secretKeyRef:
+                                  name: vcenter-secret
+                                  key: VCENTERUSER
+                            - name: GOVC_PASSWORD
+                              valueFrom:
+                                secretKeyRef:
+                                  name: vcenter-secret
+                                  key: VCENTERPASS
+                            - name: GOVC_INSECURE
+                              value: "true"
+                            - name: SEQUENCE
+                              value: parallel
+                            - name: DEFAULT_HEALTH_CHECK
+                              value: 'false'
+                        probe:
+                          - name: healthcheck
+                            type: cmdProbe
+                            mode: Edge
+                            runProperties:
+                              probeTimeout: 20s
+                              retry: 0
+                              interval: 1s
+                              stopOnFailure: false
+                            cmdProbe/inputs:
+                              command: ./healthcheck -name vmware-http-chaos
+                              source:
+                                image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                                inheritInputs: true
+                              comparator:
+                                type: string
+                                criteria: contains
+                                value: "[P000]"
+      metadata:
+        labels:
+          weight: "10"
+      container:
+        name: ""
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+        command:
+          - ./chaos-checker
+        args:
+          - -file=/tmp/chaosengine-vmware-http-latency-vrh.yaml
+          - -saveName=/tmp/engine-name
+
+    - name: cleanup-chaos-resources
+      container:
+        name: ""
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+        command:
+          - sh
+          - -c
+        args:
+          - "kubectl delete chaosengine -l 'instance_id in
+            (502f18d4-cd5e-4869-b321-083b83452d0f, )' -n
+            {{workflow.parameters.adminModeNamespace}} "
+
+  entrypoint: custom-chaos
+  arguments:
+    parameters:
+      - name: adminModeNamespace
+        value: litmus
+  serviceAccountName: argo-chaos
+  podGC:
+    strategy: OnWorkflowCompletion
+  securityContext:
+    runAsUser: 1000
+    runAsNonRoot: true

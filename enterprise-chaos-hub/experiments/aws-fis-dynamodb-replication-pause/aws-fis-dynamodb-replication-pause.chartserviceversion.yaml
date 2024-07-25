@@ -1,0 +1,29 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: aws-fis-dynamodb-replication-pause
+  version: 0.1.0
+  annotations:
+    categories: aws-fis-dynamodb-replication-pause
+    chartDescription: Injects AWS FIS experiment on target DynamoDB table for specified duration.
+spec:
+  displayName: AWS FIS DynamoDB Replication Pause
+  categoryDescription: >
+    Injects FIS chaos on target DynamoDB service causes DB replication pause for a specified duration
+  faults:
+    - name: fis-dynamodb-replication-pause
+      description: Injects FIS chaos on target DynamoDB service for a specified duration
+  keywords:
+    - AWS
+  plan:
+    - team
+  platforms:
+    - GKE
+    - Minikube
+    - Packet(Kubeadm)
+    - EKS
+    - AKS
+  icon:
+    - url:
+      mediatype: ""

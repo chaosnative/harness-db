@@ -1,0 +1,31 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: LinuxChaosExperiment
+metadata:
+  name: linux-network-rate-limit-4ap
+  labels:
+    context: linux-network-rate-limit
+    name: linux-network-rate-limit-4ap
+spec:
+  steps:
+    - - name: linux-network-rate-limit-4ap
+  tasks:
+    - name: linux-network-rate-limit-4ap
+      taskType: "chaos"
+      weight: 10
+      definition:
+        chaos:
+          experiment: linux-network-rate-limit
+          networkChaos/inputs:
+            networkBandwidth: "1mbit"
+            burst: "32kb"
+            limit: "2mb"
+            minBurst: ""
+            peakRate: ""
+            networkInterfaces: ""
+            duration: 30s
+            destinationHosts: ""
+            destinationIPs: ""
+            sourcePorts: ""
+            destinationPorts: ""
+            rampTime: ""

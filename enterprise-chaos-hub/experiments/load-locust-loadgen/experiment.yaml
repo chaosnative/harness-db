@@ -1,0 +1,135 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  name: load-locust-loadgen
+  namespace: litmus
+spec:
+  arguments:
+    parameters:
+      - name: adminModeNamespace
+        value: litmus
+  entrypoint: custom-chaos
+  podGC:
+    strategy: OnWorkflowCompletion
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 1000
+  serviceAccountName: argo-chaos
+  templates:
+    - inputs: {}
+      metadata: {}
+      name: custom-chaos
+      outputs: {}
+      steps:
+        - - arguments: {}
+            name: locust-loadgen-us4
+            template: locust-loadgen-us4
+    - container:
+        args:
+          - -file=/tmp/chaosengine-locust-loadgen-us4.yaml
+          - -saveName=/tmp/engine-name
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+        command:
+          - ./chaos-checker
+        name: ""
+        resources: {}
+      inputs:
+        artifacts:
+          - name: locust-loadgen-us4
+            path: /tmp/chaosengine-locust-loadgen-us4.yaml
+            raw:
+              data: |
+                apiVersion: litmuschaos.io/v1alpha1
+                kind: ChaosEngine
+                metadata:
+                  namespace: "{{workflow.parameters.adminModeNamespace}}"
+                  generateName: locust-loadgen-us4
+                  labels:
+                    name: locust-loadgen
+                    app.kubernetes.io/part-of: litmus
+                    app.kubernetes.io/component: experiment-job
+                    app.kubernetes.io/version: ci
+                spec:
+                  engineState: active
+                  auxiliaryAppInfo: ""
+                  chaosServiceAccount: litmus-admin
+                  experiments:
+                    - name: locust-loadgen
+                      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                      imagePullPolicy: Always
+                      args:
+                        - -c
+                        - ./experiments -name locust-load-generator
+                      command:
+                        - /bin/bash
+                      spec:
+                        components:
+                          env:
+                            - name: TOTAL_CHAOS_DURATION
+                              value: "60"
+                            - name: CHAOS_INTERVAL
+                              value: "60"
+                            - name: USERS
+                              value: "50"
+                            - name: SPAWN_RATE
+                              value: "50"
+                            - name: HOST
+                              value: https://google.com
+                            - name: LOAD_TYPE
+                              value: load
+                            - name: GRANT_TYPE
+                              value: client_credentials
+                            - name: NODE_NAMES
+                              value: ""
+                            - name: REPLICA
+                              value: "3"
+                            - name: CONFIG_MAP_FILE
+                              value: /tmp/load/config.py
+                            - name: RAMP_TIME
+                              value: ""
+                            - name: LOAD_IMAGE
+                              value: chaosnative/locust-loadgen:latest
+                          configMaps:
+                            - name: load
+                              mountPath: /tmp/load
+                        probe:
+                          - name: healthcheck
+                            type: cmdProbe
+                            mode: Edge
+                            runProperties:
+                              probeTimeout: 180s
+                              retry: 0
+                              interval: 1s
+                              stopOnFailure: false
+                            cmdProbe/inputs:
+                              command: ./healthcheck -name node-level
+                              source:
+                                image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                                inheritInputs: true
+                              comparator:
+                                type: string
+                                criteria: contains
+                                value: "[P000]"
+      metadata:
+        labels:
+          weight: "10"
+      name: locust-loadgen-us4
+      outputs: {}
+    - container:
+        args:
+          - "kubectl delete chaosengine -l 'instance_id in (500508d9-4623-4e33-b4b1-095f12173a57,
+            )' -n {{workflow.parameters.adminModeNamespace}} "
+        command:
+          - sh
+          - -c
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+        name: ""
+        resources: {}
+      inputs: {}
+      metadata: {}
+      name: cleanup-chaos-resources
+      outputs: {}
+status:
+  finishedAt: null
+  startedAt: null

@@ -1,0 +1,29 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: gcp-vm-instance-stop-by-label
+  version: 0.1.0
+  annotations:
+    categories: gcp-vm-instance-stop-by-label
+    chartDescription: Injects VM stop on target instance(s) identified by a given label for the specified chaos duration
+spec:
+  displayName: GCP VM Instance Stop By Label
+  categoryDescription: >
+    Injects VM stop on target instance(s) identified by a given label for the specified chaos duration
+  faults:
+    - name: gcp-vm-instance-stop-by-label
+      description: Injects VM stop on target instance(s) identified by a given label for the specified chaos duration
+  keywords:
+    - GCP
+  plan:
+    - free
+  platforms:
+    - GKE
+    - Minikube
+    - Packet(Kubeadm)
+    - EKS
+    - AKS
+  icon:
+    - url:
+      mediatype: ""

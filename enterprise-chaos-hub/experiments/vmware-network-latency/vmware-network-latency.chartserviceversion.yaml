@@ -1,0 +1,25 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: vmware-network-latency
+  version: 0.1.0
+  annotations:
+    categories: vmware-network-latency
+    chartDescription: Injects network latency for a given interface on the target VMware VM(s) for the specified duration
+spec:
+  displayName: VMware Network Latency
+  categoryDescription: >
+    Injects network latency for a given interface on the target VMware VM(s) for the specified duration
+  faults:
+    - name: vmware-network-latency
+      description: Injects network latency for a given interface on the target VMware VM(s) for the specified duration
+  keywords:
+    - VMware
+  plan:
+    - team
+  platforms:
+    - VMware
+  icon:
+    - url:
+      mediatype: ""

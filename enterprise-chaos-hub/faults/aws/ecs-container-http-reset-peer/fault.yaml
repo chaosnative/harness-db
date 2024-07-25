@@ -1,0 +1,157 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+description:
+  message: >
+    It injects ec2-container-http-reset-peer chaos on EC2 instance for certain chaos
+    duration
+kind: ChaosExperiment
+metadata:
+  name: ec2-container-http-reset-peer
+  labels:
+    name: ec2-container-http-reset-peer
+    app.kubernetes.io/part-of: litmus
+    app.kubernetes.io/component: chaosexperiment
+    app.kubernetes.io/version: ci
+spec:
+  definition:
+    scope: Namespaced
+    permissions:
+      - apiGroups:
+          - ""
+        resources:
+          - pods
+        verbs:
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - update
+          - deletecollection
+      - apiGroups:
+          - ""
+        resources:
+          - events
+        verbs:
+          - create
+          - get
+          - list
+          - patch
+          - update
+      - apiGroups:
+          - ""
+        resources:
+          - configmaps
+        verbs:
+          - get
+          - list
+      - apiGroups:
+          - ""
+        resources:
+          - pods/log
+        verbs:
+          - get
+          - list
+          - watch
+      - apiGroups:
+          - ""
+        resources:
+          - pods/exec
+        verbs:
+          - get
+          - list
+          - create
+      - apiGroups:
+          - apps
+        resources:
+          - deployments
+          - statefulsets
+          - replicasets
+          - daemonsets
+        verbs:
+          - list
+          - get
+      - apiGroups:
+          - apps.openshift.io
+        resources:
+          - deploymentconfigs
+        verbs:
+          - list
+          - get
+      - apiGroups:
+          - ""
+        resources:
+          - replicationcontrollers
+        verbs:
+          - get
+          - list
+      - apiGroups:
+          - argoproj.io
+        resources:
+          - rollouts
+        verbs:
+          - list
+          - get
+      - apiGroups:
+          - batch
+        resources:
+          - jobs
+        verbs:
+          - create
+          - list
+          - get
+          - delete
+          - deletecollection
+      - apiGroups:
+          - litmuschaos.io
+        resources:
+          - chaosengines
+          - chaosexperiments
+          - chaosresults
+        verbs:
+          - create
+          - list
+          - get
+          - patch
+          - update
+          - delete
+    image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+    imagePullPolicy: Always
+    args:
+      - -c
+      - ./experiments -name ec2-container-http-reset-peer
+    command:
+      - /bin/bash
+    env:
+      - name: TOTAL_CHAOS_DURATION
+        value: "60"
+      - name: CLUSTER_NAME
+        value: ""
+      - name: SERVICE_NAME
+        value: ""
+      - name: RAMP_TIME
+        value: ""
+      - name: REGION
+        value: ""
+      - name: TASK_REPLICA_ID
+        value: ""
+      - name: TASK_REPLICA_AFFECTED_PERC
+        value: "100"
+      - name: NETWORK_INTERFACE
+        value: eth0
+      - name: TARGET_SERVICE_PORT
+        value: "80"
+      - name: RESET_TIMEOUT
+        value: "0"
+      - name: SEQUENCE
+        value: "parallel"
+      - name: PROXY_PORT
+        value: "20000"
+      - name: AWS_SHARED_CREDENTIALS_FILE
+        value: /tmp/cloud_config.yml
+    labels:
+      name: ec2-container-http-reset-peer
+      app.kubernetes.io/part-of: litmus
+      app.kubernetes.io/component: experiment-job
+      app.kubernetes.io/version: ci
+      app.kubernetes.io/enableAWSAccessViaSecrets: disable

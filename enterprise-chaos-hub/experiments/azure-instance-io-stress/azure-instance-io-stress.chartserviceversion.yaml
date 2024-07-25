@@ -1,0 +1,25 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: azure-instance-io-stress
+  version: 0.1.0
+  annotations:
+    categories: azure-instance-io-stress
+    chartDescription: Injects disk (I/O) stress on the target Azure instance(s) for the specified duration
+spec:
+  displayName: Azure Instance IO Stress
+  categoryDescription: >
+    Injects disk (I/O) stress on the target Azure instance(s) for the specified duration
+  faults:
+    - name: azure-instance-io-stress
+      description: Injects disk (I/O) stress on the target Azure instance(s) for the specified duration
+  keywords:
+    - Azure
+  plan:
+    - team
+  platforms:
+    - Azure
+  icon:
+    - url:
+      mediatype: ""

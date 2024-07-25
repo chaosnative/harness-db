@@ -1,0 +1,29 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: rds-instance-reboot
+  version: 0.1.0
+  annotations:
+    categories: rds-instance-reboot
+    chartDescription: Injects instance reboot on RDS cluster
+spec:
+  displayName: RDS Instance Reboot
+  categoryDescription: >
+    Injects instance reboot on RDS cluster
+  faults:
+    - name: rds-instance-reboot
+      description: Injects instance reboot on RDS cluster
+  keywords:
+    - AWS
+  plan:
+    - team
+  platforms:
+    - GKE
+    - Minikube
+    - Packet(Kubeadm)
+    - EKS
+    - AKS
+  icon:
+    - url:
+      mediatype: ""

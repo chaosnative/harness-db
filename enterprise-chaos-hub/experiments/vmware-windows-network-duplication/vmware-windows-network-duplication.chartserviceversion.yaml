@@ -1,0 +1,25 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: vmware-windows-network-duplication
+  version: 0.1.0
+  annotations:
+    categories: vmware-windows-network-duplication
+    chartDescription: Injects network duplication on the target VMware windows VMs for the specified duration
+spec:
+  displayName: VMware Windows Network Duplication
+  categoryDescription: >
+    Injects network duplication on the target VMware Windows VMs for the specified duration
+  faults:
+    - name: vmware-windows-network-duplication
+      description: Injects network duplication on the target windows VMware VMs for the specified duration
+  keywords:
+    - VMware
+  plan:
+    - team
+  platforms:
+    - VMware
+  icon:
+    - url:
+      mediatype: ""

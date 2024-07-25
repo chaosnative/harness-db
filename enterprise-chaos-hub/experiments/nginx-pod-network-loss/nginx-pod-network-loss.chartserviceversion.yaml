@@ -1,0 +1,28 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: nginx-pod-network-loss
+  version: 0.1.0
+  annotations:
+    categories: nginx-pod-network-loss
+    chartDescription: Injects network loss on pod(s) identified by the specified labels ("app=nginx" by default)
+spec:
+  displayName: Nginx Pod Network Loss
+  categoryDescription: >
+    Injects network loss on pod(s) identified by the specified labels ("app=nginx" by default)
+  faults:
+    - name: pod-network-loss
+      description: Injects network latency on pod(s) identified by the specified labels ("app=nginx" by default)
+  keywords:
+    - Kubernetes
+  plan:
+    - free
+  platforms:
+    - GKE
+    - Minikube
+    - Packet(Kubeadm)
+    - EKS
+  icon:
+    - url:
+      mediatype: ""

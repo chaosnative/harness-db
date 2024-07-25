@@ -1,0 +1,25 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: vmware-http-reset-peer
+  version: 0.1.0
+  annotations:
+    categories: vmware-http-reset-peer
+    chartDescription: Injects HTTP connection resets on the target VMware VM(s) for the specified duration
+spec:
+  displayName: VMware HTTP Reset Peer
+  categoryDescription: >
+    Injects HTTP connection resets on the target VMware VM(s) for the specified duration
+  faults:
+    - name: vmware-http-reset-peer
+      description: Injects HTTP connection resets on the target VMware VM(s) for the specified duration
+  keywords:
+    - VMware
+  plan:
+    - team
+  platforms:
+    - VMware
+  icon:
+    - url:
+      mediatype: ""

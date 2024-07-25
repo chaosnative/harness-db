@@ -1,0 +1,29 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: nginx-pod-delete
+  version: 0.1.0
+  annotations:
+    categories: nginx-pod-delete
+    chartDescription: Injects pod deletion on pod(s) identified by the specified label ("app=nginx" by default)
+spec:
+  displayName: Nginx Pod Delete
+  categoryDescription: >
+    Injects pod deletion on pod(s) identified by the specified label ("app=nginx" by default)
+  faults:
+    - name: pod-delete
+      description: Injects pod deletion on pod(s) identified by the specified label ("app=nginx" by default)
+  keywords:
+    - Kubernetes
+  plan:
+    - free
+  platforms:
+    - GKE
+    - Minikube
+    - Packet(Kubeadm)
+    - EKS
+    - AKS
+  icon:
+    - url:
+      mediatype: ""

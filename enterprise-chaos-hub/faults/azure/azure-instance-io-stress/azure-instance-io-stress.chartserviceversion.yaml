@@ -1,0 +1,32 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  createdAt: 2022-07-18T10:28:08Z
+  name: azure-instance-io-stress
+  version: 0.1.0
+  annotations:
+    categories: AZURE
+    vendor: Harness
+spec:
+  displayName: Azure Instance IO Stress
+  categoryDescription: |
+    Azure instance IO stress fault disrupts the state of Azure instance. This fault injects IO stress on the target Azure instances.
+    - Causes IO stress in the target Azure instances.
+    - It helps to check the performance of the application running on the Azure instance when subject to IO stress.
+  keywords:
+    - Azure
+  platforms:
+    - Azure
+  experiments:
+    - azure-instance-io-stress
+  minKubeVersion: 1.12.0
+  labels:
+    app.kubernetes.io/component: chartserviceversion
+    app.kubernetes.io/version: ci
+  links:
+    - name: Documentation
+      url: https://docs.harness.io/category/kl0mxwpfw1-hce-category
+  icon:
+    - url:
+      mediatype: ""

@@ -1,0 +1,25 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: vmware-windows-service-stop
+  version: 0.1.0
+  annotations:
+    categories: vmware-windows-service-stop
+    chartDescription: Stops the given services on the target VMware Windows VMs for the specified duration
+spec:
+  displayName: VMware Windows Service Stop
+  categoryDescription: >
+    Stops the given services on the target VMware Windows VMs for the specified duration
+  faults:
+    - name: vmware-windows-service-stop
+      description: Stops the given services on the target VMware Windows VMs for the specified duration
+  keywords:
+    - VMware
+  plan:
+    - team
+  platforms:
+    - VMware
+  icon:
+    - url:
+      mediatype: ""

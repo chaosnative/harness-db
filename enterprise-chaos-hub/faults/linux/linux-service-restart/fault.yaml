@@ -1,0 +1,15 @@
+---
+apiVersion: litmuchaos.io/v1alpha1
+kind: LinuxFault
+metadata:
+  name: linux-service-restart
+  labels:
+    name: service-restart
+spec:
+  serviceRestartChaos/inputs:
+    services: ""
+    selfHealingServices: false
+    sequence: "parallel"
+    duration: 30s
+    interval: 30s
+    rampTime: ""

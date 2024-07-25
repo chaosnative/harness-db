@@ -1,0 +1,27 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: k8s-kubelet-service-kill
+  version: 0.1.0
+  annotations:
+    categories: k8s-kubelet-service-kill
+    chartDescription: Injects Kubelet service kill on the provided target Kubernetes node
+spec:
+  displayName: Kubernetes Kubelet Service Kill
+  categoryDescription: >
+    Injects Kubelet service kill on the provided target Kubernetes node
+  faults:
+    - name: kubelet-service-kill
+      description: Injects Kubelet service kill on the provided target Kubernetes node
+  keywords:
+    - Kubernetes
+  platforms:
+    - GKE
+    - Packet(Kubeadm)
+    - Minikube
+    - EKS
+    - AKS
+  icon:
+    - url:
+      mediatype: ""

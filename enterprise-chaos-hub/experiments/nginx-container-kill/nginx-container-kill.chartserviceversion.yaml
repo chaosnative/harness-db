@@ -1,0 +1,29 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: nginx-container-kill
+  version: 0.1.0
+  annotations:
+    categories: nginx-container-kill
+    chartDescription: Injects container kill on pod(s) identified by the specified labels ("app=nginx" by default)
+spec:
+  displayName: Nginx Container Kill
+  categoryDescription: >
+    Injects container kill on pod(s) identified by the specified labels ("app=nginx" by default)
+  faults:
+    - name: container-kill
+      description: Injects container kill on pod(s) identified by the specified labels ("app=nginx" by default)
+  keywords:
+    - Kubernetes
+  plan:
+    - free
+  platforms:
+    - GKE
+    - Minikube
+    - Packet(Kubeadm)
+    - EKS
+    - AKS
+  icon:
+    - url:
+      mediatype: ""

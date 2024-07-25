@@ -1,0 +1,29 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: aws-lambda-delete-function-concurrency
+  version: 0.1.0
+  annotations:
+    categories: aws-lambda-delete-function-concurrency
+    chartDescription: Injects AWS lambda delete function concurrency chaos for a specified chaos duration
+spec:
+  displayName: AWS Lambda Delete Function Concurrency
+  categoryDescription: >
+    This fault causes the deletion of reserved concurrency of the lambda function for a specified chaos duration
+  faults:
+    - name: lambda-delete-function-concurrency
+      description: Injects AWS lambda delete function concurrency chaos for a specified chaos duration
+  keywords:
+    - AWS
+  plan:
+    - enterprise
+  platforms:
+    - GKE
+    - Minikube
+    - Packet(Kubeadm)
+    - EKS
+    - AKS
+  icon:
+    - url:
+      mediatype: ""

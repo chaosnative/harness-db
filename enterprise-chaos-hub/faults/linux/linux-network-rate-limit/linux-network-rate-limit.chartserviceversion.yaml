@@ -1,0 +1,23 @@
+---
+apiVersion: litmuchaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: linux-network-rate-limit
+  annotations:
+    categories: Linux
+spec:
+  displayName: linux-network-rate-limit
+  categoryDescription: |
+    This fault injects network rate limit to a Linux machine.
+    - Simulates network connectivity slowness by rate limiting the network on the machine.
+  keywords:
+    - Linux
+    - Network
+  plan:
+    - team
+  maturity: alpha
+  labels:
+    app.kubernetes.io/component: chartserviceversion
+    app.kubernetes.io/version: ci
+  experiments:
+    - linux-network-rate-limit

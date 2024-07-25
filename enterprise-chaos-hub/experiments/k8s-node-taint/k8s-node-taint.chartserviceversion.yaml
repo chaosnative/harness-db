@@ -1,0 +1,28 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: k8s-node-taint
+  version: 0.1.0
+  annotations:
+    categories: k8s-node-taint
+    chartDescription: Injects an eviction taint on the target Kubernetes node
+spec:
+  displayName: Kubernetes Node Taint
+  categoryDescription: >
+    Injects an eviction taint on the target Kubernetes node
+  faults:
+    - name: node-taint
+      description: Injects an eviction taint on the target Kubernetes node
+  keywords:
+    - Kubernetes
+  platforms:
+    - GKE
+    - AWS(KOPS)
+    - Packet(Kubeadm)
+    - Konvoy
+    - EKS
+    - AKS
+  icon:
+    - url:
+      mediatype: ""

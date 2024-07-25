@@ -1,0 +1,40 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  createdAt: 2022-07-18T10:28:08Z
+  name: ecs-agent-stop
+  version: 0.1.0
+  annotations:
+    categories: AWS
+    vendor: Harness
+spec:
+  displayName: ECS Agent Stop
+  categoryDescription: |
+    ecs-agent-stop fault stops all the ECS agent container running on all the Container Instance of the ECS cluster.
+  keywords:
+    - AWS
+  plan:
+    - team
+  platforms:
+    - GKE
+    - Konvoy
+    - Packet(Kubeadm)
+    - Minikube
+    - EKS
+    - AKS
+    - Kind
+    - Rancher
+    - OpenShift(OKD)
+  experiments:
+    - aws-ecs-agent-stop
+  minKubeVersion: 1.12.0
+  labels:
+    app.kubernetes.io/component: chartserviceversion
+    app.kubernetes.io/version: ci
+  links:
+    - name: Documentation
+      url: https://docs.harness.io/category/kl0mxwpfw1-hce-category
+  icon:
+    - url:
+      mediatype: ""

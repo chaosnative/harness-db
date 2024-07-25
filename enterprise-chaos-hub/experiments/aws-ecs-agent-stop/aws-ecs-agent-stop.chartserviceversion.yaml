@@ -1,0 +1,29 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: aws-ecs-agent-stop
+  version: 0.1.0
+  annotations:
+    categories: aws-ecs-agent-stop
+    chartDescription: Injects container stop on the AWS ECS agent
+spec:
+  displayName: AWS ECS Agent Stop
+  categoryDescription: >
+    Injects container stop on the AWS ECS agent
+  faults:
+    - name: ecs-agent-stop
+      description: Injects container stop on the AWS ECS agent
+  keywords:
+    - AWS
+  plan:
+    - team
+  platforms:
+    - GKE
+    - Minikube
+    - Packet(Kubeadm)
+    - EKS
+    - AKS
+  icon:
+    - url:
+      mediatype: ""

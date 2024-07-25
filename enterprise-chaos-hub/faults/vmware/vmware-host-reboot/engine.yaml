@@ -1,0 +1,87 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChaosEngine
+metadata:
+  name: vmware-host-reboot
+  labels:
+    name: vmware-host-reboot
+    app.kubernetes.io/part-of: litmus
+    app.kubernetes.io/component: experiment-job
+    app.kubernetes.io/version: ci
+spec:
+  # It can be active/stop
+  engineState: 'active'
+  #ex. values: ns1:name=percona,ns2:run=nginx
+  auxiliaryAppInfo: ''
+  chaosServiceAccount: litmus-admin
+  # It can be delete/retain
+  jobCleanUpPolicy: 'delete'
+  experiments:
+    - name: vmware-host-reboot
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+      imagePullPolicy: Always
+      args:
+        - -c
+        - ./experiments -name vmware-host-reboot
+      command:
+        - /bin/bash
+      spec:
+        components:
+          statusCheckTimeouts:
+            delay: 2
+            timeout: 400
+          env:
+            - name: GOVC_URL
+              valueFrom:
+                secretKeyRef:
+                  name: vcenter-secret
+                  key: VCENTERSERVER
+
+            - name: GOVC_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: vcenter-secret
+                  key: VCENTERUSER
+
+            - name: GOVC_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: vcenter-secret
+                  key: VCENTERPASS
+
+            - name: GOVC_INSECURE
+              value: "true"
+
+            - name: RAMP_TIME
+              value: ""
+
+            # set the target host name
+            - name: HOST_NAME
+              value: ""
+
+            # set the datacenter of the target host
+            - name: HOST_DATACENTER
+              value: ""
+
+            # enable if the host belongs to a high availability cluster; defaults to disable
+            - name: HIGH_AVAILABILITY_CLUSTER
+              value: ""
+
+        probe:
+          - name: healthcheck
+            type: cmdProbe
+            mode: Edge
+            runProperties:
+              probeTimeout: 20s
+              retry: 0
+              interval: 1s
+              stopOnFailure: false
+            cmdProbe/inputs:
+              command: ./healthcheck -name vmware-host-chaos
+              source:
+                image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                inheritInputs: true
+              comparator:
+                type: string
+                criteria: contains
+                value: "[P000]"

@@ -1,0 +1,6 @@
+---
+packageName: load
+faults:
+  - name: locust-loadgen-chaos
+    CSV: locust-loadgen-chaos.chartserviceversion.yaml
+    desc: "locust-loadgen-chaos"

@@ -1,0 +1,28 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: linux-jvm-memory-stress
+  version: 0.1.0
+  annotations:
+    categories: linux-jvm-memory-stress
+    chartDescription: Injects JVM memory stress chaos into a Java process executing on a Linux machine.
+spec:
+  displayName: Linux JVM Memory Stress
+  categoryDescription: >-
+    This fault injects JVM memory stress chaos into a Java process executing on a Linux machine.
+
+  faults:
+    - name: linux-jvm-memory-stress
+      description: Injects JVM memory stress chaos into a Java process executing on a Linux machine.
+  keywords:
+    - Linux
+    - GCP
+    - Azure
+  plan:
+    - team
+  platforms:
+    - Linux
+  icon:
+    - url:
+      mediatype: ""

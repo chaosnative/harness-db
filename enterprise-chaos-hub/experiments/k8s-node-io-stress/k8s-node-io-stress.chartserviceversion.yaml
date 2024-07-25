@@ -1,0 +1,27 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: k8s-node-io-stress
+  version: 0.1.0
+  annotations:
+    categories: k8s-node-io-stress
+    chartDescription: Injects disk (I/O) stress on the target Kubernetes node
+spec:
+  displayName: Kubernetes Node IO Stress
+  categoryDescription: >
+    Injects disk (I/O) stress on the target Kubernetes node
+  faults:
+    - name: node-io-stress
+      description: Injects disk (I/O) stress on the target Kubernetes node
+  keywords:
+    - Kubernetes
+  plan:
+    - free
+  platforms:
+    - GKE
+    - Minikube
+    - AKS
+  icon:
+    - url:
+      mediatype: ""

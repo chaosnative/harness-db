@@ -1,0 +1,62 @@
+---
+apiVersion: litmuchaos.io/v1alpha1
+kind: K8sFault
+metadata:
+  name: time-chaos
+spec:
+  definition:
+    targets:
+      appinfo:
+        applabel: ""
+        appkind: ""
+        appns: ""
+    chaos:
+      experiment: time-chaos
+      serviceAccountName: litmus-admin
+      image: docker.io/harness/chaos-ddcr-faults:main-latest
+      imagePullPolicy: Always
+      env:
+        - name: TOTAL_CHAOS_DURATION
+          value: "60" # in seconds
+
+        # offset for altering the time
+        - name: OFFSET
+          value: "3600s"
+
+        # target system clock id; refer 'uapi/linux/time.h' for more details
+        - name: CLOCK_IDS
+          value: "CLOCK_REALTIME"
+
+        # Percentage of total pods to target
+        - name: POD_AFFECTED_PERCENTAGE
+          value: ""
+
+        # provide the cluster runtime
+        - name: CONTAINER_RUNTIME
+          value: "containerd"
+
+        # provide the socket file path
+        - name: SOCKET_PATH
+          value: "/run/containerd/containerd.sock"
+
+        - name: LIB_IMAGE
+          value: docker.io/harness/chaos-ddcr-faults:main-latest
+
+        # time period to wait before and after injection of chaos in sec
+        - name: RAMP_TIME
+          value: ""
+
+        - name: TARGET_CONTAINER
+          value: ""
+
+        - name: TARGET_PODS
+          value: ""
+
+        # To select pods on specific node(s)
+        - name: NODE_LABEL
+          value: ""
+
+        ## it defines the sequence of chaos execution for multiple target pods
+        ## supported values: serial, parallel
+        - name: SEQUENCE
+          value: "parallel"

@@ -1,0 +1,29 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: windows-blackhole-chaos
+  version: 0.1.0
+  annotations:
+    categories: windows-blackhole-chaos
+    chartDescription: Injects Network loss into a Windows machine.
+spec:
+  displayName: Windows Blackhole Chaos
+  categoryDescription: >-
+    This fault injects Network loss into a Windows machine.
+
+    - Simulates slow application traffic, leading to degradation in the performance of processes on the machine.
+  faults:
+    - name: windows-blackhole-chaos
+      description: Injects Network loss into a Windows machine.
+  keywords:
+    - Windows
+    - GCP
+    - Azure
+  plan:
+    - team
+  platforms:
+    - Windows
+  icon:
+    - url:
+      mediatype: ""

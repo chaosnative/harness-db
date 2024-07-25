@@ -1,0 +1,27 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  createdAt: 2022-08-31T10:28:08Z
+  name: vmware-host-reboot
+  version: 0.1.0
+  annotations:
+    categories: VMWare
+    vendor: Harness
+    chartDescription: Injects host reboot on a given ESX machine that hosts the target VMs
+spec:
+  displayName: VMware Host Reboot
+  categoryDescription: |
+    Injects host reboot on a given ESX machine that hosts the target VMs
+  faults:
+    - name: vmware-host-reboot
+      description: Injects host reboot on a given ESX machine that hosts the target VMs
+  keywords:
+    - VMware
+  plan:
+    - team
+  platforms:
+    - VMware
+  icon:
+    - url:
+      mediatype: ""

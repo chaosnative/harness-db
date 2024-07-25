@@ -1,0 +1,79 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChaosEngine
+metadata:
+  name: windows-ec2-network-latency
+  namespace: default
+  labels:
+    name: windows-ec2-network-latency
+    app.kubernetes.io/part-of: litmus
+    app.kubernetes.io/component: experiment-job
+    app.kubernetes.io/version: ci
+    app.kubernetes.io/enableAWSAccessViaSecrets: disable
+spec:
+  engineState: "active"
+  terminationGracePeriodSeconds: 30
+  chaosServiceAccount: litmus-admin
+  experiments:
+    - name: windows-ec2-network-latency
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+      imagePullPolicy: Always
+      args:
+        - -c
+        - ./experiments -name ec2-windows-network-latency
+      command:
+        - /bin/bash
+      spec:
+        components:
+          env:
+            - name: TOTAL_CHAOS_DURATION
+              value: "60"
+            - name: RAMP_TIME
+              value: ""
+            - name: REGION
+              value: ""
+            - name: EC2_INSTANCE_ID
+              value: ""
+            - name: NETWORK_LATENCY
+              value: "2000"
+            - name: DESTINATION_IPS
+              value: ""
+            - name: DESTINATION_HOSTS
+              value: ""
+            - name: PATH_OF_CLUMSY
+              value: "C:\\"
+            - name: AWS_SHARED_CREDENTIALS_FILE
+              value: /tmp/cloud_config.yml
+            - name: SEQUENCE
+              value: "parallel"
+        probe:
+          - name: healthcheck
+            type: cmdProbe
+            mode: Edge
+            runProperties:
+              probeTimeout: 5s
+              retry: 0
+              interval: 1s
+              stopOnFailure: false
+            cmdProbe/inputs:
+              command: ./healthcheck -name aws-ec2
+              source:
+                image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                inheritInputs: true
+                volumeMount:
+                  - mountPath: /var/run/secrets/eks.amazonaws.com/serviceaccount
+                    name: aws-iam-token
+                    readOnly: true
+                volumes:
+                  - name: aws-iam-token
+                    projected:
+                      defaultMode: 420
+                      sources:
+                        - serviceAccountToken:
+                            audience: sts.amazonaws.com
+                            expirationSeconds: 86400
+                            path: token
+              comparator:
+                type: string
+                criteria: contains
+                value: "[P000]"

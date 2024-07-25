@@ -1,0 +1,322 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: aws
+  version: 0.1.0
+  annotations:
+    categories: AWS
+    chartDescription: Injects faults on AWS services
+    executionPlane: "kubernetes"
+spec:
+  displayName: AWS
+  categoryDescription: >
+    AWS chaos contains different faults for AWS cloud provider to test the app/platform service availability. It uses AWS command to carry the fault logic in the instance. It will install all the faults which can be used to inject chaos into the AWS services like EC2, ECS, S3 and so on.
+  faults:
+    - name: ecs-instance-stop
+      description: It injects ecs-instance-stop chaos on ECS cluster
+      displayName: "ECS Instance Stop"
+      plan:
+        - team
+    - name: clb-az-down
+      description: It injects AZ down chaos on CLB for a certain chaos duration.
+      displayName: "CLB AZ Down"
+      plan:
+        - team
+    - name: alb-az-down
+      description: It injects AZ down chaos on ALB for a certain chaos duration.
+      displayName: "ALB AZ Down"
+      plan:
+        - team
+    - name: ecs-container-network-loss
+      description: It injects ecs-container-network-loss chaos on a AWS ECS cluster.
+      displayName: "ECS Container Network Loss"
+      plan:
+        - team
+    - name: ecs-container-network-latency
+      description: It injects ecs-container-network-latency chaos on a AWS ECS cluster.
+      displayName: "ECS Container Network Latency"
+      plan:
+        - team
+    - name: ecs-container-cpu-hog
+      description: It injects ecs-container-cpu-hog chaos on the task container of ECS cluster.
+      displayName: "ECS Container CPU Hog"
+      plan:
+        - team
+    - name: ecs-container-io-stress
+      description: It injects ecs-container-io-stress chaos on the task container of ECS cluster.
+      displayName: "ECS Container IO Stress"
+      plan:
+        - team
+    - name: ecs-container-memory-hog
+      description: It injects ecs-container-memory-hog chaos on the task container of ECS cluster.
+      displayName: "ECS Container Memory Hog"
+      plan:
+        - team
+    - name: ec2-cpu-hog
+      description: It injects CPU stress chaos on AWS EC2 instance.
+      displayName: "EC2 CPU Hog"
+      plan:
+        - team
+    - name: ec2-io-stress
+      description: It injects IO stress chaos on the AWS EC2 instance.
+      displayName: "EC2 IO Stress"
+      plan:
+        - team
+    - name: ec2-memory-hog
+      description: It injects Memory stress chaos on the AWS EC2 instance.
+      displayName: "EC2 Memory Hog"
+      plan:
+        - team
+    - name: ec2-network-loss
+      description: It injects Network loss chaos on the AWS EC2 instance.
+      displayName: "EC2 Network Loss"
+      plan:
+        - team
+    - name: ec2-network-latency
+      description: It injects Network latency chaos on the AWS EC2 instance.
+      displayName: "EC2 Network Latency"
+      plan:
+        - team
+    - name: ecs-agent-stop
+      description: It stops all the ECS agent container running on the container instances of ECS cluster.
+      displayName: "ECS Agent Stop"
+      plan:
+        - team
+    - name: aws-ssm-chaos-by-id
+      description: It allow to perform in-VM chaos using AWS SSM service and EC2 instance ID.
+      displayName: "AWS SSM Chaos By ID"
+      plan:
+        - team
+    - name: aws-ssm-chaos-by-tag
+      description: It allow to perform in-VM chaos using AWS SSM service and EC2 instance tag.
+      displayName: "AWS SSM Chaos By Tag"
+      plan:
+        - team
+    - name: ec2-stop-by-id
+      description: It stops the AWS EC2 instance identified by ID for a certain chaos duration.
+      displayName: "EC2 Stop By ID"
+      plan:
+        - team
+    - name: ec2-stop-by-tag
+      description: It stops the AWS EC2 instance identified by Tag for a certain chaos duration.
+      displayName: "EC2 Stop By Tag"
+      plan:
+        - team
+    - name: ec2-http-latency
+      description: It injects ec2-http-latency chaos on AWS EC2 instance.
+      displayName: "EC2 HTTP Latency"
+      plan:
+        - team
+    - name: ec2-http-modify-body
+      description: It injects ec2-http-modify-body chaos on AWS EC2 instance.
+      displayName: "EC2 HTTP Modify Body"
+      plan:
+        - team
+    - name: ec2-http-status-code
+      description: It injects ec2-http-status-code chaos on AWS EC2 instance.
+      displayName: "EC2 HTTP Status Code"
+      plan:
+        - team
+    - name: ec2-http-reset-peer
+      description: It injects ec2-http-reset-peer chaos on AWS EC2 instance.
+      displayName: "EC2 HTTP Reset Peer"
+      plan:
+        - team
+    - name: ebs-loss-by-id
+      description: It detach the EBS volume from AWS EC2 instance identified by ID for a certain chaos duration.
+      displayName: "EBS Loss By ID"
+      plan:
+        - free
+    - name: ebs-loss-by-tag
+      description: It detach the EBS volume from AWS EC2 instance identified by Tag for a certain chaos duration.
+      displayName: "EBS Loss By Tag"
+      plan:
+        - free
+    - name: rds-instance-delete
+      description: It injects the rds-instance-delete chaos on the RDS instances/cluster.
+      displayName: "RDS Instance Delete"
+      plan:
+        - team
+    - name: rds-instance-reboot
+      description: It injects the rds-instance-reboot chaos on the RDS instances/cluster.
+      displayName: "RDS Instance Reboot"
+      plan:
+        - team
+    - name: ec2-dns-chaos
+      description: It injects the DNS chaos into EC2 instances for a certain chaos duration.
+      displayName: "EC2 DNS Chaos"
+      plan:
+        - team
+    - name: ec2-process-kill
+      description: It injects the process-kill chaos into EC2 instances for a certain chaos duration.
+      displayName: "EC2 Process Kill"
+      plan:
+        - team
+    - name: lambda-delete-function-concurrency
+      description: It injects lambda-delete-function-concurrency to the lambda function for a certain chaos duration
+      displayName: "Lambda Delete Function Concurrency"
+      plan:
+        - enterprise
+    - name: lambda-toggle-event-mapping-state
+      description: It injects chaos to toggle event source mapping state for a certain chaos duration.
+      displayName: "Lambda Toggle Event Mapping State"
+      plan:
+        - enterprise
+    - name: lambda-delete-event-source-mapping
+      description: It injects deletion of event source mapping for a certain chaos duration.
+      displayName: "Lambda Delete Event Source Mapping"
+      plan:
+        - enterprise
+    - name: lambda-update-function-memory
+      description: It updates the memory of the lambda function for a certain chaos duration.
+      displayName: "Lambda Update Function Memory"
+      plan:
+        - enterprise
+    - name: lambda-update-function-timeout
+      description: It updates the timeout of the lambda function for a certain chaos duration.
+      displayName: "Lambda Update Function Timeout"
+      plan:
+        - enterprise
+    - name: lambda-function-layer-detach
+      description: It updates the layers of the lambda function to detach for a certain chaos duration.
+      displayName: "Lambda Function Layer Detach"
+      plan:
+        - enterprise
+    - name: lambda-update-role-permission
+      description: It updates the role of the lambda function to detach/update for a certain chaos duration.
+      displayName: "Lambda Update Role Permission"
+      plan:
+        - enterprise
+    - name: ecs-task-stop
+      description: It injects the ecs-task-stop chaos to ecs tasks/service for a certain chaos duration.
+      displayName: "ECS Task Stop"
+      plan:
+        - team
+    - name: ecs-task-scale
+      description: It injects the ecs-task-scale chaos to ecs service for a specified chaos duration.
+      displayName: "ECS Task Scale"
+      plan:
+        - team
+
+    - name: resource-access-restrict
+      description: It injects the resource-access-restrict chaos in the given AWS region for a specified chaos duration.
+      displayName: "Resource Access Restrict"
+      plan:
+        - team
+
+    - name: windows-ec2-blackhole-chaos
+      description: It injects blackhole chaos on AWS Windows EC2 instance.
+      displayName: "Windows EC2 Blackhole Chaos"
+      plan:
+        - team
+    - name: windows-ec2-cpu-hog
+      description: It injects CPU stress chaos on AWS Windows EC2 instance.
+      displayName: "Windows EC2 CPU Hog"
+      plan:
+        - team
+    - name: windows-ec2-memory-hog
+      description: It injects memory stress chaos on AWS Windows EC2 instance.
+      displayName: "Windows EC2 Memory Hog"
+      plan:
+        - team
+    - name: ecs-container-http-latency
+      description: It injects http latency chaos on AWS ECS container.
+      displayName: "ECS Container HTTP Latency"
+      plan:
+        - team
+    - name: ecs-container-http-modify-body
+      description: It injects http modify body chaos on AWS ECS instance.
+      displayName: "ECS Container HTTP Modify Body"
+      plan:
+        - team
+    - name: ecs-container-http-modify-header
+      description: It injects http header chaos on AWS ECS instance.
+      displayName: "ECS Container Modify Header"
+      plan:
+        - team
+    - name: ecs-container-http-reset-peer
+      description: It injects http reset peer chaos on AWS ECS instance.
+      displayName: "ECS Container HTTP Reset Peer"
+      plan:
+        - team
+    - name: ecs-container-http-status-code
+      description: It injects http status code chaos on AWS ECS instance.
+      displayName: "ECS Container HTTP Status Code"
+      plan:
+        - team
+    - name: ecs-invalid-container-image
+      description: It injects the ecs-invalid-container-image chaos to ecs service for a specified chaos duration.
+      displayName: "ECS Invalid Container Image"
+      plan:
+        - team
+    - name: ecs-update-container-timeout
+      description: It injects the ecs-update-container-timeout chaos to ecs service for a specified chaos duration.
+      displayName: "ECS Update Container Timeout"
+      plan:
+        - team
+    - name: ecs-update-container-resource-limit
+      description: It injects the ecs-update-container-resource-limit chaos to ecs service for a specified chaos duration.
+      displayName: "ECS Update Container Resource Limit"
+      plan:
+        - team
+    - name: ecs-update-task-role
+      description: It injects the ecs-update-task-role chaos to ecs service for a specified chaos duration.
+      displayName: "ECS Update Task Role"
+      plan:
+        - team
+    - name: ecs-network-restrict
+      description: It injects ecs network restrict chaos on AWS ECS service.
+      displayName: "ECS Network Restrict"
+      plan:
+        - team
+    - name: ecs-fargate-cpu-hog
+      description: It injects ecs fargate cpu hog chaos on AWS ECS service.
+      displayName: "ECS Fargate CPU Hog"
+      plan:
+        - team
+    - name: ecs-fargate-memory-hog
+      description: It injects ecs fargate memory hog chaos on AWS ECS service.
+      displayName: "ECS Fargate Memory Hog"
+      plan:
+        - team
+    - name: ecs-container-volume-detach
+      description: It injects ecs container volume detach chaos on AWS ECS service.
+      displayName: "ECS Container Volume Detach"
+      plan:
+        - team
+    - name: nlb-az-down
+      description: It injects nlb-az-down chaos on AWS network load balancer.
+      displayName: "NLB AZ Down"
+      plan:
+        - team
+    - name: windows-ec2-network-latency
+      description: It injects windows-ec2-network-latency chaos on AWS windows EC2 instance.
+      displayName: "Windows EC2 Network Latency"
+      plan:
+        - team
+    - name: windows-ec2-network-loss
+      description: It injects windows-ec2-network-loss chaos on AWS windows EC2 instance.
+      displayName: "Windows EC2 Network Loss"
+      plan:
+        - team
+    - name: fis-dynamodb-replication-pause
+      description: It injects fis-dynamodb-replication-pause using AWS FIS.
+      displayName: "FIS DynamoDB Replication Pause"
+      plan:
+        - team
+  keywords:
+    - AWS
+  minKubeVersion: 1.12.0
+  links:
+    - name: Kubernetes Website
+      url: https://kubernetes.io
+    - name: Source Code
+      url: https://github.com/kubernetes/kubernetes
+    - name: Kubernetes Slack
+      url: https://slack.kubernetes.io/
+    - name: Documentation
+      url: ""
+  icon:
+    - url: https://raw.githubusercontent.com/litmuschaos/charthub.litmuschaos.io/master/public/litmus.ico
+      mediatype: image/png

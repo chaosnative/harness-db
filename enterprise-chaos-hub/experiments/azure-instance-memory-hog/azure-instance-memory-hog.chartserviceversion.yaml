@@ -1,0 +1,25 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: azure-instance-memory-hog
+  version: 0.1.0
+  annotations:
+    categories: azure-instance-memory-hog
+    chartDescription: Injects memory hog (resource exhaustion) on the target Azure instance(s) for the specified duration
+spec:
+  displayName: Azure Instance Memory Hog
+  categoryDescription: >
+    Injects memory hog (resource exhaustion) on the target Azure instance(s) for the specified duration
+  faults:
+    - name: azure-instance-memory-hog
+      description: Injects memory hog (resource exhaustion) on the target Azure instance(s) for the specified duration
+  keywords:
+    - Azure
+  platforms:
+    - Azure
+  plan:
+    - team
+  icon:
+    - url:
+      mediatype: ""

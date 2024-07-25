@@ -1,0 +1,38 @@
+---
+apiVersion: litmuchaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  createdAt: 2023-03-20T10:28:08Z
+  name: ecs-network-restrict
+  version: 0.1.0
+  annotations:
+    categories: AWS
+    vendor: Harness
+spec:
+  displayName: ECS Network Restrict
+  categoryDescription: |
+    ECS network restrict fault update the network rules of security group used by ECS service. This fault can inject the network restriction on the target ECS service that can cause failures/inaccessibility of the ECS service.
+    - It helps to check the performance of the task/application running on the ECS cluster when subject to task network restriction.
+
+  keywords:
+    - AWS
+  plan:
+    - team
+  platforms:
+    - GKE
+    - Packet(Kubeadm)
+    - Minikube
+    - EKS
+
+  experiments:
+    - aws-ecs-network-restrict
+  minKubeVersion: 1.12.0
+  labels:
+    app.kubernetes.io/component: chartserviceversion
+    app.kubernetes.io/version: ci
+  links:
+    - name: Documentation
+      url: ""
+  icon:
+    - url:
+      mediatype: ""

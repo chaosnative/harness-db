@@ -1,0 +1,25 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: aws-lambda-function-layer-detach
+  version: 0.1.0
+  annotations:
+    categories: aws-lambda-function-layer-detach
+    chartDescription: Causes the layer of a lambda function to be detached for specific period.
+spec:
+  displayName: AWS Lambda Function Layer Detach
+  categoryDescription: |
+    This fault causes the layer of a lambda function to be detached for specific period.
+  keywords:
+    - AWS
+  plan:
+    - enterprise
+  platforms:
+    - AWS
+  faults:
+    - name: lambda-function-layer-detach
+      description: This fault causes the layers of lambda function to be detached.
+  icon:
+    - url:
+      mediatype: ""

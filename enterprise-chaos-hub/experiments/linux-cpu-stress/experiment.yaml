@@ -1,0 +1,23 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: LinuxChaosExperiment
+metadata:
+  name: linux-cpu-stress-4ap
+  labels:
+    context: linux-cpu-stress
+    name: linux-cpu-stress-4ap
+spec:
+  steps:
+    - - name: linux-cpu-stress-4ap
+  tasks:
+    - name: linux-cpu-stress-4ap
+      taskType: "chaos"
+      weight: 10
+      definition:
+        chaos:
+          experiment: linux-cpu-stress
+          stressChaos/inputs:
+            rampTime: ""
+            workers: 1
+            load: 100
+            duration: 30s

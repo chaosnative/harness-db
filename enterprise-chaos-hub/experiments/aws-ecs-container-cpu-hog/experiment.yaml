@@ -1,0 +1,137 @@
+---
+kind: Workflow
+apiVersion: argoproj.io/v1alpha1
+metadata:
+  name: ecs-container-cpu-hog-1658156646
+  namespace: litmus
+
+spec:
+  templates:
+    - name: custom-chaos
+      steps:
+        - - name: ecs-container-cpu-hog-6p3
+            template: ecs-container-cpu-hog-6p3
+        - - name: cleanup-chaos-resources
+            template: cleanup-chaos-resources
+    - name: ecs-container-cpu-hog-6p3
+      inputs:
+        artifacts:
+          - name: ecs-container-cpu-hog-6p3
+            path: /tmp/chaosengine-ecs-container-cpu-hog-6p3.yaml
+            raw:
+              data: |
+                apiVersion: litmuschaos.io/v1alpha1
+                kind: ChaosEngine
+                metadata:
+                  namespace: "{{workflow.parameters.adminModeNamespace}}"
+                  generateName: ecs-container-cpu-hog-6p3
+                  labels:
+                    name: ecs-container-cpu-hog
+                    app.kubernetes.io/part-of: litmus
+                    app.kubernetes.io/component: experiment-job
+                    app.kubernetes.io/enableAWSAccessViaSecrets: disable
+                    app.kubernetes.io/version: ci
+                spec:
+                  engineState: active
+                  chaosServiceAccount: litmus-admin
+                  experiments:
+                    - name: ecs-container-cpu-hog
+                      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                      imagePullPolicy: Always
+                      args:
+                        - -c
+                        - ./experiments -name ecs-container-cpu-hog
+                      command:
+                        - /bin/bash
+                      spec:
+                        components:
+                          env:
+                            - name: TOTAL_CHAOS_DURATION
+                              value: "30"
+                            - name: RAMP_TIME
+                              value: ""
+                            - name: DEFAULT_HEALTH_CHECK
+                              value: 'false'
+                            - name: CLUSTER_NAME
+                              value: ""
+                            - name: SERVICE_NAME
+                              value: ""
+                            - name: REGION
+                              value: ""
+                            - name: CPU_CORE
+                              value: "1"
+                            - name: CPU_LOAD
+                              value: "100"
+                            - name: INSTALL_DEPENDENCIES
+                              value: "True"
+                            - name: AWS_SHARED_CREDENTIALS_FILE
+                              value: /tmp/cloud_config.yml
+                            - name: SEQUENCE
+                              value: "parallel"
+                          secrets:
+                            - name: cloud-secret
+                              mountPath: /tmp/
+                        probe:
+                          - name: healthcheck
+                            type: cmdProbe
+                            mode: Edge
+                            runProperties:
+                              probeTimeout: 5s
+                              retry: 0
+                              interval: 1s
+                              stopOnFailure: false
+                            cmdProbe/inputs:
+                              command: ./healthcheck -name aws-ecs-container
+                              source:
+                                image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                                inheritInputs: true
+                                volumeMount:
+                                  - mountPath: /var/run/secrets/eks.amazonaws.com/serviceaccount
+                                    name: aws-iam-token
+                                    readOnly: true
+                                volumes:
+                                  - name: aws-iam-token
+                                    projected:
+                                      defaultMode: 420
+                                      sources:
+                                        - serviceAccountToken:
+                                            audience: sts.amazonaws.com
+                                            expirationSeconds: 86400
+                                            path: token
+                              comparator:
+                                type: string
+                                criteria: contains
+                                value: "[P000]"
+      metadata:
+        labels:
+          weight: "10"
+      container:
+        name: ""
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+        command:
+          - ./chaos-checker
+        args:
+          - -file=/tmp/chaosengine-ecs-container-cpu-hog-6p3.yaml
+          - -saveName=/tmp/engine-name
+    - name: cleanup-chaos-resources
+      container:
+        name: ""
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+        command:
+          - sh
+          - -c
+        args:
+          - "kubectl delete chaosengine -l 'instance_id in
+            (1b66f86d-dfb9-4bf3-ab43-98a1a7915539, )' -n
+            {{workflow.parameters.adminModeNamespace}} "
+  entrypoint: custom-chaos
+  arguments:
+    parameters:
+      - name: adminModeNamespace
+        value: litmus
+  serviceAccountName: argo-chaos
+  podGC:
+    strategy: OnWorkflowCompletion
+  securityContext:
+    runAsUser: 1000
+    runAsNonRoot: true

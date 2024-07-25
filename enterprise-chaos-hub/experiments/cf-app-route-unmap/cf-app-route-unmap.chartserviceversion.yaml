@@ -1,0 +1,29 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: cf-app-route-unmap
+  version: 0.1.0
+  annotations:
+    categories: cf-app-route-unmap
+    chartDescription: Injects app route un-map chaos for a CF app.
+spec:
+  displayName: CF App Route Unmap
+  categoryDescription: >-
+    This fault injects app route un-map chaos in the Cloud Foundry platform.
+
+    - Checks resilience upon abrupt un-mapping of an application route for a component/microservice
+
+    - Helps validate the effectiveness of disaster recovery and high availability of the app
+  faults:
+    - name: cf-app-route-unmap
+      description: Injects app route un-map chaos for a CF app.
+  keywords:
+    - Cloud Foundry
+  plan:
+    - enterprise
+  platforms:
+    - Cloud Foundry
+  icon:
+    - url:
+      mediatype: ""

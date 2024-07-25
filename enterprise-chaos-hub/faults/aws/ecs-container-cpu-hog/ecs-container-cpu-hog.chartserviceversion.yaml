@@ -1,0 +1,42 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  createdAt: 2022-07-18T10:28:08Z
+  name: ecs-container-cpu-hog
+  version: 0.1.0
+  annotations:
+    categories: AWS
+    vendor: Harness
+spec:
+  displayName: ECS Container CPU Hog
+  categoryDescription: |
+    ECS container CPU hog fault disrupts the state of AWS ECS service. This fault injects CPU hog against specified tasks running on the ECS cluster.
+    - Causes CPU hog in the task container running on the ECS Cluster.
+    - It helps to check the performance of the task/application running on the ECS cluster when subject to CPU hog.
+  keywords:
+    - AWS
+  plan:
+    - team
+  platforms:
+    - GKE
+    - Konvoy
+    - Packet(Kubeadm)
+    - Minikube
+    - EKS
+    - AKS
+    - Kind
+    - Rancher
+    - OpenShift(OKD)
+  experiments:
+    - aws-ecs-container-cpu-hog
+  minKubeVersion: 1.12.0
+  labels:
+    app.kubernetes.io/component: chartserviceversion
+    app.kubernetes.io/version: ci
+  links:
+    - name: Documentation
+      url: https://docs.harness.io/category/kl0mxwpfw1-hce-category
+  icon:
+    - url:
+      mediatype: ""

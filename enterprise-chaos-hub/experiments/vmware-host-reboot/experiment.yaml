@@ -1,0 +1,134 @@
+---
+kind: Workflow
+apiVersion: argoproj.io/v1alpha1
+metadata:
+  name: vmware-host-reboot-1658234777
+  namespace: litmus
+
+spec:
+  templates:
+    - name: custom-chaos
+      steps:
+        - - name: vmware-host-reboot-ph4
+            template: vmware-host-reboot-ph4
+        - - name: cleanup-chaos-resources
+            template: cleanup-chaos-resources
+
+    - name: vmware-host-reboot-ph4
+      inputs:
+        artifacts:
+          - name: vmware-host-reboot-ph4
+            path: /tmp/chaosengine-vmware-host-reboot-ph4.yaml
+            raw:
+              data: |
+                apiVersion: litmuschaos.io/v1alpha1
+                kind: ChaosEngine
+                metadata:
+                  generateName: vmware-host-reboot-ph4
+                  namespace: "{{workflow.parameters.adminModeNamespace}}"
+                  labels:
+                    name: vmware-host-reboot
+                    app.kubernetes.io/part-of: litmus
+                    app.kubernetes.io/component: experiment-job
+                    app.kubernetes.io/version: ci
+                spec:
+                  engineState: active
+                  chaosServiceAccount: litmus-admin
+                  experiments:
+                    - name: vmware-host-reboot
+                      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                      imagePullPolicy: Always
+                      args:
+                        - -c
+                        - ./experiments -name vmware-host-reboot
+                      command:
+                        - /bin/bash
+                      spec:
+                        components:
+                          statusCheckTimeouts:
+                            delay: 2
+                            timeout: 400
+                          env:
+                            - name: GOVC_URL
+                              valueFrom:
+                                secretKeyRef:
+                                  name: vcenter-secret
+                                  key: VCENTERSERVER
+                            - name: GOVC_USERNAME
+                              valueFrom:
+                                secretKeyRef:
+                                  name: vcenter-secret
+                                  key: VCENTERUSER
+                            - name: GOVC_PASSWORD
+                              valueFrom:
+                                secretKeyRef:
+                                  name: vcenter-secret
+                                  key: VCENTERPASS
+                            - name: TOTAL_CHAOS_DURATION
+                              value: "30"
+                            - name: CHAOS_INTERVAL
+                              value: "30"
+                            - name: GOVC_INSECURE
+                              value: "true"
+                            - name: LIB
+                              value: ''
+                            - name: RAMP_TIME
+                              value: ''
+                            - name: HOST_NAME
+                              value: ''
+                            - name: HOST_DATACENTER
+                              value: ''
+                            - name: HIGH_AVAILABILITY_CLUSTER
+                              value: ''
+                        probe:
+                          - name: healthcheck
+                            type: cmdProbe
+                            mode: Edge
+                            runProperties:
+                              probeTimeout: 20s
+                              retry: 0
+                              interval: 1s
+                              stopOnFailure: false
+                            cmdProbe/inputs:
+                              command: ./healthcheck -name vmware-host-chaos
+                              source:
+                                image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                                inheritInputs: true
+                              comparator:
+                                type: string
+                                criteria: contains
+                                value: "[P000]"
+                  annotationCheck: "false"
+      metadata:
+        labels:
+          weight: "10"
+      container:
+        name: ""
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+        command:
+          - ./chaos-checker
+        args:
+          - -file=/tmp/chaosengine-vmware-host-reboot-ph4.yaml
+          - -saveName=/tmp/engine-name
+    - name: cleanup-chaos-resources
+      container:
+        name: ""
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+        command:
+          - sh
+          - -c
+        args:
+          - "kubectl delete chaosengine -l 'instance_id in
+            (acafcdd5-61b7-445a-a473-78ea1a9983d9, )' -n
+            {{workflow.parameters.adminModeNamespace}} "
+  entrypoint: custom-chaos
+  arguments:
+    parameters:
+      - name: adminModeNamespace
+        value: litmus
+  serviceAccountName: argo-chaos
+  podGC:
+    strategy: OnWorkflowCompletion
+  securityContext:
+    runAsUser: 1000
+    runAsNonRoot: true

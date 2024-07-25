@@ -1,0 +1,148 @@
+---
+kind: Workflow
+apiVersion: argoproj.io/v1alpha1
+metadata:
+  name: vmware-network-latency-1658843827
+  namespace: litmus
+
+spec:
+  templates:
+    - name: custom-chaos
+      steps:
+        - - name: vmware-network-latency-uis
+            template: vmware-network-latency-uis
+        - - name: cleanup-chaos-resources
+            template: cleanup-chaos-resources
+
+    - name: vmware-network-latency-uis
+      inputs:
+        artifacts:
+          - name: vmware-network-latency-uis
+            path: /tmp/chaosengine-vmware-network-latency-uis.yaml
+            raw:
+              data: |
+                apiVersion: litmuschaos.io/v1alpha1
+                kind: ChaosEngine
+                metadata:
+                  namespace: "{{workflow.parameters.adminModeNamespace}}"
+                  generateName: vmware-network-latency-uis
+                  labels:
+                    name: vmware-network-latency
+                    app.kubernetes.io/part-of: litmus
+                    app.kubernetes.io/component: experiment-job
+                    app.kubernetes.io/version: ci
+                spec:
+                  engineState: active
+                  chaosServiceAccount: litmus-admin
+                  experiments:
+                    - name: vmware-network-latency
+                      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                      imagePullPolicy: Always
+                      args:
+                        - -c
+                        - ./experiments -name vmware-network-latency
+                      command:
+                        - /bin/bash
+                      spec:
+                        components:
+                          env:
+                            - name: TOTAL_CHAOS_DURATION
+                              value: "30"
+                            - name: CHAOS_INTERVAL
+                              value: "30"
+                            - name: RAMP_TIME
+                              value: ""
+                            - name: NETWORK_INTERFACE
+                              value: "ens160"
+                            - name: NETWORK_LATENCY
+                              value: "2000"
+                            - name: JITTER
+                              value: ""
+                            - name: DESTINATION_HOSTS
+                              value: ""
+                            - name: DESTINATION_IPS
+                              value: ""
+                            - name: SOURCE_PORTS
+                              value: ""
+                            - name: DESTINATION_PORTS
+                              value: ""
+                            - name: VM_NAME
+                              value: ""
+                            - name: VM_USER_NAME
+                              value: ""
+                            - name: VM_PASSWORD
+                              value: ""
+                            - name: GOVC_URL
+                              valueFrom:
+                                secretKeyRef:
+                                  name: vcenter-secret
+                                  key: VCENTERSERVER
+                            - name: GOVC_USERNAME
+                              valueFrom:
+                                secretKeyRef:
+                                  name: vcenter-secret
+                                  key: VCENTERUSER
+                            - name: GOVC_PASSWORD
+                              valueFrom:
+                                secretKeyRef:
+                                  name: vcenter-secret
+                                  key: VCENTERPASS
+                            - name: GOVC_INSECURE
+                              value: "true"
+                            - name: SEQUENCE
+                              value: parallel
+                            - name: DEFAULT_HEALTH_CHECK
+                              value: 'false'
+                        probe:
+                          - name: healthcheck
+                            type: cmdProbe
+                            mode: Edge
+                            runProperties:
+                              probeTimeout: 20s
+                              retry: 0
+                              interval: 1s
+                              stopOnFailure: false
+                            cmdProbe/inputs:
+                              command: ./healthcheck -name vmware-network-chaos
+                              source:
+                                image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                                inheritInputs: true
+                              comparator:
+                                type: string
+                                criteria: contains
+                                value: "[P000]"
+      metadata:
+        labels:
+          weight: "10"
+      container:
+        name: ""
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+        command:
+          - ./chaos-checker
+        args:
+          - -file=/tmp/chaosengine-vmware-network-latency-uis.yaml
+          - -saveName=/tmp/engine-name
+
+    - name: cleanup-chaos-resources
+      container:
+        name: ""
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+        command:
+          - sh
+          - -c
+        args:
+          - "kubectl delete chaosengine -l 'instance_id in
+            (ee705d86-6720-47a5-a499-4ef2bea9312c, )' -n
+            {{workflow.parameters.adminModeNamespace}} "
+
+  entrypoint: custom-chaos
+  arguments:
+    parameters:
+      - name: adminModeNamespace
+        value: litmus
+  serviceAccountName: argo-chaos
+  podGC:
+    strategy: OnWorkflowCompletion
+  securityContext:
+    runAsUser: 1000
+    runAsNonRoot: true

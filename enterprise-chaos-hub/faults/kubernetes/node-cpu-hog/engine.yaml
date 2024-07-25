@@ -1,0 +1,87 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChaosEngine
+metadata:
+  name: node-cpu-hog
+  namespace: default
+  labels:
+    name: node-cpu-hog
+    app.kubernetes.io/part-of: litmus
+    app.kubernetes.io/component: experiment-job
+    app.kubernetes.io/version: ci
+spec:
+  # It can be active/stop
+  engineState: "active"
+  terminationGracePeriodSeconds: 30
+  #ex. values: ns1:name=percona,ns2:run=nginx
+  auxiliaryAppInfo: ""
+  chaosServiceAccount: node-cpu-hog-sa
+  experiments:
+    - name: node-cpu-hog
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+      imagePullPolicy: Always
+      args:
+        - -c
+        - ./experiments -name node-cpu-hog
+      command:
+        - /bin/bash
+      spec:
+        components:
+          env:
+            - name: TOTAL_CHAOS_DURATION
+              value: "60"
+
+            # Period to wait before and after injection of chaos in sec
+            - name: RAMP_TIME
+              value: ""
+
+            ## ENTER THE NUMBER OF CORES OF CPU FOR CPU HOGGING
+            ## OPTIONAL VALUE IN CASE OF EMPTY VALUE IT WILL TAKE NODE CPU CAPACITY
+            - name: NODE_CPU_CORE
+              value: "1"
+
+            ## LOAD CPU WITH GIVEN PERCENT LOADING FOR THE CPU STRESS WORKERS.
+            ## 0 IS EFFECTIVELY A SLEEP (NO LOAD) AND 100 IS FULL LOADING
+            - name: CPU_LOAD
+              value: "0"
+
+            # ENTER THE COMMA SEPARATED TARGET NODES NAME
+            - name: TARGET_NODES
+              value: ""
+
+            - name: NODE_LABEL
+              value: ""
+
+            # provide lib image
+            - name: LIB_IMAGE
+              value: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+
+            ## percentage of total nodes to target
+            - name: NODES_AFFECTED_PERC
+              value: ""
+
+            - name: DEFAULT_HEALTH_CHECK
+              value: "false"
+
+            ## it defines the sequence of chaos execution for multiple target nodes
+            ## supported values: serial, parallel
+            - name: SEQUENCE
+              value: "parallel"
+        probe:
+          - name: healthcheck
+            type: cmdProbe
+            mode: Edge
+            runProperties:
+              probeTimeout: 180s
+              retry: 0
+              interval: 1s
+              stopOnFailure: false
+            cmdProbe/inputs:
+              command: ./healthcheck -name node-level
+              source:
+                image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                inheritInputs: true
+              comparator:
+                type: string
+                criteria: contains
+                value: "[P000]"

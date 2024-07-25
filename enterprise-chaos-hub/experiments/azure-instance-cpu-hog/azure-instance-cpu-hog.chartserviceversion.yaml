@@ -1,0 +1,25 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: azure-instance-cpu-hog
+  version: 0.1.0
+  annotations:
+    categories: azure-instance-cpu-hog
+    chartDescription: Injects CPU hog (resource exhaustion) on the target Azure instance(s) for the specified duration
+spec:
+  displayName: Azure Instance CPU Hog
+  categoryDescription: >
+    Injects CPU hog (resource exhaustion) on the target Azure instance(s) for the specified duration
+  faults:
+    - name: azure-instance-cpu-hog
+      description: Injects CPU hog (resource exhaustion) on the target Azure instance(s) for the specified duration
+  keywords:
+    - Azure
+  plan:
+    - team
+  platforms:
+    - Azure
+  icon:
+    - url:
+      mediatype: ""

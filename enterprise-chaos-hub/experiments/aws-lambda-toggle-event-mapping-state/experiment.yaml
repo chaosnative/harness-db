@@ -1,0 +1,135 @@
+---
+kind: Workflow
+apiVersion: argoproj.io/v1alpha1
+metadata:
+  name: lambda-toggle-event-mapping-state-1658947438
+  namespace: litmus
+
+spec:
+  templates:
+    - name: custom-chaos
+
+      steps:
+        - - name: lambda-toggle-event-mapping-state-mgk
+            template: lambda-toggle-event-mapping-state-mgk
+        - - name: cleanup-chaos-resources
+            template: cleanup-chaos-resources
+
+    - name: lambda-toggle-event-mapping-state-mgk
+      inputs:
+        artifacts:
+          - name: lambda-toggle-event-mapping-state-mgk
+            path: /tmp/chaosengine-lambda-toggle-event-mapping-state-mgk.yaml
+            raw:
+              data: |
+                apiVersion: litmuschaos.io/v1alpha1
+                kind: ChaosEngine
+                metadata:
+                  namespace: "{{workflow.parameters.adminModeNamespace}}"
+                  generateName: lambda-toggle-event-mapping-state-mgk
+                  labels:
+                    name: lambda-toggle-event-mapping-state
+                    app.kubernetes.io/part-of: litmus
+                    app.kubernetes.io/component: experiment-job
+                    app.kubernetes.io/enableAWSAccessViaSecrets: disable
+                    app.kubernetes.io/version: ci
+                spec:
+                  engineState: active
+                  chaosServiceAccount: litmus-admin
+                  experiments:
+                    - name: lambda-toggle-event-mapping-state
+                      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                      imagePullPolicy: Always
+                      args:
+                        - -c
+                        - ./experiments -name lambda-toggle-event-mapping-state
+                      command:
+                        - /bin/bash
+                      spec:
+                        components:
+                          env:
+                            - name: TOTAL_CHAOS_DURATION
+                              value: '30'
+                            - name: CHAOS_INTERVAL
+                              value: '30'
+                            - name: RAMP_TIME
+                              value: ''
+                            - name: FUNCTION_NAME
+                              value: ''
+                            - name: EVENT_UUIDS
+                              value: ''
+                            - name: REGION
+                              value: ''
+                            - name: SEQUENCE
+                              value: 'parallel'
+                            - name: AWS_SHARED_CREDENTIALS_FILE
+                              value: '/tmp/cloud_config.yml'
+                          secrets:
+                            - name: cloud-secret
+                              mountPath: /tmp/
+                        probe:
+                          - name: healthcheck
+                            type: cmdProbe
+                            mode: SOT
+                            runProperties:
+                              probeTimeout: 5s
+                              retry: 0
+                              interval: 1s
+                              stopOnFailure: false
+                            cmdProbe/inputs:
+                              command: ./healthcheck -name aws-lambda-toggle-event-mapping-state
+                              source:
+                                image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                                inheritInputs: true
+                                volumeMount:
+                                  - mountPath: /var/run/secrets/eks.amazonaws.com/serviceaccount
+                                    name: aws-iam-token
+                                    readOnly: true
+                                volumes:
+                                  - name: aws-iam-token
+                                    projected:
+                                      defaultMode: 420
+                                      sources:
+                                        - serviceAccountToken:
+                                            audience: sts.amazonaws.com
+                                            expirationSeconds: 86400
+                                            path: token
+                              comparator:
+                                type: string
+                                criteria: contains
+                                value: "[P000]"
+      metadata:
+        labels:
+          weight: "10"
+      container:
+        name: ""
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+        command:
+          - ./chaos-checker
+        args:
+          - -file=/tmp/chaosengine-lambda-toggle-event-mapping-state-mgk.yaml
+          - -saveName=/tmp/engine-name
+
+    - name: cleanup-chaos-resources
+      container:
+        name: ""
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+        command:
+          - sh
+          - -c
+        args:
+          - "kubectl delete chaosengine -l 'instance_id in
+            (3b589183-7d6f-402c-835c-6a0638c00b96, )' -n
+            {{workflow.parameters.adminModeNamespace}} "
+
+  entrypoint: custom-chaos
+  arguments:
+    parameters:
+      - name: adminModeNamespace
+        value: litmus
+  serviceAccountName: argo-chaos
+  podGC:
+    strategy: OnWorkflowCompletion
+  securityContext:
+    runAsUser: 1000
+    runAsNonRoot: true

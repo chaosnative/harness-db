@@ -1,0 +1,33 @@
+---
+apiVersion: litmuchaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  createdAt: 2023-03-19T10:28:08Z
+  name: linux-time-chaos
+  version: 0.1.0
+  annotations:
+    categories: Linux
+    vendor: Harness
+spec:
+  displayName: linux-time-chaos
+  categoryDescription: |
+    This fault injects time chaos in a Linux machine.
+    - Changes the system time by offsetting it for a certain duration.
+    - Determines the resiliency of the underlying application components when subjected to a change in the system time.
+  keywords:
+    - Linux
+    - Time
+  plan:
+    - team
+  maturity: alpha
+  labels:
+    app.kubernetes.io/component: chartserviceversion
+    app.kubernetes.io/version: ci
+  links:
+    - name: Documentation
+      url: https://developer.harness.io/docs/chaos-engineering/technical-reference/chaos-faults/linux/
+  icon:
+    - url:
+      mediatype: ""
+  experiments:
+    - linux-time-chaos

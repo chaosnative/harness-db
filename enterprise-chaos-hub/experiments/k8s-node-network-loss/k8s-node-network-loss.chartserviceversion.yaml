@@ -1,0 +1,30 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: k8s-node-network-loss
+  version: 0.1.0
+  annotations:
+    categories: k8s-node-network-loss
+    chartDescription: Injects network packet loss on a given interface on the target Kubernetes node for the specified duration
+spec:
+  displayName: Kubernetes Node Network Loss
+  categoryDescription: >
+    Injects network packet loss on a given interface on the target Kubernetes node for the specified duration
+  faults:
+    - name: node-network-loss
+      description: Injects network packet loss on a given interface on the target Kubernetes node for the specified duration
+  keywords:
+    - Kubernetes
+  plan:
+    - free
+  platforms:
+    - GKE
+    - AWS(KOPS)
+    - Packet(Kubeadm)
+    - Konvoy
+    - EKS
+    - AKS
+  icon:
+    - url:
+      mediatype: ""

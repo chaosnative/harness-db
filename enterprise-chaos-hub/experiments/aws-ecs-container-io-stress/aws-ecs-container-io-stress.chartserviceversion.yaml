@@ -1,0 +1,29 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: aws-ecs-container-io-stress
+  version: 0.1.0
+  annotations:
+    categories: aws-ecs-container-io-stress
+    chartDescription: Injects I/O stress on an ECS container that runs a given task
+spec:
+  displayName: AWS ECS Container IO Stress
+  categoryDescription: >
+    Injects I/O stress on an ECS container that runs a given task
+  faults:
+    - name: ecs-container-io-stress
+      description: Injects I/O stress on an ECS container that runs a given task
+  keywords:
+    - AWS
+  plan:
+    - team
+  platforms:
+    - GKE
+    - Minikube
+    - Packet(Kubeadm)
+    - EKS
+    - AKS
+  icon:
+    - url:
+      mediatype: ""

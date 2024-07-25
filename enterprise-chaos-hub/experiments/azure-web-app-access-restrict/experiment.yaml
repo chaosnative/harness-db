@@ -1,0 +1,128 @@
+---
+kind: Workflow
+apiVersion: argoproj.io/v1alpha1
+metadata:
+  name: azure-webapp-access-restrict
+  namespace: litmus
+
+spec:
+  templates:
+    - name: custom-chaos
+
+      steps:
+        - - name: azure-app-access-restrict-j5o
+            template: azure-app-access-restrict-j5o
+
+        - - name: cleanup-chaos-resources
+            template: cleanup-chaos-resources
+
+    - name: azure-app-access-restrict-j5o
+      inputs:
+        artifacts:
+          - name: azure-app-access-restrict-j5o
+            path: /tmp/chaosengine-azure-app-access-restrict-j5o.yaml
+            raw:
+              data: |
+                apiVersion: litmuschaos.io/v1alpha1
+                kind: ChaosEngine
+                metadata:
+                  namespace: "{{workflow.parameters.adminModeNamespace}}"
+                  generateName: azure-app-access-restrict-j5o
+                  labels:
+                    name: azure-app-access-restrict
+                    app.kubernetes.io/part-of: chaosnative
+                    app.kubernetes.io/component: experiment-job
+                    app.kubernetes.io/version: ci
+                spec:
+                  engineState: active
+                  chaosServiceAccount: litmus-admin
+                  experiments:
+                    - name: azure-app-access-restrict
+                      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                      imagePullPolicy: Always
+                      args:
+                        - -c
+                        - ./experiments -name azure-app-access-restrict
+                      command:
+                        - /bin/bash
+                      spec:
+                        components:
+                          env:
+                            - name: TOTAL_CHAOS_DURATION
+                              value: "30"
+                            - name: CHAOS_INTERVAL
+                              value: "30"
+                            - name: RAMP_TIME
+                              value: ""
+                            - name: AZURE_WEB_APP_NAMES
+                              value: ""
+                            - name: RESOURCE_GROUP
+                              value: ""
+                            - name: RULE_NAME
+                              value: litmus-rule
+                            - name: ACTION
+                              value: Deny
+                            - name: PRIORITY
+                              value: "300"
+                            - name: IP_ADDRESS_BLOCK
+                              value: "0.0.0.0/0"
+                            - name: AZURE_AUTH_LOCATION
+                              value: "/tmp/azure.auth"
+                            - name: DEFAULT_HEALTH_CHECK
+                              value: 'false'
+                          secrets:
+                            - name: cloud-secret
+                              mountPath: /tmp/
+                        probe:
+                          - name: healthcheck
+                            type: cmdProbe
+                            mode: Edge
+                            runProperties:
+                              probeTimeout: 5s
+                              retry: 0
+                              interval: 1s
+                              stopOnFailure: false
+                            cmdProbe/inputs:
+                              command: ./healthcheck -name web-app-access
+                              source:
+                                image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                                inheritInputs: true
+                              comparator:
+                                type: string
+                                criteria: contains
+                                value: "[P000]"
+      metadata:
+        labels:
+          weight: "10"
+      container:
+        name: ""
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+        command:
+          - ./chaos-checker
+        args:
+          - -file=/tmp/chaosengine-azure-app-access-restrict-j5o.yaml
+          - -saveName=/tmp/engine-name
+
+    - name: cleanup-chaos-resources
+      container:
+        name: ""
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+        command:
+          - sh
+          - -c
+        args:
+          - "kubectl delete chaosengine -l 'instance_id in
+            (af43aca7-06cb-40c2-9273-9d3ee9c99202, )' -n
+            {{workflow.parameters.adminModeNamespace}} "
+
+  entrypoint: custom-chaos
+  arguments:
+    parameters:
+      - name: adminModeNamespace
+        value: litmus
+  serviceAccountName: argo-chaos
+  podGC:
+    strategy: OnWorkflowCompletion
+  securityContext:
+    runAsUser: 1000
+    runAsNonRoot: true

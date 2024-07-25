@@ -1,0 +1,31 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: linux-time-chaos
+  version: 0.1.0
+  annotations:
+    categories: linux-time-chaos
+    chartDescription: Injects time chaos into a Linux machine.
+spec:
+  displayName: Linux Time Chaos
+  categoryDescription: >-
+    This fault injects time chaos in a Linux machine.
+
+    - Changes the system time by offsetting it for a certain duration.
+
+    - Determines the resiliency of the underlying application components when subjected to a change in the system time.
+  faults:
+    - name: linux-time-chaos
+      description: Injects time chaos into a Linux machine.
+  keywords:
+    - Linux
+    - GCP
+    - Azure
+  plan:
+    - team
+  platforms:
+    - Linux
+  icon:
+    - url:
+      mediatype: ""

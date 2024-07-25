@@ -1,0 +1,25 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: vmware-vm-service-stop
+  version: 0.1.0
+  annotations:
+    categories: vmware-vm-service-stop
+    chartDescription: Injects service stop of given service(s) running in the target VMware VM(s) for the specified duration
+spec:
+  displayName: VMware VM Service Stop
+  categoryDescription: >
+    Injects service stop of given service(s) running in the target VMware VM(s) for the specified duration
+  faults:
+    - name: vmware-vm-service-stop
+      description: Injects service stop of given service(s) running in the target VMware VM(s) for the specified duration
+  keywords:
+    - VMware
+  plan:
+    - team
+  platforms:
+    - VMware
+  icon:
+    - url:
+      mediatype: ""

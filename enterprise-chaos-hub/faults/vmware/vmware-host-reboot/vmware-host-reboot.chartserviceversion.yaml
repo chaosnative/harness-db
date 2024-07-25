@@ -1,0 +1,29 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: vmware-host-reboot
+  version: 0.1.0
+  annotations:
+    categories: VMware
+    vendor: Harness
+spec:
+  displayName: VMware Host Reboot
+  categoryDescription: >
+    VMware Host Reboot fault causes a given VMware ESX Host to reboot.
+  keywords:
+    - VMware
+  platforms:
+    - VMware
+  experiments:
+    - vmware-host-reboot
+  minKubeVersion: 1.12.0
+  labels:
+    app.kubernetes.io/component: chartserviceversion
+    app.kubernetes.io/version: ci
+  links:
+    - name: Documentation
+      url: https://docs.harness.io/category/kl0mxwpfw1-hce-category
+  icon:
+    - url:
+      mediatype: ""

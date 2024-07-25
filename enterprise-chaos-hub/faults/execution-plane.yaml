@@ -1,0 +1,34 @@
+---
+executionPlane:
+  - name: Linux
+    category:
+      - name: linux
+        CSV: linux.chartserviceversion.yaml
+      - name: cloud-foundry
+        CSV: cloud-foundry.chartserviceversion.yaml
+  - name: Windows
+    category:
+      - name: windows
+        CSV: windows.chartserviceversion.yaml
+  - name: Kubernetes
+    category:
+      - name: aws
+        CSV: aws.chartserviceversion.yaml
+      - name: azure
+        CSV: azure.chartserviceversion.yaml
+      - name: gcp
+        CSV: gcp.chartserviceversion.yaml
+      - name: kube-resilience
+        CSV: kube-resilience.chartserviceversion.yaml
+      - name: kubernetes
+        CSV: kubernetes.chartserviceversion.yaml
+      - name: vmware
+        CSV: vmware.chartserviceversion.yaml
+      - name: load
+        CSV: load.chartserviceversion.yaml
+      - name: ssh
+        CSV: ssh.chartserviceversion.yaml
+  - name: KubernetesV2
+    category:
+      - name: kubernetes
+        CSV: kubernetes.chartserviceversion.yaml

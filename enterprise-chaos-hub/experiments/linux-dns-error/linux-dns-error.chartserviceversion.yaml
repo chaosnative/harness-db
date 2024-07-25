@@ -1,0 +1,27 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: linux-dns-error
+  version: 0.1.0
+  annotations:
+    categories: linux-dns-error
+    chartDescription: Injects DNS error chaos into a Linux machine.
+spec:
+  displayName: Linux DNS Error
+  categoryDescription: >-
+    It injects DNS error in a linux VM
+  faults:
+    - name: linux-dns-error
+      description: Injects DNS error chaos into a Linux machine.
+  keywords:
+    - Linux
+    - GCP
+    - Azure
+  plan:
+    - team
+  platforms:
+    - Linux
+  icon:
+    - url:
+      mediatype: ""

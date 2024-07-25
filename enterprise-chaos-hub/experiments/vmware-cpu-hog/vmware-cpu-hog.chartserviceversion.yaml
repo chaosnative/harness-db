@@ -1,0 +1,25 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: vmware-cpu-hog
+  version: 0.1.0
+  annotations:
+    categories: vmware-cpu-hog
+    chartDescription: Injects CPU hog (resource exhaustion) on the target VMware VMs for the specified duration
+spec:
+  displayName: VMware CPU Hog
+  categoryDescription: >
+    Injects CPU hog (resource exhaustion) on the target VMware VMs for the specified duration
+  faults:
+    - name: vmware-cpu-hog
+      description: Injects CPU hog (resource exhaustion) on the target VMware VMs for the specified duration
+  keywords:
+    - VMware
+  plan:
+    - team
+  platforms:
+    - VMware
+  icon:
+    - url:
+      mediatype: ""

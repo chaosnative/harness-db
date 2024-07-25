@@ -1,0 +1,32 @@
+---
+apiVersion: litmuchaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  createdAt: 2023-04-02T00:00:00Z
+  name: ecs-container-volume-detach
+  version: 0.1.0
+  annotations:
+    categories: AWS
+    vendor: Harness
+spec:
+  displayName: ECS Container Volume Detach
+  categoryDescription: |
+    ECS container volume detach fault disrupts the state of AWS ECS service. This fault injects the volume detach chaos on the target ECS tasks.
+    - It helps to check the ability of the task/application running on the ECS cluster to handle the volume detach issues.
+  keywords:
+    - AWS
+  platforms:
+    - GKE
+    - EKS
+    - AKS
+  experiments:
+    - aws-ecs-container-volume-detach
+  labels:
+    app.kubernetes.io/component: chartserviceversion
+    app.kubernetes.io/version: ci
+  links:
+    - name: Documentation
+      url: https://docs.harness.io/category/kl0mxwpfw1-hce-category
+  icon:
+    - url:
+      mediatype: ""

@@ -1,0 +1,101 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChaosEngine
+metadata:
+  name: disk-fill
+  namespace: default
+  labels:
+    name: disk-fill
+    app.kubernetes.io/part-of: litmus
+    app.kubernetes.io/component: experiment-job
+    app.kubernetes.io/host-path-usage: "true"
+    app.kubernetes.io/version: ci
+spec:
+  # It can be active/stop
+  engineState: "active"
+  terminationGracePeriodSeconds: 30
+  #ex. values: ns1:name=percona,ns2:run=nginx
+  auxiliaryAppInfo: ""
+  appinfo:
+    appns: ""
+    applabel: ""
+    appkind: ""
+  chaosServiceAccount: disk-fill-sa
+  experiments:
+    - name: disk-fill
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+      imagePullPolicy: Always
+      args:
+        - -c
+        - ./experiments -name disk-fill
+      command:
+        - /bin/bash
+      spec:
+        components:
+          env:
+            - name: TARGET_CONTAINER
+              value: ""
+
+            - name: FILL_PERCENTAGE
+              value: "80"
+
+            - name: TOTAL_CHAOS_DURATION
+              value: "60"
+
+            # Period to wait before and after injection of chaos in sec
+            - name: RAMP_TIME
+              value: ""
+
+            # provide the data block size
+            # supported unit is KB
+            - name: DATA_BLOCK_SIZE
+              value: "256"
+
+            - name: TARGET_PODS
+              value: ""
+
+            - name: EPHEMERAL_STORAGE_MEBIBYTES
+              value: ""
+
+            # To select pods on specific node(s)
+            - name: NODE_LABEL
+              value: ""
+
+            ## percentage of total pods to target
+            - name: PODS_AFFECTED_PERC
+              value: ""
+
+            - name: DEFAULT_HEALTH_CHECK
+              value: "false"
+
+            - name: LIB_IMAGE
+              value: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+
+            ## it defines the sequence of chaos execution for multiple target pods
+            ## supported values: serial, parallel
+            - name: SEQUENCE
+              value: "parallel"
+
+            - name: CONTAINER_RUNTIME
+              value: containerd
+
+            - name: SOCKET_PATH
+              value: /run/containerd/containerd.sock
+        probe:
+          - name: healthcheck
+            type: cmdProbe
+            mode: Edge
+            runProperties:
+              probeTimeout: 180s
+              retry: 0
+              interval: 1s
+              stopOnFailure: false
+            cmdProbe/inputs:
+              command: ./healthcheck -name pod-level
+              source:
+                image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                inheritInputs: true
+              comparator:
+                type: string
+                criteria: contains
+                value: "[P000]"

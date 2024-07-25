@@ -1,0 +1,25 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: LinuxChaosExperiment
+metadata:
+  name: linux-dns-error-4ap
+  labels:
+    context: linux-dns-error
+    name: linux-dns-error-4ap
+spec:
+  steps:
+    - - name: linux-dns-error-4ap
+  tasks:
+    - name: linux-dns-error-4ap
+      taskType: "chaos"
+      weight: 10
+      definition:
+        chaos:
+          experiment: linux-dns-error
+          dnsChaos/inputs:
+            hostNames: ""
+            matchScheme: "exact"
+            duration: 30s
+            dnsPort: 53
+            upstreamServer: ""
+            rampTime: ""

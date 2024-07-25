@@ -1,0 +1,31 @@
+---
+apiVersion: litmuchaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: linux-disk-io-stress
+  annotations:
+    categories: Linux
+spec:
+  displayName: linux-disk-io-stress
+  categoryDescription: |
+    This fault injects disk I/O stress to a Linux machine.
+    - Induces heavy disk usage scenario on the target Linux machines.
+    - Simulates a lack of storage space for the underlying applications in the system.
+    - Validates application failover and data resiliency in the scenario of low disk space.
+  keywords:
+    - Linux
+    - Disk I/O
+  plan:
+    - team
+  maturity: alpha
+  labels:
+    app.kubernetes.io/component: chartserviceversion
+    app.kubernetes.io/version: ci
+  links:
+    - name: Documentation
+      url: https://developer.harness.io/docs/chaos-engineering/technical-reference/chaos-faults/linux/
+  icon:
+    - url:
+      mediatype: ""
+  experiments:
+    - linux-disk-io-stress

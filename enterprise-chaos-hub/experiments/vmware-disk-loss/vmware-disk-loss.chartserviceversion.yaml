@@ -1,0 +1,25 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: vmware-disk-loss
+  version: 0.1.0
+  annotations:
+    categories: VMWare
+    chartDescription: Injects loss of a given disk on a target VMware VM for a specific duration
+spec:
+  displayName: VMware Disk Loss
+  categoryDescription: |
+    Injects loss of a given disk on a target VMware VM for a specific duration
+  faults:
+    - name: vmware-disk-loss
+      description: Injects loss of a given disk on a target VMware VM for a specific duration
+  keywords:
+    - VMware
+  plan:
+    - team
+  platforms:
+    - VMware
+  icon:
+    - url:
+      mediatype: ""

@@ -1,0 +1,29 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: linux-network-duplication
+  version: 0.1.0
+  annotations:
+    categories: linux-network-duplication
+    chartDescription: Injects network duplication chaos into a Linux machine.
+spec:
+  displayName: Linux Network Duplication
+  categoryDescription: >-
+    This fault injects network duplication into a Linux machine.
+
+    - Simulates network packet duplication in the machine.
+  faults:
+    - name: linux-network-duplication
+      description: Injects network duplication chaos into a Linux machine.
+  keywords:
+    - Linux
+    - GCP
+    - Azure
+  plan:
+    - team
+  platforms:
+    - Linux
+  icon:
+    - url:
+      mediatype: ""

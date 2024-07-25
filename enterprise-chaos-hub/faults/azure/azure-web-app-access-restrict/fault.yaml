@@ -1,0 +1,124 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+description:
+  message: |
+    Adds access restriction on an Azure web app for a certain chaos duration
+kind: ChaosExperiment
+metadata:
+  name: azure-app-access-restrict
+  labels:
+    name: azure-app-access-restrict
+    app.kubernetes.io/part-of: chaosnative
+    app.kubernetes.io/component: chaosexperiment
+    app.kubernetes.io/version: ci
+spec:
+  definition:
+    scope: Cluster
+    permissions:
+      - apiGroups:
+          - ""
+        resources:
+          - pods
+        verbs:
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - update
+          - deletecollection
+      - apiGroups:
+          - ""
+        resources:
+          - events
+        verbs:
+          - create
+          - get
+          - list
+          - patch
+          - update
+      - apiGroups:
+          - ""
+        resources:
+          - secrets
+          - configmaps
+        verbs:
+          - get
+          - list
+      - apiGroups:
+          - ""
+        resources:
+          - pods/log
+        verbs:
+          - get
+          - list
+          - watch
+      - apiGroups:
+          - ""
+        resources:
+          - pods/exec
+        verbs:
+          - get
+          - list
+          - create
+      - apiGroups:
+          - batch
+        resources:
+          - jobs
+        verbs:
+          - create
+          - list
+          - get
+          - delete
+          - deletecollection
+      - apiGroups:
+          - litmuschaos.io
+        resources:
+          - chaosengines
+          - chaosexperiments
+          - chaosresults
+        verbs:
+          - create
+          - list
+          - get
+          - patch
+          - update
+          - delete
+    image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+    imagePullPolicy: Always
+    args:
+      - -c
+      - ./experiments -name azure-app-access-restrict
+    command:
+      - /bin/bash
+    env:
+      - name: TOTAL_CHAOS_DURATION
+        value: "30"
+      - name: CHAOS_INTERVAL
+        value: "30"
+      - name: RAMP_TIME
+        value: ""
+      - name: AZURE_WEB_APP_NAMES
+        value: ""
+      - name: RESOURCE_GROUP
+        value: ""
+      - name: RULE_NAME
+        value: litmus-rule
+      - name: ACTION
+        value: Deny
+      - name: PRIORITY
+        value: "300"
+      - name: IP_ADDRESS_BLOCK
+        value: 0.0.0.0/0
+      - name: AZURE_AUTH_LOCATION
+        value: /tmp/azure.auth
+      - name: DEFAULT_HEALTH_CHECK
+        value: "false"
+    labels:
+      name: azure-app-access-restrict
+      app.kubernetes.io/part-of: chaosnative
+      app.kubernetes.io/component: experiment-job
+      app.kubernetes.io/version: ci
+    secrets:
+      - name: cloud-secret
+        mountPath: /tmp/

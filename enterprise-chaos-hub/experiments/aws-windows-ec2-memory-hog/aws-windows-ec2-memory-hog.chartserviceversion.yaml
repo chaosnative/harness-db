@@ -1,0 +1,29 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: aws-windows-ec2-memory-hog
+  version: 0.1.0
+  annotations:
+    categories: aws-windows-ec2-memory-hog
+    chartDescription: Injects memory hog (resource exhaustion) on an AWS EC2 instance for a specified chaos duration
+spec:
+  displayName: AWS Windows EC2 Memory Hog
+  categoryDescription: >
+    Injects memory hog (resource exhaustion) on an AWS windows EC2 instance for a specified chaos duration
+  faults:
+    - name: windows-ec2-memory-hog
+      description: This chaos fault performs memory-hog on an AWS windows EC2 instance for a specified chaos duration.
+  keywords:
+    - AWS
+  plan:
+    - team
+  platforms:
+    - GKE
+    - Minikube
+    - Packet(Kubeadm)
+    - EKS
+    - AKS
+  icon:
+    - url:
+      mediatype: ""

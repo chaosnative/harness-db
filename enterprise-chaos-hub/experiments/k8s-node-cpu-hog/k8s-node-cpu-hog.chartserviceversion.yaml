@@ -1,0 +1,27 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: k8s-node-cpu-hog
+  version: 0.1.0
+  annotations:
+    categories: k8s-node-cpu-hog
+    chartDescription: Injects CPU hog (resource exhaustion) on the provided target Kubernetes node
+spec:
+  displayName: Kubernetes Node CPU Hog
+  categoryDescription: >
+    Injects CPU hog (resource exhaustion) on the provided target Kubernetes node
+  faults:
+    - name: node-cpu-hog
+      description: Injects CPU hog (resource exhaustion) on the provided target Kubernetes node
+  keywords:
+    - Kubernetes
+  plan:
+    - free
+  platforms:
+    - GKE
+    - Minikube
+    - AKS
+  icon:
+    - url:
+      mediatype: ""

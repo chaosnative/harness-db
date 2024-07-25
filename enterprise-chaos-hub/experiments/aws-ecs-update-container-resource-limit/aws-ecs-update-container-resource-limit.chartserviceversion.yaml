@@ -1,0 +1,29 @@
+---
+apiVersion: litmuchaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: aws-ecs-update-container-resource-limit
+  version: 0.1.0
+  annotations:
+    categories: aws-ecs-update-container-resource-limit
+    chartDescription: Injects update container resource limit chaos on a target ECS service for a specified duration
+spec:
+  displayName: AWS ECS Update Container Resource Limit
+  categoryDescription: >
+    Injects update container resource limit chaos on a target ECS service for a specified duration
+  faults:
+    - name: ecs-update-container-resource-limit
+      description: Injects update container resource limit chaos on a target ECS service for a specified duration
+  keywords:
+    - AWS
+  plan:
+    - team
+  platforms:
+    - GKE
+    - Minikube
+    - Packet(Kubeadm)
+    - EKS
+    - AKS
+  icon:
+    - url:
+      mediatype: ""

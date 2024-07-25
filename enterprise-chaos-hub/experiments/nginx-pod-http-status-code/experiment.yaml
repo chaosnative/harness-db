@@ -1,0 +1,136 @@
+---
+kind: Workflow
+apiVersion: argoproj.io/v1alpha1
+metadata:
+  name: pod-http-status-code-1658839816
+  namespace: litmus
+
+spec:
+  templates:
+    - name: custom-chaos
+      steps:
+        - - name: pod-http-status-code-20e
+            template: pod-http-status-code-20e
+        - - name: cleanup-chaos-resources
+            template: cleanup-chaos-resources
+
+    - name: pod-http-status-code-20e
+      inputs:
+        artifacts:
+          - name: pod-http-status-code-20e
+            path: /tmp/chaosengine-pod-http-status-code-20e.yaml
+            raw:
+              data: |
+                apiVersion: litmuschaos.io/v1alpha1
+                kind: ChaosEngine
+                metadata:
+                  generateName: pod-http-status-code-20e
+                  namespace: "{{workflow.parameters.adminModeNamespace}}"
+                  labels:
+                    name: pod-http-status-code
+                    app.kubernetes.io/part-of: litmus
+                    app.kubernetes.io/component: experiment-job
+                    app.kubernetes.io/version: ci
+                spec:
+                  engineState: active
+                  appinfo:
+                    appns: default
+                    applabel: app=nginx
+                    appkind: deployment
+                  chaosServiceAccount: litmus-admin
+                  experiments:
+                    - name: pod-http-status-code
+                      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                      imagePullPolicy: Always
+                      args:
+                        - -c
+                        - ./experiments -name pod-http-status-code
+                      command:
+                        - /bin/bash
+                      spec:
+                        components:
+                          env:
+                            - name: TARGET_CONTAINER
+                              value: ""
+                            - name: LIB_IMAGE
+                              value: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                            - name: STATUS_CODE
+                              value: ""
+                            - name: MODIFY_RESPONSE_BODY
+                              value: "true"
+                            - name: TARGET_SERVICE_PORT
+                              value: "80"
+                            - name: PROXY_PORT
+                              value: "20000"
+                            - name: NETWORK_INTERFACE
+                              value: eth0
+                            - name: TOTAL_CHAOS_DURATION
+                              value: "30"
+                            - name: RAMP_TIME
+                              value: "10"
+                            - name: PODS_AFFECTED_PERC
+                              value: ""
+                            - name: TARGET_PODS
+                              value: ""
+                            - name: CONTAINER_RUNTIME
+                              value: 'containerd'
+                            - name: SOCKET_PATH
+                              value: '/run/containerd/containerd.sock'
+                            - name: NODE_LABEL
+                              value: ""
+                            - name: SEQUENCE
+                              value: parallel
+                            - name: DEFAULT_HEALTH_CHECK
+                              value: 'false'
+                        probe:
+                          - name: healthcheck
+                            type: cmdProbe
+                            mode: Edge
+                            runProperties:
+                              probeTimeout: 180s
+                              retry: 0
+                              interval: 1s
+                              stopOnFailure: false
+                            cmdProbe/inputs:
+                              command: ./healthcheck -name pod-level
+                              source:
+                                image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                                inheritInputs: true
+                              comparator:
+                                type: string
+                                criteria: contains
+                                value: "[P000]"
+      metadata:
+        labels:
+          weight: "10"
+      container:
+        name: ""
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+        command:
+          - ./chaos-checker
+        args:
+          - -file=/tmp/chaosengine-pod-http-status-code-20e.yaml
+          - -saveName=/tmp/engine-name
+
+    - name: cleanup-chaos-resources
+      container:
+        name: ""
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+        command:
+          - sh
+          - -c
+        args:
+          - "kubectl delete chaosengine -l 'instance_id in
+            (ccd3c194-42e2-4314-a34f-aef9fe9e0d1d, )' -n
+            {{workflow.parameters.adminModeNamespace}} "
+  entrypoint: custom-chaos
+  arguments:
+    parameters:
+      - name: adminModeNamespace
+        value: litmus
+  serviceAccountName: argo-chaos
+  podGC:
+    strategy: OnWorkflowCompletion
+  securityContext:
+    runAsUser: 1000
+    runAsNonRoot: true

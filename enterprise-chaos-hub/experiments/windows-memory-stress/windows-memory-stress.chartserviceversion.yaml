@@ -1,0 +1,33 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: windows-memory-stress
+  version: 0.1.0
+  annotations:
+    categories: windows-memory-stress
+    chartDescription: Injects Memory stress into a Windows machine.
+spec:
+  displayName: Windows Memory Stress
+  categoryDescription: >-
+    This fault injects Memory stress into a Windows machine.
+
+    - Induces Memory consumption and exhaustion on the target Windows machines.
+
+    - Simulates a lack of Memory for processes running on the application, which degrades their performance.
+
+    - Simulates slow application traffic or exhaustion of the resources, leading to degradation in the performance of processes on the machine.
+  faults:
+    - name: windows-memory-stress
+      description: Injects Memory stress into a Windows machine.
+  keywords:
+    - Windows
+    - GCP
+    - Azure
+  plan:
+    - team
+  platforms:
+    - Windows
+  icon:
+    - url:
+      mediatype: ""

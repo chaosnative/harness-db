@@ -1,0 +1,174 @@
+---
+packageName: aws
+faults:
+  - name: ecs-instance-stop
+    CSV: ecs-instance-stop.chartserviceversion.yaml
+    desc: "ecs-instance-stop"
+  - name: clb-az-down
+    CSV: clb-az-down.chartserviceversion.yaml
+    desc: "clb-az-down"
+  - name: alb-az-down
+    CSV: alb-az-down.chartserviceversion.yaml
+    desc: "alb-az-down"
+  - name: ecs-container-network-loss
+    CSV: ecs-container-network-loss.chartserviceversion.yaml
+    desc: "ecs-container-network-loss"
+  - name: ecs-container-network-latency
+    CSV: ecs-container-network-latency.chartserviceversion.yaml
+    desc: "ecs-container-network-latency"
+  - name: ecs-container-cpu-hog
+    CSV: ecs-container-cpu-hog.chartserviceversion.yaml
+    desc: "ecs-container-cpu-hog"
+  - name: ecs-container-memory-hog
+    CSV: ecs-container-memory-hog.chartserviceversion.yaml
+    desc: "ecs-container-memory-hog"
+  - name: ecs-container-io-stress
+    CSV: ecs-container-io-stress.chartserviceversion.yaml
+    desc: "ecs-container-io-stress"
+  - name: ecs-agent-stop
+    CSV: ecs-agent-stop.chartserviceversion.yaml
+    desc: "ecs-agent-stop"
+  - name: ec2-cpu-hog
+    CSV: ec2-cpu-hog.chartserviceversion.yaml
+    desc: "ec2-cpu-hog"
+  - name: ec2-memory-hog
+    CSV: ec2-memory-hog.chartserviceversion.yaml
+    desc: "ec2-memory-hog"
+  - name: ec2-io-stress
+    CSV: ec2-io-stress.chartserviceversion.yaml
+    desc: "ec2-io-stress"
+  - name: ec2-http-latency
+    CSV: ec2-http-latency.chartserviceversion.yaml
+    desc: "ec2-http-latency"
+  - name: ec2-http-modify-header
+    CSV: ec2-http-modify-header.chartserviceversion.yaml
+    desc: "ec2-http-modify-header"
+  - name: ec2-http-modify-body
+    CSV: ec2-http-modify-body.chartserviceversion.yaml
+    desc: "ec2-http-modify-body"
+  - name: ec2-http-status-code
+    CSV: ec2-http-status-code.chartserviceversion.yaml
+    desc: "ec2-http-status-code"
+  - name: ec2-http-reset-peer
+    CSV: ec2-http-reset-peer.chartserviceversion.yaml
+    desc: "ec2-http-reset-peer"
+  - name: ec2-network-loss
+    CSV: ec2-network-loss.chartserviceversion.yaml
+    desc: "ec2-network-loss"
+  - name: ec2-network-latency
+    CSV: ec2-network-latency.chartserviceversion.yaml
+    desc: "ec2-network-latency"
+  - name: aws-ssm-chaos-by-id
+    CSV: aws-ssm-chaos-by-id.chartserviceversion.yaml
+    desc: "aws-ssm-chaos-by-id"
+  - name: aws-ssm-chaos-by-tag
+    CSV: aws-ssm-chaos-by-tag.chartserviceversion.yaml
+    desc: "aws-ssm-chaos-by-tag"
+  - name: ec2-stop-by-id
+    CSV: ec2-stop-by-id.chartserviceversion.yaml
+    desc: "ec2-stop-by-id"
+  - name: ec2-stop-by-tag
+    CSV: ec2-stop-by-tag.chartserviceversion.yaml
+    desc: "ec2-stop-by-tag"
+  - name: ebs-loss-by-id
+    CSV: ebs-loss-by-id.chartserviceversion.yaml
+    desc: "ebs-loss-by-id"
+  - name: ebs-loss-by-tag
+    CSV: ebs-loss-by-tag.chartserviceversion.yaml
+    desc: "ebs-loss-by-tag"
+  - name: rds-instance-delete
+    CSV: rds-instance-delete.chartserviceversion.yaml
+    desc: "rds-instance-delete"
+  - name: rds-instance-reboot
+    CSV: rds-instance-reboot.chartserviceversion.yaml
+    desc: "rds-instance-reboot"
+  - name: ec2-dns-chaos
+    CSV: ec2-dns-chaos.chartserviceversion.yaml
+    desc: "ec2-dns-chaos"
+  - name: ec2-process-kill
+    CSV: ec2-process-kill.chartserviceversion.yaml
+    desc: "ec2-process-kill"
+  - name: lambda-delete-function-concurrency
+    CSV: lambda-delete-function-concurrency.chartserviceversion.yaml
+    desc: "lambda-delete-function-concurrency"
+  - name: lambda-delete-event-source-mapping
+    CSV: lambda-delete-event-source-mapping.chartserviceversion.yaml
+    desc: "lambda-delete-event-source-mapping"
+  - name: lambda-update-function-memory
+    CSV: lambda-update-function-memory.chartserviceversion.yaml
+    desc: "lambda-update-function-memory"
+  - name: lambda-update-function-timeout
+    CSV: lambda-update-function-timeout.chartserviceversion.yaml
+    desc: "lambda-update-function-timeout"
+  - name: lambda-function-layer-detach
+    CSV: lambda-function-layer-detach.chartserviceversion.yaml
+    desc: "lambda-function-layer-detach"
+  - name: lambda-update-role-permission
+    CSV: lambda-update-role-permission.chartserviceversion.yaml
+    desc: "lambda-update-role-permission"
+  - name: ecs-task-stop
+    CSV: ecs-task-stop.chartserviceversion.yaml
+    desc: "ecs-task-stop"
+  - name: ecs-task-scale
+    CSV: ecs-task-scale.chartserviceversion.yaml
+    desc: "ecs-task-scale"
+  - name: resource-access-restrict
+    CSV: resource-access-restrict.chartserviceversion.yaml
+    desc: "resource-access-restrict"
+  - name: ecs-invalid-container-image
+    CSV: ecs-invalid-container-image.chartserviceversion.yaml
+    desc: "ecs-invalid-container-image"
+  - name: ecs-update-container-timeout
+    CSV: ecs-update-container-timeout.chartserviceversion.yaml
+    desc: "ecs-update-container-timeout"
+  - name: ecs-update-container-resource-limit
+    CSV: ecs-update-container-resource-limit.chartserviceversion.yaml
+    desc: "ecs-update-container-resource-limit"
+  - name: ecs-update-task-role
+    CSV: ecs-update-task-role.chartserviceversion.yaml
+    desc: "ecs-update-task-role"
+  - name: windows-ec2-cpu-hog
+    CSV: windows-ec2-cpu-hog.chartserviceversion.yaml
+    desc: "windows-ec2-cpu-hog"
+  - name: windows-ec2-memory-hog
+    CSV: windows-ec2-memory-hog.chartserviceversion.yaml
+    desc: "windows-ec2-memory-hog"
+  - name: windows-ec2-blackhole-chaos
+    CSV: windows-ec2-blackhole-chaos.chartserviceversion.yaml
+    desc: "windows-ec2-blackhole-chaos"
+  - name: ecs-container-http-latency
+    CSV: ecs-container-http-latency.chartserviceversion.yaml
+    desc: "ecs-container-http-latency"
+  - name: ecs-http-modify-body
+    CSV: ecs-container-http-modify-body.chartserviceversion.yaml
+    desc: "ecs-container-http-modify-body"
+  - name: ecs-container-http-reset-peer
+    CSV: ecs-container-http-reset-peer.chartserviceversion.yaml
+    desc: "ecs-container-http-reset-peer"
+  - name: ecs-container-http-status-code
+    CSV: ecs-container-http-status-code.chartserviceversion.yaml
+    desc: "ecs-container-http-status-code"
+  - name: ecs-network-restrict
+    CSV: ecs-network-restrict.chartserviceversion.yaml
+    desc: "ecs-network-restrict"
+  - name: ecs-fargate-cpu-hog
+    CSV: ecs-fargate-cpu-hog.chartserviceversion.yaml
+    desc: "ecs-fargate-cpu-hog"
+  - name: ecs-fargate-memory-hog
+    CSV: ecs-fargate-memory-hog.chartserviceversion.yaml
+    desc: "ecs-fargate-memory-hog"
+  - name: ecs-container-volume-detach
+    CSV: ecs-container-volume-detach.chartserviceversion.yaml
+    desc: "ecs-container-volume-detach"
+  - name: nlb-az-down
+    CSV: nlb-az-down.chartserviceversion.yaml
+    desc: "nlb-az-down"
+  - name: windows-ec2-network-latency
+    CSV: windows-ec2-network-latency.chartserviceversion.yaml
+    desc: "windows-ec2-network-latency"
+  - name: windows-ec2-network-loss
+    CSV: windows-ec2-network-loss.chartserviceversion.yaml
+    desc: "windows-ec2-network-loss"
+  - name: fis-dynamodb-replication-pause
+    CSV: fis-dynamodb-replication-pause.chartserviceversion.yaml
+    desc: "fis-dynamodb-replication-pause"

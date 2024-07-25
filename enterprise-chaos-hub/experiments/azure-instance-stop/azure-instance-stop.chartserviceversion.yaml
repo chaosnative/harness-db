@@ -1,0 +1,25 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: azure-instance-stop
+  version: 0.1.0
+  annotations:
+    categories: azure-instance-stop
+    chartDescription: Injects instance stop on the target Azure VM(s) for a specified duration
+spec:
+  displayName: Azure Instance Stop
+  categoryDescription: >
+    Injects instance stop on the target Azure VM(s) for a specified duration
+  faults:
+    - name: azure-instance-stop
+      description: Injects instance stop on the target Azure VM(s) for a specified duration
+  keywords:
+    - Azure
+  platforms:
+    - Azure
+  plan:
+    - free
+  icon:
+    - url:
+      mediatype: ""

@@ -1,0 +1,33 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: time-chaos
+  version: 0.1.0
+  annotations:
+    categories: Kubernetes
+    vendor: Harness
+spec:
+  displayName: Time Chaos
+  categoryDescription: |
+    Time chaos fault alters the system time of the Kubernetes pod container based on a given offset. This fault injects time chaos based on label and namespace selectors.
+    - The application pod should be healthy once chaos is stopped. Service-requests should be served (say, via alternate replicas) despite chaos.
+  keywords:
+    - Kubernetes
+  plan:
+    - free
+  platforms:
+    - Minikube
+    - GKE
+  experiments:
+    - time-chaos
+  minKubeVersion: 1.12.0
+  labels:
+    app.kubernetes.io/component: chartserviceversion
+    app.kubernetes.io/version: ci
+  links:
+    - name: Documentation
+      url: https://docs.harness.io/category/kl0mxwpfw1-hce-category
+  icon:
+    - base64data: ""
+      mediatype: ""

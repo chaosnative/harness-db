@@ -1,0 +1,123 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+description:
+  message: |
+    Inject network restrict chaos on the target AWS ECS service.
+kind: ChaosExperiment
+metadata:
+  name: ecs-network-restrict
+  labels:
+    name: ecs-network-restrict
+    app.kubernetes.io/part-of: litmus
+    app.kubernetes.io/component: chaosexperiment
+    app.kubernetes.io/version: ci
+spec:
+  definition:
+    scope: Namespaced
+    permissions:
+      # Create and monitor the experiment & helper pods
+      - apiGroups: [""]
+        resources: ["pods"]
+        verbs:
+          [
+            "create",
+            "delete",
+            "get",
+            "list",
+            "patch",
+            "update",
+            "deletecollection",
+          ]
+      # Performs CRUD operations on the events inside chaosengine and chaosresult
+      - apiGroups: [""]
+        resources: ["events"]
+        verbs: ["create", "get", "list", "patch", "update"]
+      # Fetch configmaps details and mount it to the experiment pod (if specified)
+      - apiGroups: [""]
+        resources: ["configmaps"]
+        verbs: ["get", "list"]
+      # Track and get the runner, experiment, and helper pods log
+      - apiGroups: [""]
+        resources: ["pods/log"]
+        verbs: ["get", "list", "watch"]
+      # for creating and managing to execute comands inside target container
+      - apiGroups: [""]
+        resources: ["pods/exec"]
+        verbs: ["get", "list", "create"]
+      # deriving the parent/owner details of the pod(if parent is anyof {deployment, statefulset, daemonsets})
+      - apiGroups: ["apps"]
+        resources: ["deployments", "statefulsets", "replicasets", "daemonsets"]
+        verbs: ["list", "get"]
+      # deriving the parent/owner details of the pod(if parent is deploymentConfig)
+      - apiGroups: ["apps.openshift.io"]
+        resources: ["deploymentconfigs"]
+        verbs: ["list", "get"]
+      # deriving the parent/owner details of the pod(if parent is deploymentConfig)
+      - apiGroups: [""]
+        resources: ["replicationcontrollers"]
+        verbs: ["get", "list"]
+      # deriving the parent/owner details of the pod(if parent is argo-rollouts)
+      - apiGroups: ["argoproj.io"]
+        resources: ["rollouts"]
+        verbs: ["list", "get"]
+      # for configuring and monitor the experiment job by the chaos-runner pod
+      - apiGroups: ["batch"]
+        resources: ["jobs"]
+        verbs: ["create", "list", "get", "delete", "deletecollection"]
+      # for creation, status polling and deletion of litmus chaos resources used within a chaos workflow
+      - apiGroups: ["litmuschaos.io"]
+        resources: ["chaosengines", "chaosexperiments", "chaosresults"]
+        verbs: ["create", "list", "get", "patch", "update", "delete"]
+    image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+    imagePullPolicy: Always
+    args:
+      - -c
+      - ./experiments -name ecs-network-restrict
+    command:
+      - /bin/bash
+    env:
+      - name: TOTAL_CHAOS_DURATION
+        value: "30"
+
+      - name: CHAOS_INTERVAL
+        value: "30"
+
+      - name: RAMP_TIME
+        value: ""
+
+      - name: CLUSTER_NAME
+        value: ""
+
+      - name: SERVICE_NAMES
+        value: ""
+
+      - name: REGION
+        value: ""
+
+      - name: IP_ADDRESS
+        value: ""
+
+      - name: PROTOCOL
+        value: "tcp"
+
+      - name: FROM_PORT
+        value: "80"
+
+      - name: TO_PORT
+        value: "80"
+
+      - name: RULE_TYPE
+        value: "outbound"
+
+      - name: RULE_MODE
+        value: "remove"
+
+      - name: AWS_SHARED_CREDENTIALS_FILE
+        value: "/tmp/cloud_config.yml"
+
+    labels:
+      name: ecs-network-restrict
+      app.kubernetes.io/part-of: litmus
+      app.kubernetes.io/component: experiment-job
+      app.kubernetes.io/version: ci
+      app.kubernetes.io/enableAWSAccessViaSecrets: disable

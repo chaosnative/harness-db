@@ -1,0 +1,31 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: pod-api-modify-header
+  version: 0.1.0
+  annotations:
+    categories: kubernetes
+spec:
+  displayName: Pod API Modify Header
+  categoryDescription: >
+    - It overrides the header values of API requests and responses with the user-provided values for the given keys
+    - The application pod should be healthy once chaos is stopped. Service-requests should be served despite chaos.
+  keywords:
+    - kubernetes
+  plan:
+    - free
+  platforms:
+    - "Minikube"
+  experiments:
+    - nginx-pod-api-modify-header
+  minKubeVersion: 1.12.0
+  labels:
+    app.kubernetes.io/component: chartserviceversion
+    app.kubernetes.io/version: ci
+  links:
+    - name: Documentation
+      url: https://docs.harness.io/category/kl0mxwpfw1-hce-category
+  icon:
+    - base64data: ""
+      mediatype: ""

@@ -1,0 +1,29 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: cf-app-network-loss
+  version: 0.1.0
+  annotations:
+    categories: cf-app-network-loss
+    chartDescription: Injects app network loss chaos for a CF app.
+spec:
+  displayName: CF App Network Loss
+  categoryDescription: >-
+    This fault injects app network loss chaos in the Cloud Foundry platform.
+
+    - Checks resilience against network packet loss in app instances
+
+    - Helps validate the effectiveness of disaster recovery and high availability of the app
+  faults:
+    - name: cf-app-network-loss
+      description: Injects app network loss chaos for a CF app.
+  keywords:
+    - Cloud Foundry
+  plan:
+    - enterprise
+  platforms:
+    - Cloud Foundry
+  icon:
+    - url:
+      mediatype: ""

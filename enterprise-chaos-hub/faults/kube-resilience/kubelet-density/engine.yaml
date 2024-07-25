@@ -1,0 +1,30 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChaosEngine
+metadata:
+  name: kubelet-density
+  labels:
+    name: kubelet-density
+    app.kubernetes.io/part-of: litmus
+    app.kubernetes.io/component: experiment-job
+    app.kubernetes.io/version: ci
+spec:
+  engineState: 'active'
+  chaosServiceAccount: kubelet-density-sa
+  jobCleanUpPolicy: 'retain'
+  experiments:
+    - name: kubelet-density
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+      imagePullPolicy: Always
+      args:
+        - -c
+        - ./experiments -name kubelet-density
+      command:
+        - /bin/bash
+      spec:
+        components:
+          env:
+            # set chaos duration (in sec)
+            # ensure it is greater than the "maxWaitTimeout" parameter in the experiment configmap
+            - name: TOTAL_CHAOS_DURATION
+              value: '30'

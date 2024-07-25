@@ -1,0 +1,6 @@
+---
+packageName: ssh
+faults:
+  - name: ssh-chaos
+    CSV: ssh-chaos.chartserviceversion.yaml
+    desc: "ssh-chaos"

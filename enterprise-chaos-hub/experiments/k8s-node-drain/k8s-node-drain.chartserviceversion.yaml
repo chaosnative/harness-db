@@ -1,0 +1,30 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: k8s-node-drain
+  version: 0.1.0
+  annotations:
+    categories: k8s-node-drain
+    chartDescription: Injects node drain on provided Kubernetes node
+spec:
+  displayName: Kubernetes Node Drain
+  categoryDescription: >
+    Injects node drain on provided Kubernetes node
+  faults:
+    - name: node-drain
+      description: Injects node drain on provided Kubernetes node
+  keywords:
+    - Kubernetes
+  plan:
+    - free
+  platforms:
+    - GKE
+    - AWS(KOPS)
+    - Packet(Kubeadm)
+    - Konvoy
+    - EKS
+    - AKS
+  icon:
+    - url:
+      mediatype: ""

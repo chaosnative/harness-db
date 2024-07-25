@@ -1,0 +1,24 @@
+---
+packageName: cloud-foundry
+experiments:
+  - name: cf-app-stop
+    CSV: cf-app-stop.chartserviceversion.yaml
+    desc: "cf-app-stop"
+  - name: cf-app-route-unmap
+    CSV: cf-app-route-unmap.chartserviceversion.yaml
+    desc: "cf-app-route-unmap"
+  - name: cf-app-container-kill
+    CSV: cf-app-container-kill.chartserviceversion.yaml
+    desc: "cf-app-container-kill"
+  - name: cf-app-network-loss
+    CSV: cf-app-network-loss.chartserviceversion.yaml
+    desc: "cf-app-network-loss"
+  - name: cf-app-network-latency
+    CSV: cf-app-network-latency.chartserviceversion.yaml
+    desc: "cf-app-network-latency"
+  - name: cf-app-network-corruption
+    CSV: cf-app-network-corruption.chartserviceversion.yaml
+    desc: "cf-app-network-corruption"
+  - name: cf-app-network-duplication
+    CSV: cf-app-network-duplication.chartserviceversion.yaml
+    desc: "cf-app-network-duplication"

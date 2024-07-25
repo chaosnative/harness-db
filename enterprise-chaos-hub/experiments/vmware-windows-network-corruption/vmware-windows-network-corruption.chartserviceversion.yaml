@@ -1,0 +1,25 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: vmware-windows-network-corruption
+  version: 0.1.0
+  annotations:
+    categories: vmware-windows-network-corruption
+    chartDescription: Injects network corruption on the target VMware windows VMs for the specified duration
+spec:
+  displayName: VMware Windows Network Corruption
+  categoryDescription: >
+    Injects network corruption on the target VMware Windows VMs for the specified duration
+  faults:
+    - name: vmware-windows-network-corruption
+      description: Injects network corruption on the target windows VMware VMs for the specified duration
+  keywords:
+    - VMware
+  plan:
+    - team
+  platforms:
+    - VMware
+  icon:
+    - url:
+      mediatype: ""

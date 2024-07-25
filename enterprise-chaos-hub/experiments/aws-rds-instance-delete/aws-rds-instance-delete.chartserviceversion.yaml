@@ -1,0 +1,29 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: rds-instance-delete
+  version: 0.1.0
+  annotations:
+    categories: rds-instance-delete
+    chartDescription: Injects instance deletion on RDS cluster
+spec:
+  displayName: RDS Instance Delete
+  categoryDescription: >
+    Injects instance deletion on RDS cluster
+  faults:
+    - name: rds-instance-delete
+      description: Injects instance deletion on RDS cluster
+  keywords:
+    - AWS
+  plan:
+    - team
+  platforms:
+    - GKE
+    - Minikube
+    - Packet(Kubeadm)
+    - EKS
+    - AKS
+  icon:
+    - url:
+      mediatype: ""

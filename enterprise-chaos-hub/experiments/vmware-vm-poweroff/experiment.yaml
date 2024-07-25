@@ -1,0 +1,126 @@
+---
+kind: Workflow
+apiVersion: argoproj.io/v1alpha1
+metadata:
+  name: vmware-vm-power-off-1658225278
+  namespace: litmus
+
+spec:
+  templates:
+    - name: custom-chaos
+      steps:
+        - - name: vm-poweroff-72v
+            template: vm-poweroff-72v
+        - - name: cleanup-chaos-resources
+            template: cleanup-chaos-resources
+
+    - name: vm-poweroff-72v
+      inputs:
+        artifacts:
+          - name: vm-poweroff-72v
+            path: /tmp/chaosengine-vm-poweroff-72v.yaml
+            raw:
+              data: |
+                apiVersion: litmuschaos.io/v1alpha1
+                kind: ChaosEngine
+                metadata:
+                  namespace: "{{workflow.parameters.adminModeNamespace}}"
+                  generateName: vm-poweroff-72v
+                  labels:
+                    name: vm-poweroff
+                    app.kubernetes.io/part-of: litmus
+                    app.kubernetes.io/component: experiment-job
+                    app.kubernetes.io/version: ci
+                spec:
+                  engineState: active
+                  chaosServiceAccount: litmus-admin
+                  experiments:
+                    - name: vm-poweroff
+                      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                      imagePullPolicy: Always
+                      args:
+                        - -c
+                        - ./experiments -name vm-poweroff
+                      command:
+                        - /bin/bash
+                      spec:
+                        components:
+                          env:
+                            - name: TOTAL_CHAOS_DURATION
+                              value: "60"
+                            - name: CHAOS_INTERVAL
+                              value: "60"
+                            - name: RAMP_TIME
+                              value: ""
+                            - name: VCENTERSERVER
+                              valueFrom:
+                                secretKeyRef:
+                                  name: vcenter-secret
+                                  key: VCENTERSERVER
+                            - name: VCENTERUSER
+                              valueFrom:
+                                secretKeyRef:
+                                  name: vcenter-secret
+                                  key: VCENTERUSER
+                            - name: VCENTERPASS
+                              valueFrom:
+                                secretKeyRef:
+                                  name: vcenter-secret
+                                  key: VCENTERPASS
+                            - name: APP_VM_MOIDS
+                              value: ""
+                            - name: SEQUENCE
+                              value: parallel
+                            - name: DEFAULT_HEALTH_CHECK
+                              value: 'false'
+                        probe:
+                          - name: healthcheck
+                            type: cmdProbe
+                            mode: Edge
+                            runProperties:
+                              probeTimeout: 20s
+                              retry: 0
+                              interval: 1s
+                              stopOnFailure: false
+                            cmdProbe/inputs:
+                              command: ./healthcheck -name vmware-vm
+                              source:
+                                image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                                inheritInputs: true
+                              comparator:
+                                type: string
+                                criteria: contains
+                                value: "[P000]"
+      metadata:
+        labels:
+          weight: "10"
+      container:
+        name: ""
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+        command:
+          - ./chaos-checker
+        args:
+          - -file=/tmp/chaosengine-vm-poweroff-72v.yaml
+          - -saveName=/tmp/engine-name
+    - name: cleanup-chaos-resources
+      container:
+        name: ""
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+        command:
+          - sh
+          - -c
+        args:
+          - "kubectl delete chaosengine -l 'instance_id in
+            (5aa30d1a-08dc-40dd-964d-b1e7291ab7fc, )' -n
+            {{workflow.parameters.adminModeNamespace}} "
+  entrypoint: custom-chaos
+  arguments:
+    parameters:
+      - name: adminModeNamespace
+        value: litmus
+  serviceAccountName: argo-chaos
+  podGC:
+    strategy: OnWorkflowCompletion
+  securityContext:
+    runAsUser: 1000
+    runAsNonRoot: true

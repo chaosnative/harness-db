@@ -1,0 +1,29 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: aws-ecs-instance-stop
+  version: 0.1.0
+  annotations:
+    categories: aws-ecs-instance-stop
+    chartDescription: Injects EC2 stop on the instance that runs a given task for a specified duration
+spec:
+  displayName: AWS ECS Instance Stop
+  categoryDescription: >
+    Injects EC2 stop on the instance that runs a given task for a specified duration
+  faults:
+    - name: ecs-instance-stop
+      description: Injects EC2 stop on the instance that runs a given task for a specified duration
+  keywords:
+    - AWS
+  plan:
+    - team
+  platforms:
+    - GKE
+    - Minikube
+    - Packet(Kubeadm)
+    - EKS
+    - AKS
+  icon:
+    - url:
+      mediatype: ""

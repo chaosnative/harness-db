@@ -1,0 +1,33 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: linux-memory-stress
+  version: 0.1.0
+  annotations:
+    categories: linux-memory-stress
+    chartDescription: Injects memory chaos into a Linux machine.
+spec:
+  displayName: Linux Memory Stress
+  categoryDescription: >-
+    This fault injects memory stress to a Linux machine.
+
+    - Induces memory consumption and exhaustion on the target Linux machines.
+
+    - Simulates a lack of memory for processes running on the application, which degrades their performance.
+
+    - Simulates application slowness due to memory starvation, and noisy neighbour problems due to excessive consumption of memory.
+  faults:
+    - name: linux-memory-stress
+      description: Injects memory chaos into a Linux machine.
+  keywords:
+    - Linux
+    - GCP
+    - Azure
+  plan:
+    - team
+  platforms:
+    - Linux
+  icon:
+    - url:
+      mediatype: ""

@@ -1,0 +1,169 @@
+---
+kind: Workflow
+apiVersion: argoproj.io/v1alpha1
+metadata:
+  name: spring-boot-faults-1658939319
+  namespace: litmus
+
+spec:
+  templates:
+    - name: custom-chaos
+      steps:
+        - - name: spring-boot-faults-t3s
+            template: spring-boot-faults-t3s
+        - - name: cleanup-chaos-resources
+            template: cleanup-chaos-resources
+
+    - name: spring-boot-faults-t3s
+      inputs:
+        artifacts:
+          - name: spring-boot-faults-t3s
+            path: /tmp/chaosengine-spring-boot-faults-t3s.yaml
+            raw:
+              data: |
+                apiVersion: litmuschaos.io/v1alpha1
+                kind: ChaosEngine
+                metadata:
+                  namespace: "{{workflow.parameters.adminModeNamespace}}"
+                  generateName: spring-boot-faults-t3s
+                  labels:
+                    name: spring-boot-faults
+                    app.kubernetes.io/part-of: litmus
+                    app.kubernetes.io/component: experiment-job
+                    app.kubernetes.io/version: ci
+                spec:
+                  appinfo:
+                    appns: default
+                    applabel: app=spring-boot
+                    appkind: deployment
+                  # It can be active/stop
+                  engineState: 'active'
+                  chaosServiceAccount: litmus-admin
+                  experiments:
+                    - name: spring-boot-faults
+                      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                      imagePullPolicy: Always
+                      args:
+                      - -c
+                      - ./experiments -name spring-boot-faults
+                      command:
+                      - /bin/bash
+                      spec:
+                        components:
+                          env:
+                            # it enables spring app-kill fault
+                            - name: CM_KILL_APPLICATION_ACTIVE
+                              value: ''
+                           # it enables spring-boot latency fault
+                            - name: CM_LATENCY_ACTIVE
+                              value: ''
+                            # provide the latency (ms)
+                            # it is applicable when latency is active
+                            - name: LATENCY
+                              value: '2000'
+                            # it enables spring-boot memory stress fault
+                            - name: CM_MEMORY_ACTIVE
+                              value: ''
+                            # it contains fraction of memory to be stressed(0.70 equals 70%)
+                            # it supports value in range [0.01,0.95]
+                            # it is applicable when memory is active
+                            - name: MEMORY_FILL_FRACTION
+                              value: '0.70'
+                            # it enables spring-boot cpu stress fault
+                            - name: CM_CPU_ACTIVE
+                              value: ''
+                            # it contains fraction of cpu to be stressed(0.95 equals 95%)
+                            # it supports value in range [0.1,1.0]
+                            # it is applicable when cpu is active
+                            - name: CPU_LOAD_FRACTION
+                              value: '0.9'
+                            # it enables spring-boot exceptions fault
+                            - name: CM_EXCEPTIONS_ACTIVE
+                              value: ''
+                            # Type of raised exception
+                            # it is applicable when exceptions is active
+                            - name: CM_EXCEPTIONS_TYPE
+                              value: 'java.lang.IllegalArgumentException'
+                              # Argument of raised exception
+                              # it is applicable when exceptions is active
+                            - name: CM_EXCEPTIONS_ARGUMENTS
+                              value: 'java.lang.String:custom illegal argument exception'
+                            # port of the spring boot application
+                            - name: CM_PORT
+                              value: ''
+                            #it contains number of requests are to be attacked
+                            # n value means nth request will be affected
+                            - name: CM_LEVEL
+                              value: '1'
+                            # it limits watched packages/classes/methods
+                            - name: CM_WATCHED_CUSTOM_SERVICES
+                              value: ''
+                            # provide name of watcher
+                            # it supports controller, restController, service, repository, component, webClient
+                            - name: CM_WATCHERS
+                              value: 'restController'
+                            - name: TOTAL_CHAOS_DURATION
+                              value: '30'
+                            ## percentage of total pods to target
+                            - name: PODS_AFFECTED_PERC
+                              value: ''
+                            ## Period to wait before and after injection of chaos
+                            - name: RAMP_TIME
+                              value: ''
+                            ## it defines the sequence of chaos execution for multiple target pods
+                            ## supported values: serial, parallel
+                            - name: SEQUENCE
+                              value: 'parallel'
+                        probe:
+                          - name: healthcheck
+                            type: cmdProbe
+                            mode: Edge
+                            runProperties:
+                              probeTimeout: 180s
+                              retry: 0
+                              interval: 1s
+                              stopOnFailure: false
+                            cmdProbe/inputs:
+                              command: ./healthcheck -name pod-level
+                              source:
+                                image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                                inheritInputs: true
+                              comparator:
+                                type: string
+                                criteria: contains
+                                value: "[P000]"
+      metadata:
+        labels:
+          weight: "10"
+      container:
+        name: ""
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+        command:
+          - ./chaos-checker
+        args:
+          - -file=/tmp/chaosengine-spring-boot-faults-t3s.yaml
+          - -saveName=/tmp/engine-name
+
+    - name: cleanup-chaos-resources
+      container:
+        name: ""
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+        command:
+          - sh
+          - -c
+        args:
+          - "kubectl delete chaosengine -l 'instance_id in
+            (9cf6250c-8173-4c98-b6de-f7147f13e4e2, )' -n
+            {{workflow.parameters.adminModeNamespace}} "
+
+  entrypoint: custom-chaos
+  arguments:
+    parameters:
+      - name: adminModeNamespace
+        value: litmus
+  serviceAccountName: argo-chaos
+  podGC:
+    strategy: OnWorkflowCompletion
+  securityContext:
+    runAsUser: 1000
+    runAsNonRoot: true

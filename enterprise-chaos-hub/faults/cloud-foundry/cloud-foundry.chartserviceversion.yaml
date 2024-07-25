@@ -1,0 +1,60 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: cloud-foundry
+  version: 0.1.0
+  annotations:
+    categories: Cloud-Foundry
+    chartDescription: Injects faults on Cloud Foundry resources
+    executionPlane: "linux"
+spec:
+  displayName: Cloud Foundry
+  categoryDescription: >
+    Cloud Foundry injects chaos for Cloud Foundry setup.
+  faults:
+    - name: cf-app-stop
+      description: It injects cf-app-stop fault for CF apps.
+      displayName: "CF App Stop"
+      plan:
+        - enterprise
+    - name: cf-app-route-unmap
+      description: It injects cf-app-route-unmap fault for CF apps.
+      displayName: "CF App Route Unmap"
+      plan:
+        - enterprise
+    - name: cf-app-container-kill
+      description: It injects cf-app-container-kill fault for CF apps.
+      displayName: "CF App Container Kill"
+      plan:
+        - enterprise
+    - name: cf-app-network-loss
+      description: It injects cf-app-network-loss fault for CF apps.
+      displayName: "CF App Network Loss"
+      plan:
+        - enterprise
+    - name: cf-app-network-latency
+      description: It injects cf-app-network-latency fault for CF apps.
+      displayName: "CF App Network Latency"
+      plan:
+        - enterprise
+    - name: cf-app-network-corruption
+      description: It injects cf-app-network-corruption fault for CF apps.
+      displayName: "CF App Network Corruption"
+      plan:
+        - enterprise
+    - name: cf-app-network-duplication
+      description: It injects cf-app-network-duplication fault for CF apps.
+      displayName: "CF App Network Duplication"
+      plan:
+        - enterprise
+  keywords:
+    - Cloud Foundry
+    - CF
+  minKubeVersion: 1.12.0
+  links:
+    - name: Cloud Foundry Website
+      url: https://www.cloudfoundry.org
+  icon:
+    - url: https://raw.githubusercontent.com/litmuschaos/charthub.litmuschaos.io/master/public/litmus.ico
+      mediatype: image/png

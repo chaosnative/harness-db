@@ -1,0 +1,29 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: aws-ecs-container-cpu-hog
+  version: 0.1.0
+  annotations:
+    categories: aws-ecs-container-cpu-hog
+    chartDescription: Injects CPU hog (resource exhaustion) on an ECS container that runs a specified task
+spec:
+  displayName: AWS ECS Container CPU Hog
+  categoryDescription: >
+    Injects CPU hog (resource exhaustion) on an ECS container that runs a specified task
+  faults:
+    - name: ecs-container-cpu-hog
+      description: Injects CPU hog (resource exhaustion) on an AWS ECS container that runs a specified task
+  keywords:
+    - AWS
+  plan:
+    - team
+  platforms:
+    - GKE
+    - Minikube
+    - Packet(Kubeadm)
+    - EKS
+    - AKS
+  icon:
+    - url:
+      mediatype: ""

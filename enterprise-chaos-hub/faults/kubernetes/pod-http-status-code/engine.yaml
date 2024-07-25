@@ -1,0 +1,138 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChaosEngine
+metadata:
+  name: pod-http-status-code
+  labels:
+    name: pod-http-status-code
+    app.kubernetes.io/part-of: litmus
+    app.kubernetes.io/component: experiment-job
+    app.kubernetes.io/version: ci
+spec:
+  # It can be active/stop
+  engineState: "active"
+  terminationGracePeriodSeconds: 30
+  appinfo:
+    appns: ""
+    applabel: ""
+    appkind: ""
+  chaosServiceAccount: pod-http-status-code-sa
+  experiments:
+    - name: pod-http-status-code
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+      imagePullPolicy: Always
+      args:
+        - -c
+        - ./experiments -name pod-http-status-code
+      command:
+        - /bin/bash
+      spec:
+        components:
+          env:
+            - name: TARGET_CONTAINER
+              value: ""
+
+            # provide lib image
+            - name: LIB_IMAGE
+              value: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+
+            # modified status code for the HTTP response
+            # if no value is provided, a random status code from the supported code list will selected
+            # if an invalid status code is provided, the experiment will fail
+            # supported status code list: [200, 201, 202, 204, 300, 301, 302, 304, 307, 400, 401, 403, 404, 500, 501, 502, 503, 504]
+            - name: STATUS_CODE
+              value: ""
+
+            #  whether to modify the body as per the status code provided
+            - name: "MODIFY_RESPONSE_BODY"
+              value: "true"
+
+            # provide the body string to overwrite the response body. This will be used only if MODIFY_RESPONSE_BODY is set to true
+            - name: RESPONSE_BODY
+              value: ""
+
+            # provide the encoding type for the response body
+            # currently supported value are gzip, deflate
+            # if empty no encoding will be applied
+            - name: CONTENT_ENCODING
+              value: ""
+
+            # provide the content type for the response body
+            - name: CONTENT_TYPE
+              value: "text/plain"
+
+            # port of the target service
+            - name: TARGET_SERVICE_PORT
+              value: "80"
+
+            # toxicity is the probability of the request to be affected
+            # provide the percentage value in the range of 0-100
+            # 0 means no request will be affected and 100 means all request will be affected
+            - name: TOXICITY
+              value: "100"
+
+            # port on which the proxy will listen
+            - name: PROXY_PORT
+              value: "20000"
+
+            # network interface on which the proxy will listen
+            - name: NETWORK_INTERFACE
+              value: "eth0"
+
+            - name: TOTAL_CHAOS_DURATION
+              value: "30" # in seconds
+
+            # set chaos interval (in sec) as desired
+            - name: CHAOS_INTERVAL
+              value: "10"
+
+            # Time period to wait before and after injection of chaos in sec
+            - name: RAMP_TIME
+              value: ""
+
+            - name: DEFAULT_HEALTH_CHECK
+              value: "false"
+
+            # percentage of total pods to target
+            - name: PODS_AFFECTED_PERC
+              value: ""
+
+            - name: TARGET_PODS
+              value: ""
+
+            # provide the name of container runtime
+            # for litmus LIB, it supports docker, containerd, crio
+            # for pumba LIB, it supports docker only
+            - name: CONTAINER_RUNTIME
+              value: "containerd"
+
+            # provide the socket file path
+            - name: SOCKET_PATH
+              value: "/run/containerd/containerd.sock"
+
+            # To select pods on specific node(s)
+            - name: NODE_LABEL
+              value: ""
+
+            ## it defines the sequence of chaos execution for multiple target pods
+            ## supported values: serial, parallel
+            - name: SEQUENCE
+              value: "parallel"
+        probe:
+          - name: healthcheck
+            type: cmdProbe
+            mode: Edge
+            runProperties:
+              probeTimeout: 180s
+              retry: 0
+              interval: 1s
+              stopOnFailure: false
+            cmdProbe/inputs:
+              command: ./healthcheck -name pod-level
+              source:
+                image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                inheritInputs: true
+              comparator:
+                type: string
+                criteria: contains
+                value: "[P000]"

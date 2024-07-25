@@ -1,0 +1,23 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: LinuxChaosExperiment
+metadata:
+  name: linux-time-chaos-4ap
+  labels:
+    context: linux-time-chaos
+    name: linux-time-chaos-4ap
+spec:
+  steps:
+    - - name: linux-time-chaos-4ap
+  tasks:
+    - name: linux-time-chaos-4ap
+      taskType: "chaos"
+      weight: 10
+      definition:
+        chaos:
+          experiment: linux-time-chaos
+          timeChaos/inputs:
+            offset: "+24h"
+            disableNTP: true
+            duration: 30s
+            rampTime: ""

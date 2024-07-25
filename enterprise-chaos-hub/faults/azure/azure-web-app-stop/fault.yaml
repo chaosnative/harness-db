@@ -1,0 +1,70 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+description:
+  message: |
+    It injects the web app stop chaos for a specific chaos duration
+kind: ChaosExperiment
+metadata:
+  name: azure-web-app-stop
+  labels:
+    name: azure-web-app-stop
+    app.kubernetes.io/part-of: litmus
+    app.kubernetes.io/component: chaosexperiment
+    app.kubernetes.io/version: ci
+spec:
+  definition:
+    scope: Cluster
+    permissions:
+      - apiGroups:
+          - ""
+          - batch
+          - litmuschaos.io
+        resources:
+          - jobs
+          - pods
+          - events
+          - pods/log
+          - pods/exec
+          - secrets
+          - chaosengines
+          - chaosexperiments
+          - chaosresults
+        verbs:
+          - create
+          - list
+          - get
+          - patch
+          - update
+          - delete
+    image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+    imagePullPolicy: Always
+    args:
+      - -c
+      - ./experiments -name azure-web-app-stop
+    command:
+      - /bin/bash
+    env:
+      - name: TOTAL_CHAOS_DURATION
+        value: "30"
+      - name: CHAOS_INTERVAL
+        value: "30"
+      - name: RAMP_TIME
+        value: ""
+      - name: AZURE_WEB_APP_NAMES
+        value: ""
+      - name: RESOURCE_GROUP
+        value: ""
+      - name: AZURE_AUTH_LOCATION
+        value: /tmp/azure.auth
+      - name: SEQUENCE
+        value: parallel
+      - name: DEFAULT_HEALTH_CHECK
+        value: "false"
+    labels:
+      name: azure-web-app-stop
+      app.kubernetes.io/part-of: litmus
+      app.kubernetes.io/component: experiment-job
+      app.kubernetes.io/version: ci
+    secrets:
+      - name: cloud-secret
+        mountPath: /tmp/

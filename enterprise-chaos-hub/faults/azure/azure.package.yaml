@@ -1,0 +1,24 @@
+---
+packageName: azure
+faults:
+  - name: azure-instance-cpu-hog
+    CSV: azure-instance-cpu-hog.chartserviceversion.yaml
+    desc: "azure-instance-cpu-hog"
+  - name: azure-instance-memory-hog
+    CSV: azure-instance-memory-hog.chartserviceversion.yaml
+    desc: "azure-instance-memory-hog"
+  - name: azure-instance-io-stress
+    CSV: azure-instance-io-stress.chartserviceversion.yaml
+    desc: "azure-instance-io-stress"
+  - name: azure-disk-loss
+    CSV: azure-disk-loss.chartserviceversion.yaml
+    desc: "azure-disk-loss"
+  - name: azure-instance-stop
+    CSV: azure-instance-stop.chartserviceversion.yaml
+    desc: "azure-instance-stop"
+  - name: azure-web-app-access-restrict
+    CSV: azure-web-app-access-restrict.chartserviceversion.yaml
+    desc: "azure-web-app-access-restrict"
+  - name: azure-web-app-stop
+    CSV: azure-web-app-stop.chartserviceversion.yaml
+    desc: "azure-web-app-stop"

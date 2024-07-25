@@ -1,0 +1,32 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  createdAt: 2022-07-18T10:28:08Z
+  name: azure-instance-memory-hog
+  version: 0.1.0
+  annotations:
+    categories: AZURE
+    vendor: Harness
+spec:
+  displayName: Azure Instance Memory Hog
+  categoryDescription: |
+    Azure instance memory hog fault disrupts the state of Azure instance. This fault injects memory hog on the target Azure instances.
+    - Causes memory hog in the target Azure instances.
+    - It helps to check the performance of the application running on the Azure instance when subject to memory hog.
+  keywords:
+    - Azure
+  platforms:
+    - Azure
+  experiments:
+    - azure-instance-memory-hog
+  minKubeVersion: 1.12.0
+  labels:
+    app.kubernetes.io/component: chartserviceversion
+    app.kubernetes.io/version: ci
+  links:
+    - name: Documentation
+      url: https://docs.harness.io/category/kl0mxwpfw1-hce-category
+  icon:
+    - url:
+      mediatype: ""

@@ -1,0 +1,25 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: gcp-vm-service-kill
+  version: 0.1.0
+  annotations:
+    categories: gcp-vm-service-kill
+    chartDescription: Injects service kill on the given target vm instance
+spec:
+  displayName: GCP VM Service Kill
+  categoryDescription: >
+    Injects service kill on the given target vm instance
+  faults:
+    - name: gcp-vm-service-kill
+      description: Injects service kill on the given target vm instance
+  keywords:
+    - Kubernetes
+  plan:
+    - free
+  platforms:
+    - GKE
+  icon:
+    - url:
+      mediatype: ""

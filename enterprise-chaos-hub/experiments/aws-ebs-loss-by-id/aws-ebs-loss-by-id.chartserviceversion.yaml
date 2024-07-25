@@ -1,0 +1,29 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: aws-ebs-loss-by-id
+  version: 0.1.0
+  annotations:
+    categories: aws-ebs-loss-by-id
+    chartDescription: Injects EBS disk loss for a given EC2 instance for a specified chaos duration
+spec:
+  displayName: AWS EBS Loss By ID
+  categoryDescription: >
+    Injects EBS disk loss for a given EC2 instance for a specified chaos duration
+  faults:
+    - name: ebs-loss-by-id
+      description: Injects EBS disk loss for a given EC2 instance for a specified chaos duration
+  keywords:
+    - AWS
+  plan:
+    - free
+  platforms:
+    - GKE
+    - Minikube
+    - Packet(Kubeadm)
+    - EKS
+    - AKS
+  icon:
+    - url:
+      mediatype: ""

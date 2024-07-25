@@ -1,0 +1,27 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: nginx-pod-network-duplication
+  version: 0.1.0
+  annotations:
+    categories: nginx-pod-network-duplication
+    chartDescription: Injects network packet duplication on pod(s) identified by the specified labels ("app=nginx" by default)
+spec:
+  displayName: Nginx Pod Network Duplication
+  categoryDescription: >
+    Injects network packet duplication on pod(s) identified by the specified labels ("app=nginx" by default)
+  faults:
+    - name: pod-network-duplication
+      description: Injects network packet duplication on pod(s) identified by the specified labels ("app=nginx" by default)
+  keywords:
+    - Kubernetes
+  platforms:
+    - GKE
+    - Minikube
+    - Packet(Kubeadm)
+    - EKS
+    - AKS
+  icon:
+    - url:
+      mediatype: ""

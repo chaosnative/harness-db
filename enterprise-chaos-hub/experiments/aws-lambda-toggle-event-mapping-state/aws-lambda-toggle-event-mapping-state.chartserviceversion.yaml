@@ -1,0 +1,25 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: aws-lambda-toggle-event-mapping-state
+  version: 0.1.0
+  annotations:
+    categories: aws-lambda-toggle-event-mapping-state
+    chartDescription: Injects AWS toggle lambda event source mapping state chaos for a specified chaos duration
+spec:
+  displayName: AWS Lambda Toggle Event Mapping State
+  categoryDescription: >
+    Injects AWS lambda toggle event source mapping for a specified chaos duration
+  faults:
+    - name: lambda-toggle-event-mapping-state
+      description: Injects AWS lambda toggle event source mapping for a specified chaos duration
+  keywords:
+    - AWS
+  plan:
+    - enterprise
+  platforms:
+    - AWS
+  icon:
+    - url:
+      mediatype: ""

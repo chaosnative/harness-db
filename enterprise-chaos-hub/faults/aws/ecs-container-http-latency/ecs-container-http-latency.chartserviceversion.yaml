@@ -1,0 +1,36 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  createdAt: 2022-07-18T10:28:08Z
+  name: ecs-container-http-latency
+  version: 0.1.0
+  annotations:
+    categories: AWS
+    vendor: Harness
+spec:
+  displayName: ECS Container HTTP Latency
+  categoryDescription: |
+    ECS container HTTP latency fault disrupts the state of AWS ECS service. This fault injects HTTP latency against specified tasks container running on the ECS cluster.
+    - Causes HTTP latency in the task container running on the ECS Cluster.
+    - It helps to check the performance of the task/application running on the ECS cluster when subject to HTTP latency.
+  keywords:
+    - AWS
+  platforms:
+    - GKE
+    - Minikube
+    - EKS
+  plan:
+    - team
+  experiments:
+    - aws-ecs-container-http-latency
+  minKubeVersion: 1.12.0
+  labels:
+    app.kubernetes.io/component: chartserviceversion
+    app.kubernetes.io/version: ci
+  links:
+    - name: Documentation
+      url: https://docs.harness.io/category/kl0mxwpfw1-hce-category
+  icon:
+    - url:
+      mediatype: ""

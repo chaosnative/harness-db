@@ -1,0 +1,41 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  createdAt: 2023-02-17T10:28:08Z
+  name: ecs-task-scale
+  version: 0.1.0
+  annotations:
+    categories: AWS
+    vendor: Harness
+spec:
+  displayName: ECS Task Scale
+  categoryDescription: |
+    ECS task scale fault scales the ecs task repilcas. This fault can inject scaling of the task replicas that can cause failures/slowness in the ecs task service.
+    - It helps to check the performance of the task/application running on the ECS cluster when subject to task stop.
+  keywords:
+    - AWS
+  plan:
+    - team
+  platforms:
+    - GKE
+    - Konvoy
+    - Packet(Kubeadm)
+    - Minikube
+    - EKS
+    - AKS
+    - Kind
+    - Rancher
+    - OpenShift(OKD)
+  experiments:
+    - aws-ecs-task-scale
+  minKubeVersion: 1.12.0
+  labels:
+    app.kubernetes.io/component: chartserviceversion
+    app.kubernetes.io/version: ci
+  links:
+    - name: Documentation
+      url: https://docs.harness.io/category/kl0mxwpfw1-hce-category
+  icon:
+    - url:
+      mediatype: ""

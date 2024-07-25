@@ -1,0 +1,36 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  createdAt: 2022-07-18T10:28:08Z
+  name: ec2-http-modify-header
+  version: 0.1.0
+  annotations:
+    categories: AWS
+    vendor: Harness
+spec:
+  displayName: EC2 HTTP Modify Header
+  categoryDescription: |
+    EC2 http-modify-header fault disrupts the state of the EC2 instance. The fault injects http-modify-header chaos on the target EC2 instances.
+    - Causes http-modify-header chaos in the target EC2 instances.
+    - It helps to check the performance of the application running on the EC2 instance when subject to http-modify-header experiment.
+
+  keywords:
+    - AWS
+  plan:
+    - team
+  platforms:
+    - GKE
+    - EKS
+  experiments:
+    - aws-ec2-http-modify-header
+  minKubeVersion: 1.12.0
+  labels:
+    app.kubernetes.io/component: chartserviceversion
+    app.kubernetes.io/version: ci
+  links:
+    - name: Documentation
+      url: https://docs.harness.io/category/kl0mxwpfw1-hce-category
+  icon:
+    - url:
+      mediatype: ""

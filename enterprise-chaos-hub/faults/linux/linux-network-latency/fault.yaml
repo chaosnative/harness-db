@@ -1,0 +1,18 @@
+---
+apiVersion: litmuchaos.io/v1alpha1
+kind: LinuxFault
+metadata:
+  name: linux-network-latency
+  labels:
+    name: network-latency
+spec:
+  networkChaos/inputs:
+    networkLatency: 2000
+    networkInterfaces: ""
+    duration: 30s
+    jitter: 0
+    destinationHosts: ""
+    destinationIPs: ""
+    sourcePorts: ""
+    destinationPorts: ""
+    rampTime: ""

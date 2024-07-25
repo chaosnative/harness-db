@@ -1,0 +1,29 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: aws-windows-ec2-cpu-hog
+  version: 0.1.0
+  annotations:
+    categories: aws-windows-ec2-cpu-hog
+    chartDescription: Injects CPU hog (resource exhaustion) on an AWS windows EC2 instance for a specified chaos duration
+spec:
+  displayName: AWS Windows EC2 CPU Hog
+  categoryDescription: >
+    Injects CPU hog (resource exhaustion) on an AWS EC2 instance for a specified chaos duration
+  faults:
+    - name: windows-ec2-cpu-hog
+      description: Injects CPU hog (resource exhaustion) on an AWS windows EC2 instance for a specified chaos duration
+  keywords:
+    - AWS
+  plan:
+    - team
+  platforms:
+    - GKE
+    - Minikube
+    - Packet(Kubeadm)
+    - EKS
+    - AKS
+  icon:
+    - url:
+      mediatype: ""

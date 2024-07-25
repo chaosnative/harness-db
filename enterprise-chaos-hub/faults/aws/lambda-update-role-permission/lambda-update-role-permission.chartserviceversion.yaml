@@ -1,0 +1,31 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: lambda-update-role-permission
+  version: 0.1.0
+  annotations:
+    categories: AWS
+    vendor: Harness
+spec:
+  displayName: Lambda Update Role Permission
+  categoryDescription: |
+    This fault causes role/policy of a lambda function to update/detach for a certain chaos period
+  keywords:
+    - AWS
+  plan:
+    - enterprise
+  platforms:
+    - AWS
+  experiments:
+    - aws-lambda-update-role-permission
+  chaosType: infra
+  labels:
+    app.kubernetes.io/component: chartserviceversion
+    app.kubernetes.io/version: ci
+  links:
+    - name: Documentation
+      url: https://docs.harness.io/category/kl0mxwpfw1-hce-category
+  icon:
+    - url:
+      mediatype: ""

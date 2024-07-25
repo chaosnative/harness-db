@@ -1,0 +1,29 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: aws-windows-ec2-network-latency
+  version: 0.1.0
+  annotations:
+    categories: aws-windows-ec2-network-latency
+    chartDescription: Injects network latency on an AWS Windows EC2 instance for a specified duration
+spec:
+  displayName: AWS Windows EC2 Network Latency
+  categoryDescription: >
+    Injects network latency on an AWS Windows EC2 instance for a specified duration
+  faults:
+    - name: windows-ec2-network-latency
+      description: This chaos fault introduces network latency on an AWS Windows EC2 instance for a specified duration.
+  keywords:
+    - AWS
+  plan:
+    - team
+  platforms:
+    - GKE
+    - Minikube
+    - Packet(Kubeadm)
+    - EKS
+    - AKS
+  icon:
+    - url:
+      mediatype: ""

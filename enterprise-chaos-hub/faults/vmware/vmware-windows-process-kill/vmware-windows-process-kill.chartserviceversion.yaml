@@ -1,0 +1,29 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  createdAt: 2023-07-09T10:28:08Z
+  name: vmware-windows-process-kill
+  version: 0.1.0
+  annotations:
+    categories: VMWare
+    vendor: Harness
+spec:
+  displayName: VMware Windows Process Kill
+  categoryDescription: |
+      VMware windows process kill fault contains chaos to terminate a specified process on the target VMware VMs.
+      - It can simulate the scenario of a critical process failure or unexpected termination.
+  keywords:
+    - VMware
+    - Windows
+  platforms:
+    - VMware
+  experiments:
+    - vmware-windows-process-kill
+  minKubeVersion: 1.12.0
+  labels:
+    app.kubernetes.io/component: chartserviceversion
+    app.kubernetes.io/version: ci
+  icon:
+    - url:
+      mediatype: ""

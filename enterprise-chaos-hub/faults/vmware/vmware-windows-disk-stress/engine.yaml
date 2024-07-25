@@ -1,0 +1,101 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChaosEngine
+metadata:
+  name: vmware-windows-disk-stress
+  namespace: default
+  labels:
+    name: vmware-windows-disk-stress
+    app.kubernetes.io/part-of: litmus
+    app.kubernetes.io/component: experiment-job
+    app.kubernetes.io/version: ci
+spec:
+  engineState: "active"
+  terminationGracePeriodSeconds: 30
+  chaosServiceAccount: litmus-admin
+  experiments:
+    - name: vmware-disk-stress
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+      imagePullPolicy: Always
+      args:
+        - -c
+        - ./experiments -name vmware-windows-disk-stress
+      command:
+        - /bin/bash
+      spec:
+        components:
+          env:
+            - name: TOTAL_CHAOS_DURATION
+              value: "60"
+
+            - name: VM_NAME
+              value: ""
+
+            - name: VM_USER_NAME
+              value: ""
+
+            - name: VM_PASSWORD
+              value: ""
+
+            - name: DISK_PATH
+              value: ""
+
+            - name: MEMORY_CONSUMPTION
+              value: "1024"
+
+            - name: BLOCK_SIZE_IN_KILOBYTES
+              value: "128"
+
+            - name: WRITE_PERCENTAGE
+              value: "100"
+
+            - name: NUMBER_OF_WORKERS
+              value: "2"
+
+            - name: PATH_OF_DISKSPD
+              value: ""
+
+            - name: RAMP_TIME
+              value: ""
+
+            - name: SEQUENCE
+              value: "parallel"
+
+            - name: GOVC_URL
+              valueFrom:
+                secretKeyRef:
+                  name: vcenter-secret
+                  key: VCENTERSERVER
+
+            - name: GOVC_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: vcenter-secret
+                  key: VCENTERUSER
+
+            - name: GOVC_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: vcenter-secret
+                  key: VCENTERPASS
+
+            - name: GOVC_INSECURE
+              value: "true"
+        probe:
+          - name: healthcheck
+            type: cmdProbe
+            mode: Edge
+            runProperties:
+              probeTimeout: 20s
+              retry: 0
+              interval: 1s
+              stopOnFailure: false
+            cmdProbe/inputs:
+              command: ./healthcheck -name vmware-windows-healthcheck
+              source:
+                image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                inheritInputs: true
+              comparator:
+                type: string
+                criteria: contains
+                value: "[P000]"

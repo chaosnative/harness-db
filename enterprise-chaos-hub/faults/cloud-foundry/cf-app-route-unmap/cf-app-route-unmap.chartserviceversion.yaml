@@ -1,0 +1,35 @@
+---
+apiVersion: litmuchaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  createdAt: 2023-11-03T04:27:08Z
+  name: cf-app-route-unmap
+  version: 0.1.0
+  annotations:
+    categories: Cloud-Foundry
+    vendor: Harness
+spec:
+  displayName: cf-app-route-unmap
+  categoryDescription: |
+    This fault injects app route un-map chaos in the Cloud Foundry platform.
+    - Checks resilience upon abrupt un-mapping of an app route
+    - Helps validate the effectiveness of disaster recovery and high availability of the app
+  keywords:
+    - Cloud Foundry
+    - CF
+    - App
+    - Route
+  plan:
+    - enterprise
+  maturity: alpha
+  labels:
+    app.kubernetes.io/component: chartserviceversion
+    app.kubernetes.io/version: ci
+  links:
+    - name: Documentation
+      url: https://developer.harness.io/docs/chaos-engineering/technical-reference/chaos-faults/cloud-foundry/
+  icon:
+    - url:
+      mediatype: ""
+  experiments:
+    - cf-app-route-unmap

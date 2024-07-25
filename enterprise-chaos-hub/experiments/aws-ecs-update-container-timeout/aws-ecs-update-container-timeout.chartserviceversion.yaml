@@ -1,0 +1,29 @@
+---
+apiVersion: litmuchaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: aws-ecs-update-container-timeout
+  version: 0.1.0
+  annotations:
+    categories: aws-ecs-update-container-timeout
+    chartDescription: Injects update container timeout chaos on a target ECS service for a specified duration
+spec:
+  displayName: AWS ECS Update Container Timeout
+  categoryDescription: >
+    Injects update container timeout chaos on a target ECS service for a specified duration
+  faults:
+    - name: ecs-update-container-timeout
+      description: Injects update container timeout chaos on a target ECS service for a specified duration
+  keywords:
+    - AWS
+  plan:
+    - team
+  platforms:
+    - GKE
+    - Minikube
+    - Packet(Kubeadm)
+    - EKS
+    - AKS
+  icon:
+    - url:
+      mediatype: ""

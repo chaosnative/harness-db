@@ -1,0 +1,37 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: LinuxChaosExperiment
+metadata:
+  name: cf-app-network-latency-a89
+  labels:
+    context: cf-app-network-latency
+    name: cf-app-network-latency-a89
+spec:
+  steps:
+    - - name: cf-app-network-latency-a89
+  tasks:
+    - name: cf-app-network-latency-a89
+      taskType: "chaos"
+      weight: 10
+      definition:
+        chaos:
+          experiment: cf-app-network-latency
+          cfAppNetworkChaos/inputs:
+            duration: 30s
+            faultInjectorLocation: "local"
+            deploymentModel: ""
+            app: ""
+            organization: ""
+            space: ""
+            networkInterface: "eth0"
+            boshDeployment: ""
+            destinationHosts: ""
+            destinationIPs: ""
+            sourcePorts: ""
+            destinationPorts: ""
+            networkLatency: 2000
+            jitter: 0
+            instanceAffectedPercentage: 0
+            faultInjectorPort: 50320
+            skipSSLValidation: false
+            rampTime: ""

@@ -1,0 +1,117 @@
+---
+kind: Workflow
+apiVersion: argoproj.io/v1alpha1
+metadata:
+  name: gcp-vm-disk-loss-1-1658952599
+  namespace: litmus
+
+spec:
+  templates:
+    - name: custom-chaos
+      steps:
+        - - name: gcp-vm-disk-loss-by-label-4bw
+            template: gcp-vm-disk-loss-by-label-4bw
+        - - name: cleanup-chaos-resources
+            template: cleanup-chaos-resources
+    - name: gcp-vm-disk-loss-by-label-4bw
+      inputs:
+        artifacts:
+          - name: gcp-vm-disk-loss-by-label-4bw
+            path: /tmp/chaosengine-gcp-vm-disk-loss-by-label-4bw.yaml
+            raw:
+              data: |
+                apiVersion: litmuschaos.io/v1alpha1
+                kind: ChaosEngine
+                metadata:
+                  generateName: gcp-vm-disk-loss-by-label-4bw
+                  namespace: "{{workflow.parameters.adminModeNamespace}}"
+                  labels:
+                    name: gcp-vm-disk-loss-by-label
+                    app.kubernetes.io/part-of: litmus
+                    app.kubernetes.io/component: experiment-job
+                    app.kubernetes.io/version: ci
+                spec:
+                  engineState: active
+                  chaosServiceAccount: litmus-admin
+                  experiments:
+                    - name: gcp-vm-disk-loss-by-label
+                      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                      imagePullPolicy: Always
+                      args:
+                        - -c
+                        - ./experiments -name gcp-vm-disk-loss-by-label
+                      command:
+                        - /bin/bash
+                      spec:
+                        components:
+                          env:
+                            - name: TOTAL_CHAOS_DURATION
+                              value: "60"
+                            - name: CHAOS_INTERVAL
+                              value: "30"
+                            - name: GCP_PROJECT_ID
+                              value: ""
+                            - name: ZONES
+                              value: ""
+                            - name: DISK_VOLUME_LABEL
+                              value: ""
+                            - name: DISK_AFFECTED_PERC
+                              value: ""
+                            - name: DEFAULT_HEALTH_CHECK
+                              value: 'false'
+                            - name: SEQUENCE
+                              value: parallel
+                          secrets:
+                            - name: cloud-secret
+                              mountPath: /tmp/
+                        probe:
+                        - name: healthcheck
+                          type: cmdProbe
+                          mode: SOT
+                          runProperties:
+                            probeTimeout: 5s
+                            retry: 0
+                            interval: 1s
+                            stopOnFailure: false
+                          cmdProbe/inputs:
+                            command: ./healthcheck -name gcp-vm-disk-loss-by-label
+                            source:
+                              image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                              inheritInputs: true
+                            comparator:
+                              type: string
+                              criteria: contains
+                              value: "[P000]"
+      metadata:
+        labels:
+          weight: "10"
+      container:
+        name: ""
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+        command:
+          - ./chaos-checker
+        args:
+          - -file=/tmp/chaosengine-gcp-vm-disk-loss-by-label-4bw.yaml
+          - -saveName=/tmp/engine-name
+    - name: cleanup-chaos-resources
+      container:
+        name: ""
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+        command:
+          - sh
+          - -c
+        args:
+          - "kubectl delete chaosengine -l 'instance_id in
+            (5ba55033-ca8f-4b73-af8d-eb4441818630, )' -n
+            {{workflow.parameters.adminModeNamespace}} "
+  entrypoint: custom-chaos
+  arguments:
+    parameters:
+      - name: adminModeNamespace
+        value: litmus
+  serviceAccountName: argo-chaos
+  podGC:
+    strategy: OnWorkflowCompletion
+  securityContext:
+    runAsUser: 1000
+    runAsNonRoot: true

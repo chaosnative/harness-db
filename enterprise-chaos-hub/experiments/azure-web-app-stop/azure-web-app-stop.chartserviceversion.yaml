@@ -1,0 +1,25 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: azure-web-app-stop
+  version: 0.1.0
+  annotations:
+    categories: azure-web-app-stop
+    chartDescription: Injects app stop on the target web app for a specified duration
+spec:
+  displayName: Azure Web App Stop
+  categoryDescription: >
+    Injects app stop on the target web app for a specified duration
+  faults:
+    - name: azure-web-app-stop
+      description: Injects app stop on the target web app for a specified duration
+  keywords:
+    - Azure
+  plan:
+    - team
+  platforms:
+    - Azure
+  icon:
+    - url:
+      mediatype: ""

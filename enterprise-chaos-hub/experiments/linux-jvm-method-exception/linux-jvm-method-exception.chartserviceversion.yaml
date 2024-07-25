@@ -1,0 +1,28 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: linux-jvm-method-exception
+  version: 0.1.0
+  annotations:
+    categories: linux-jvm-method-exception
+    chartDescription: Injects JVM method exception chaos into a Java process executing on a Linux machine.
+spec:
+  displayName: Linux JVM Method Exception
+  categoryDescription: >-
+    This fault injects JVM method exception chaos into a Java process executing on a Linux machine.
+
+  faults:
+    - name: linux-jvm-method-exception
+      description: Injects JVM method exception chaos into a Java process executing on a Linux machine.
+  keywords:
+    - Linux
+    - GCP
+    - Azure
+  plan:
+    - team
+  platforms:
+    - Linux
+  icon:
+    - url:
+      mediatype: ""

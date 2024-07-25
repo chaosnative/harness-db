@@ -1,0 +1,34 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: gcp-vm-service-kill
+  version: 0.1.0
+  annotations:
+    categories: GCP
+    vendor: Harness
+spec:
+  displayName: GCP VM Service Kill
+  categoryDescription: |
+    gcp-vm-service-kill fault kills the service gracefully running on the GCP VM instance for the specified chaos duration.
+    - Causes replicas to be evicted or become unreachable on account of nodes turning unschedulable (Not Ready) due to service kill (say containerd).
+    - The application node should be healthy once the chaos is stopped and the services are re-accessable.
+  keywords:
+    - Kubernetes
+  plan:
+    - free
+  platforms:
+    - GKE
+    - AKS
+  experiments:
+    - gcp-vm-service-kill
+  minKubeVersion: 1.12.0
+  labels:
+    app.kubernetes.io/component: chartserviceversion
+    app.kubernetes.io/version: ci
+  links:
+    - name: Documentation
+      url: https://docs.harness.io/category/kl0mxwpfw1-hce-category
+  icon:
+    - base64data: ""
+      mediatype: ""

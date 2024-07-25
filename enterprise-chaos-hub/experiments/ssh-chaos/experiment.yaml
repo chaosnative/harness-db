@@ -1,0 +1,118 @@
+---
+kind: Workflow
+apiVersion: argoproj.io/v1alpha1
+metadata:
+  name: ssh-chaos
+  namespace: litmus
+
+spec:
+  templates:
+    - name: custom-chaos
+      steps:
+        - - name: ssh-chaos-1tr
+            template: ssh-chaos-1tr
+        - - name: cleanup-chaos-resources
+            template: cleanup-chaos-resources
+    - name: ssh-chaos-1tr
+      inputs:
+        artifacts:
+          - name: ssh-chaos-1tr
+            path: /tmp/chaosengine-ssh-chaos-1tr.yaml
+            raw:
+              data: |
+                apiVersion: litmuschaos.io/v1alpha1
+                kind: ChaosEngine
+                metadata:
+                  namespace: "{{workflow.parameters.adminModeNamespace}}"
+                  generateName: ssh-chaos-1tr
+                labels:
+                  name: ssh-chaos
+                  app.kubernetes.io/part-of: litmus
+                  app.kubernetes.io/component: experiment-job
+                  app.kubernetes.io/version: ci
+                  app.kubernetes.io/enableSSHAccessViaSecrets: disable
+                spec:
+                  engineState: active
+                  chaosServiceAccount: litmus-admin
+                  experiments:
+                    - name: ssh-chaos
+                      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                      imagePullPolicy: Always
+                      args:
+                        - -c
+                        - ./experiments -name ssh-chaos
+                      command:
+                        - /bin/bash
+                      spec:
+                        components:
+                          env:
+                            - name: RAMP_TIME
+                              value: ""
+                            - name: PRIVATE_KEY
+                              value: ''
+                            - name: CHAOS_SCRIPT_PATH
+                              value: '/tmp/chaos-script/script.sh'
+                            - name: ABORT_SCRIPT_PATH
+                              value: '/tmp/abort-script/abort-script.sh'
+                            - name: HOST
+                              value: ""
+                            - name: USERNAME
+                              value: ""
+                            - name: PASSWORD
+                              value: ""
+                            - name: CHAOS_PARAMETER
+                              value: ""
+                            - name: ABORT_PARAMETER
+                              value: ""
+                        probe:
+                          - name: healthcheck
+                            type: cmdProbe
+                            mode: SOT
+                            runProperties:
+                              probeTimeout: 20s
+                              retry: 0
+                              interval: 1s
+                              stopOnFailure: false
+                            cmdProbe/inputs:
+                              command: ./healthcheck -name ssh-chaos
+                              source:
+                                image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                                inheritInputs: true
+                              comparator:
+                                type: string
+                                criteria: contains
+                                value: "[P000]"
+      metadata:
+        labels:
+          weight: "10"
+      container:
+        name: ""
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+        command:
+          - ./chaos-checker
+        args:
+          - -file=/tmp/chaosengine-ssh-chaos-1tr.yaml
+          - -saveName=/tmp/engine-name
+
+    - name: cleanup-chaos-resources
+      container:
+        name: ""
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+        command:
+          - sh
+          - -c
+        args:
+          - "kubectl delete chaosengine -l 'instance_id in
+            (1121ad1d-6019-49d7-ad3b-6b56b00f2852, )' -n
+            {{workflow.parameters.adminModeNamespace}} "
+  entrypoint: custom-chaos
+  arguments:
+    parameters:
+      - name: adminModeNamespace
+        value: litmus
+  serviceAccountName: argo-chaos
+  podGC:
+    strategy: OnWorkflowCompletion
+  securityContext:
+    runAsUser: 1000
+    runAsNonRoot: true

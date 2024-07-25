@@ -1,0 +1,28 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: linux-jvm-modify-return
+  version: 0.1.0
+  annotations:
+    categories: linux-jvm-modify-return
+    chartDescription: Injects JVM method modify return chaos into a Java process executing on a Linux machine.
+spec:
+  displayName: Linux JVM Modify Return
+  categoryDescription: >-
+    This fault injects JVM method modify return chaos into a Java process executing on a Linux machine.
+
+  faults:
+    - name: linux-jvm-modify-return
+      description: Injects JVM method modify return into a Java process executing on a Linux machine.
+  keywords:
+    - Linux
+    - GCP
+    - Azure
+  plan:
+    - team
+  platforms:
+    - Linux
+  icon:
+    - url:
+      mediatype: ""

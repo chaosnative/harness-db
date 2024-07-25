@@ -1,0 +1,123 @@
+---
+kind: Workflow
+apiVersion: argoproj.io/v1alpha1
+metadata:
+  name: gcp-vm-instance-stop-1658946792
+  namespace: litmus
+
+spec:
+  templates:
+    - name: custom-chaos
+      steps:
+        - - name: gcp-vm-instance-stop-p2s
+            template: gcp-vm-instance-stop-p2s
+        - - name: cleanup-chaos-resources
+            template: cleanup-chaos-resources
+    - name: gcp-vm-instance-stop-p2s
+      inputs:
+        artifacts:
+          - name: gcp-vm-instance-stop-p2s
+            path: /tmp/chaosengine-gcp-vm-instance-stop-p2s.yaml
+            raw:
+              data: >
+                apiVersion: litmuschaos.io/v1alpha1
+
+                kind: ChaosEngine
+
+                metadata:
+                  generateName: gcp-vm-instance-stop-p2s
+                  namespace: "{{workflow.parameters.adminModeNamespace}}"
+                  labels:
+                    name: gcp-vm-instance-stop
+                    app.kubernetes.io/part-of: litmus
+                    app.kubernetes.io/component: experiment-job
+                    app.kubernetes.io/version: ci
+                spec:
+                  engineState: active
+                  chaosServiceAccount: litmus-admin
+                  experiments:
+                    - name: gcp-vm-instance-stop
+                      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                      imagePullPolicy: Always
+                      args:
+                        - -c
+                        - ./experiments -name gcp-vm-instance-stop
+                      command:
+                        - /bin/bash
+                      spec:
+                        components:
+                          env:
+                            - name: TOTAL_CHAOS_DURATION
+                              value: "30"
+                            - name: CHAOS_INTERVAL
+                              value: "30"
+                            - name: SEQUENCE
+                              value: parallel
+                            - name: RAMP_TIME
+                              value: ""
+                            - name: MANAGED_INSTANCE_GROUP
+                              value: disable
+                            - name: VM_INSTANCE_NAMES
+                              value: ""
+                            - name: GCP_PROJECT_ID
+                              value: ""
+                            - name: ZONES
+                              value: ""
+                            - name: DEFAULT_HEALTH_CHECK
+                              value: 'false'
+                          secrets:
+                            - name: cloud-secret
+                              mountPath: /tmp/
+                        probe:
+                        - name: healthcheck
+                          type: cmdProbe
+                          mode: Edge
+                          runProperties:
+                            probeTimeout: 5s
+                            retry: 0
+                            interval: 1s
+                            stopOnFailure: false
+                          cmdProbe/inputs:
+                            command: ./healthcheck -name gcp-vm
+                            source:
+                              image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                              inheritInputs: true
+                            comparator:
+                              type: string
+                              criteria: contains
+                              value: "[P000]"
+      metadata:
+        labels:
+          weight: "10"
+      container:
+        name: ""
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+        command:
+          - ./chaos-checker
+        args:
+          - -file=/tmp/chaosengine-gcp-vm-instance-stop-p2s.yaml
+          - -saveName=/tmp/engine-name
+
+    - name: cleanup-chaos-resources
+      container:
+        name: ""
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+        command:
+          - sh
+          - -c
+        args:
+          - "kubectl delete chaosengine -l 'instance_id in
+            (73e1769a-deb7-4988-8b8c-b89fada83557, )' -n
+            {{workflow.parameters.adminModeNamespace}} "
+
+  entrypoint: custom-chaos
+  arguments:
+    parameters:
+      - name: adminModeNamespace
+        value: litmus
+  serviceAccountName: argo-chaos
+  podGC:
+    strategy: OnWorkflowCompletion
+  securityContext:
+    runAsUser: 1000
+    runAsNonRoot: true

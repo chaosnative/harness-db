@@ -1,0 +1,31 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: vmware-http-latency
+  version: 0.1.0
+  annotations:
+    categories: VMware
+    vendor: Harness
+spec:
+  displayName: VMware HTTP Latency
+  categoryDescription: |
+    vmware-http-latency fault disrupts HTTP requests of VMware VMs.
+    - Causes flaky access to application by injecting HTTP response delay using toxiproxy.
+    - The application should be healthy once chaos is stopped. Service-requests should be served despite the chaos, as per the expectation.
+  keywords:
+    - VMware
+  platforms:
+    - VMware
+  experiments:
+    - vmware-http-latency
+  minKubeVersion: 1.12.0
+  labels:
+    app.kubernetes.io/component: chartserviceversion
+    app.kubernetes.io/version: ci
+  links:
+    - name: Documentation
+      url: https://docs.harness.io/category/kl0mxwpfw1-hce-category
+  icon:
+    - url:
+      mediatype: ""

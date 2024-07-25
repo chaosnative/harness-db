@@ -1,0 +1,36 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: pod-io-latency
+  version: 0.1.0
+  annotations:
+    categories: Kubernetes
+    vendor: Harness
+spec:
+  displayName: Pod IO Latency
+  categoryDescription: |
+    pod-io-latency injects the latency in i/o operations on the files, present inside the mounted volume of the pods.
+  keywords:
+    - Kubernetes
+  plan:
+    - enterprise
+  platforms:
+    - GKE
+    - Packet(Kubeadm)
+    - Minikube
+    - EKS
+    - AKS
+    - Kind
+  experiments:
+    - pod-io-latency
+  minKubeVersion: 1.12.0
+  labels:
+    app.kubernetes.io/component: chartserviceversion
+    app.kubernetes.io/version: ci
+  links:
+    - name: Documentation
+      url: https://docs.harness.io/category/kl0mxwpfw1-hce-category
+  icon:
+    - base64data: ""
+      mediatype: ""

@@ -1,0 +1,29 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: linux-network-latency
+  version: 0.1.0
+  annotations:
+    categories: linux-network-latency
+    chartDescription: Injects network latency chaos into a Linux machine.
+spec:
+  displayName: Linux Network Latency
+  categoryDescription: >-
+    This fault injects network latency into a Linux machine.
+
+    - Simulates latency in connectivity access by delaying the network requests of the machine.
+  faults:
+    - name: linux-network-latency
+      description: Injects network latency chaos into a Linux machine.
+  keywords:
+    - Linux
+    - GCP
+    - Azure
+  plan:
+    - team
+  platforms:
+    - Linux
+  icon:
+    - url:
+      mediatype: ""

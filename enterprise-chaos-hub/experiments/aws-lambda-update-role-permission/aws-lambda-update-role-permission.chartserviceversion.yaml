@@ -1,0 +1,25 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: aws-lambda-update-role-permission
+  version: 0.1.0
+  annotations:
+    categories: aws-lambda-update-role-permission
+    chartDescription: Causes the role of a lambda function to be detached/updated for specific period.
+spec:
+  displayName: AWS Lambda Update Role Permission
+  categoryDescription: |
+    This fault causes the role of a lambda function to be detached/updated for specific period.
+  keywords:
+    - AWS
+  plan:
+    - enterprise
+  platforms:
+    - AWS
+  faults:
+    - name: lambda-update-role-permission
+      description: This fault causes the role of lambda function to be detached/updated.
+  icon:
+    - url:
+      mediatype: ""

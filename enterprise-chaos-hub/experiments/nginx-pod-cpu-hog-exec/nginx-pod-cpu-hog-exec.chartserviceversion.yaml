@@ -1,0 +1,30 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: nginx-pod-cpu-hog-exec
+  version: 0.1.0
+  annotations:
+    categories: nginx-pod-cpu-hog-exec
+    chartDescription: Injects CPU hog by running md5sum via exec command on pod(s) identified by specified labels ("app=nginx" by default)
+spec:
+  displayName: Nginx Pod CPU Hog Exec
+  categoryDescription: >
+    Injects CPU hog by running md5sum via exec command on pod(s) identified by specified labels ("app=nginx" by default)
+  faults:
+    - name: pod-cpu-hog-exec
+      description: Injects CPU hog by running md5sum via exec command on pod(s) identified by specified labels ("app=nginx" by default)
+  keywords:
+    - Kubernetes
+  plan:
+    - free
+  platforms:
+    - GKE
+    - Packet(Kubeadm)
+    - Minikube
+    - EKS
+    - AKS
+    - Kind
+  icon:
+    - url:
+      mediatype: ""

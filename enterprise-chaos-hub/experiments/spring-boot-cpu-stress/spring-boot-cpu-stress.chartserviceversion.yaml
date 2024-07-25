@@ -1,0 +1,30 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: spring-boot-cpu-stress
+  version: 0.1.0
+  annotations:
+    categories: spring-boot-cpu-stress
+    chartDescription: It targets random pods with a Spring Boot application and allows configuring the assaults to inject cpu-stress
+spec:
+  displayName: Spring Boot CPU Stress
+  categoryDescription: >
+    It targets random pods with a Spring Boot application and allows configuring the assaults to inject cpu-stress
+  faults:
+    - name: spring-boot-cpu-stress
+      description: It targets random pods with a Spring Boot application and allows configuring the assaults to inject cpu-stress
+  keywords:
+    - Spring Boot
+  plan:
+    - free
+  platforms:
+    - GKE
+    - AWS(KOPS)
+    - Packet(Kubeadm)
+    - Konvoy
+    - EKS
+    - AKS
+  icon:
+    - url:
+      mediatype: ""

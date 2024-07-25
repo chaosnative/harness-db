@@ -1,0 +1,27 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: nginx-pod-http-modify-header
+  version: 0.1.0
+  annotations:
+    categories: nginx-pod-http-modify-header
+    chartDescription: Injects erroneous headers in HTTP responses on pod(s) identified by the specified label ("app=nginx" by default)
+spec:
+  displayName: Nginx Pod HTTP Modify Header
+  categoryDescription: >
+    Injects erroneous headers in HTTP responses on pod(s) identified by the specified label ("app=nginx" by default)
+  faults:
+    - name: pod-http-modify-header
+      description: Injects erroneous headers in HTTP responses on pod(s) identified by the specified label ("app=nginx" by default)
+  keywords:
+    - Kubernetes
+  plan:
+    - free
+  platforms:
+    - GKE
+    - Minikube
+    - EKS
+  icon:
+    - url:
+      mediatype: ""

@@ -1,0 +1,27 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: LinuxChaosExperiment
+metadata:
+  name: linux-network-duplication-4ap
+  labels:
+    context: linux-network-duplication
+    name: linux-network-duplication-4ap
+spec:
+  steps:
+    - - name: linux-network-duplication-4ap
+  tasks:
+    - name: linux-network-duplication-4ap
+      taskType: "chaos"
+      weight: 10
+      definition:
+        chaos:
+          experiment: linux-network-duplication
+          networkChaos/inputs:
+            packetDuplicationPercentage: 100
+            networkInterfaces: ""
+            duration: 30s
+            destinationHosts: ""
+            destinationIPs: ""
+            sourcePorts: ""
+            destinationPorts: ""
+            rampTime: ""

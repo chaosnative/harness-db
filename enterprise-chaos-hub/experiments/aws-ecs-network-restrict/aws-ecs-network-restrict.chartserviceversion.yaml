@@ -1,0 +1,29 @@
+---
+apiVersion: litmuchaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: aws-ecs-network-restrict
+  version: 0.1.0
+  annotations:
+    categories: aws-ecs-network-restrict
+    chartDescription: Injects network restrict chaos on a target ECS service for a specified duration
+spec:
+  displayName: AWS ECS Network Restrict
+  categoryDescription: >
+    Injects ECS network restrict chaos on a target ECS service for a specified duration
+  faults:
+    - name: ecs-network-restrict
+      description: Injects network restrict chaos on a target ECS service for a specified duration
+  keywords:
+    - AWS
+  plan:
+    - team
+  platforms:
+    - GKE
+    - Minikube
+    - Packet(Kubeadm)
+    - EKS
+    - AKS
+  icon:
+    - url:
+      mediatype: ""

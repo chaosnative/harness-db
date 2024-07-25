@@ -1,0 +1,84 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChaosEngine
+metadata:
+  name: pod-delete
+  namespace: default
+  labels:
+    name: pod-delete
+    app.kubernetes.io/part-of: litmus
+    app.kubernetes.io/component: experiment-job
+    app.kubernetes.io/version: ci
+spec:
+  appinfo:
+    appns: ""
+    applabel: ""
+    appkind: ""
+  # It can be active/stop
+  engineState: "active"
+  terminationGracePeriodSeconds: 30
+  chaosServiceAccount: pod-delete-sa
+  experiments:
+    - name: pod-delete
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+      imagePullPolicy: Always
+      args:
+        - -c
+        - ./experiments -name pod-delete
+      command:
+        - /bin/bash
+      spec:
+        components:
+          env:
+            - name: TOTAL_CHAOS_DURATION
+              value: "30"
+
+            # Period to wait before and after injection of chaos in sec
+            - name: RAMP_TIME
+              value: ""
+
+            - name: FORCE
+              value: "false"
+
+            - name: CHAOS_INTERVAL
+              value: "10"
+
+            ## percentage of total pods to target
+            - name: PODS_AFFECTED_PERC
+              value: ""
+
+            - name: TARGET_CONTAINER
+              value: ""
+
+            - name: TARGET_PODS
+              value: ""
+
+            - name: DEFAULT_HEALTH_CHECK
+              value: "false"
+
+            # To select pods on specific node(s)
+            - name: NODE_LABEL
+              value: ""
+
+            ## it defines the sequence of chaos execution for multiple target pods
+            ## supported values: serial, parallel
+            - name: SEQUENCE
+              value: "parallel"
+        probe:
+          - name: healthcheck
+            type: cmdProbe
+            mode: Edge
+            runProperties:
+              probeTimeout: 180s
+              retry: 0
+              interval: 1s
+              stopOnFailure: false
+            cmdProbe/inputs:
+              command: ./healthcheck -name pod-level
+              source:
+                image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                inheritInputs: true
+              comparator:
+                type: string
+                criteria: contains
+                value: "[P000]"

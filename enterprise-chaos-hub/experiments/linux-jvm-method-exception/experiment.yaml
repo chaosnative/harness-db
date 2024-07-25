@@ -1,0 +1,27 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: LinuxChaosExperiment
+metadata:
+  name: linux-jvm-method-exception-4ap
+  labels:
+    context: linux-jvm-method-exception
+    name: linux-jvm-method-exception-4ap
+spec:
+  steps:
+    - - name: linux-jvm-method-exception-4ap
+  tasks:
+    - name: linux-jvm-method-exception-4ap
+      taskType: "chaos"
+      weight: 10
+      definition:
+        chaos:
+          experiment: linux-jvm-method-exception
+          jvmChaos/inputs:
+            duration: 30s
+            port: 9091
+            pid: 0
+            class: ""
+            method: ""
+            exception: ""
+            startupCommand: ""
+            rampTime: ""

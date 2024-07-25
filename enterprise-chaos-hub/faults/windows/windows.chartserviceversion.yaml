@@ -1,0 +1,36 @@
+---
+apiVersion: litmuchaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: windows
+  annotations:
+    categories: Windows
+    chartDescription: Injects chaos in windows VM
+    executionPlane: "windows"
+spec:
+  displayName: Windows
+  categoryDescription: >
+    It contains chaos to disrupt state of a windows VM
+  faults:
+    - name: windows-cpu-stress
+      description: It injects cpu stress to a windows VM.
+      displayName: "Windows CPU Stress"
+      plan:
+        - team
+    - name: windows-memory-stress
+      description: It injects memory stress to a windows VM.
+      displayName: "Windows Memory Stress"
+      plan:
+        - team
+    - name: windows-blackhole-chaos
+      description: It injects network loss to a windows VM.
+      displayName: "Windows Blackhole Chaos"
+      plan:
+        - team
+  keywords:
+    - Windows
+    - CPU
+    - Memory
+    - Network
+    - GCP
+    - Azure

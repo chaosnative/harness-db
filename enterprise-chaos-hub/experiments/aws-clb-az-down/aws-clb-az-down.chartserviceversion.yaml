@@ -1,0 +1,29 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: aws-clb-az-down
+  version: 0.1.0
+  annotations:
+    categories: aws-clb-az-down
+    chartDescription: Injects AZ down chaos on a target CLB for a specified duration
+spec:
+  displayName: AWS CLB AZ Down
+  categoryDescription: >
+    Injects AZ down chaos on a target CLB for a specified duration
+  faults:
+    - name: clb-az-down
+      description: Injects AZ down chaos on a target CLB for a specified duration
+  keywords:
+    - AWS
+  plan:
+    - team
+  platforms:
+    - GKE
+    - Minikube
+    - Packet(Kubeadm)
+    - EKS
+    - AKS
+  icon:
+    - url:
+      mediatype: ""

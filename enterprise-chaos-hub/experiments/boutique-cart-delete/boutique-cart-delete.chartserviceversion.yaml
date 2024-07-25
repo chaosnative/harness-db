@@ -1,0 +1,28 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: boutique-cart-delete
+  version: 0.1.0
+  annotations:
+    categories: boutique-cart-delete
+    chartDescription: Injects pod-delete chaos on cart service of the boutique app
+spec:
+  displayName: Boutique Cart Delete
+  categoryDescription: >
+    Injects pod-delete chaos on cart service of the boutique app
+  faults:
+    - name: pod-delete
+      description: Injects pod-delete chaos on cart service of the boutique app
+  keywords:
+    - Kubernetes
+    - Boutique
+  platforms:
+    - GKE
+    - Minikube
+    - Packet(Kubeadm)
+    - EKS
+    - AKS
+  icon:
+    - url:
+      mediatype: ""

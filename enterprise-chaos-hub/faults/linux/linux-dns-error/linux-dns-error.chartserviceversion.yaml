@@ -1,0 +1,22 @@
+---
+apiVersion: litmuchaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: linux-dns-error
+  annotations:
+    categories: Linux
+spec:
+  displayName: linux-dns-error
+  categoryDescription: |
+    It injects DNS error in a linux VM
+  keywords:
+    - Linux
+    - DNS
+  plan:
+    - team
+  maturity: alpha
+  labels:
+    app.kubernetes.io/component: chartserviceversion
+    app.kubernetes.io/version: ci
+  experiments:
+    - linux-dns-error

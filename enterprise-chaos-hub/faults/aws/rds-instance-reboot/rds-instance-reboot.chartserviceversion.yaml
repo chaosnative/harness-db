@@ -1,0 +1,40 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: rds-instance-reboot
+  version: 0.1.0
+  annotations:
+    categories: AWS
+    vendor: Harness
+spec:
+  displayName: RDS Instance Reboot
+  categoryDescription: |
+    RDS instance reboot fault disrupts the state of RDS instance associated with RDS cluster. This fault injects chaos to reboot the RDS instances that are in available state.
+    - It helps to check the performance of the RDS instances when subjected to rds-instance-reboot fault.
+  keywords:
+    - AWS
+  plan:
+    - team
+  platforms:
+    - GKE
+    - Konvoy
+    - Packet(Kubeadm)
+    - Minikube
+    - EKS
+    - AKS
+    - Kind
+    - Rancher
+    - OpenShift(OKD)
+  experiments:
+    - aws-rds-instance-reboot
+  minKubeVersion: 1.12.0
+  labels:
+    app.kubernetes.io/component: chartserviceversion
+    app.kubernetes.io/version: ci
+  links:
+    - name: Documentation
+      url: https://docs.harness.io/category/kl0mxwpfw1-hce-category
+  icon:
+    - url:
+      mediatype: ""

@@ -1,0 +1,90 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChaosEngine
+metadata:
+  name: fis-dynamodb-replication-pause
+  namespace: default
+  labels:
+    name: fis-dynamodb-replication-pause
+    app.kubernetes.io/part-of: litmus
+    app.kubernetes.io/component: experiment-job
+    app.kubernetes.io/version: ci
+    app.kubernetes.io/enableAWSAccessViaSecrets: disable
+spec:
+  engineState: "active"
+  chaosServiceAccount: litmus-admin
+  experiments:
+    - name: fis-dynamodb-replication-pause
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+      imagePullPolicy: Always
+      args:
+        - -c
+        - ./experiments -name fis-dynamodb-replication-pause
+      command:
+        - /bin/bash
+      spec:
+        components:
+          env:
+            - name: TOTAL_CHAOS_DURATION
+              value: "60"
+
+            - name: CHAOS_INTERVAL
+              value: "60"
+
+            - name: TABLE_NAMES
+              value: ""
+
+            - name: FIS_ROLE_ARN
+              value: ""
+
+            - name: FIS_ACCOUNT_ID
+              value: ''
+
+            - name: REGION
+              value: ""
+
+            - name: STOP_CONDITION_CLOUDWATCH_ALARMS
+              value: ''
+
+            - name: COUNT
+              value: ""
+
+            - name: RAMP_TIME
+              value: ""
+
+            - name: DEFAULT_HEALTH_CHECK
+              value: "false"
+
+            - name: AWS_SHARED_CREDENTIALS_FILE
+              value: "/tmp/cloud_config.yml"
+        probe:
+          - name: healthcheck
+            type: cmdProbe
+            mode: SOT
+            runProperties:
+              probeTimeout: 5s
+              retry: 0
+              interval: 1s
+              stopOnFailure: false
+            cmdProbe/inputs:
+              command: ./healthcheck -name aws-fis-dynamodb-replication-pause
+              source:
+                image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                inheritInputs: true
+                volumeMount:
+                  - mountPath: /var/run/secrets/eks.amazonaws.com/serviceaccount
+                    name: aws-iam-token
+                    readOnly: true
+                volumes:
+                  - name: aws-iam-token
+                    projected:
+                      defaultMode: 420
+                      sources:
+                        - serviceAccountToken:
+                            audience: sts.amazonaws.com
+                            expirationSeconds: 86400
+                            path: token
+              comparator:
+                type: string
+                criteria: contains
+                value: "[P000]"

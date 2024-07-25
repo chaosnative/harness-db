@@ -1,0 +1,28 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: LinuxChaosExperiment
+metadata:
+  name: linux-network-latency-4ap
+  labels:
+    context: linux-network-latency
+    name: linux-network-latency-4ap
+spec:
+  steps:
+    - - name: linux-network-latency-4ap
+  tasks:
+    - name: linux-network-latency-4ap
+      taskType: "chaos"
+      weight: 10
+      definition:
+        chaos:
+          experiment: linux-network-latency
+          networkChaos/inputs:
+            networkLatency: 2000
+            networkInterfaces: ""
+            duration: 30s
+            jitter: 0
+            destinationHosts: ""
+            destinationIPs: ""
+            sourcePorts: ""
+            destinationPorts: ""
+            rampTime: ""

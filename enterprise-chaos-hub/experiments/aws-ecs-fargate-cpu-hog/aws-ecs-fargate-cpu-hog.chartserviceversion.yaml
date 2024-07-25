@@ -1,0 +1,27 @@
+---
+apiVersion: litmuchaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: aws-ecs-fargate-cpu-hog
+  version: 0.1.0
+  annotations:
+    categories: aws-ecs-fargate-cpu-hog
+    chartDescription: Injects cpu stress chaos on a target ECS fargate service/task for a specified duration
+spec:
+  displayName: AWS ECS Fargate CPU Hog
+  categoryDescription: >
+    Injects Fargate CPU Hog chaos on a target ECS service for a specified duration
+  faults:
+    - name: ecs-fargate-cpu-hog
+      description: Injects fargate CPU hog chaos on a target ECS service for a specified duration
+  keywords:
+    - AWS
+  platforms:
+    - GKE
+    - Minikube
+    - Packet(Kubeadm)
+    - EKS
+    - AKS
+  icon:
+    - url:
+      mediatype: ""

@@ -1,0 +1,169 @@
+---
+kind: Workflow
+apiVersion: argoproj.io/v1alpha1
+metadata:
+  name: aws-rds-instance-reboot
+  namespace: litmus
+
+spec:
+  templates:
+    - name: custom-chaos
+      steps:
+        - - name: rds-instance-reboot-4yf
+            template: rds-instance-reboot-4yf
+
+        - - name: cleanup-chaos-resources
+            template: cleanup-chaos-resources
+
+    - name: rds-instance-reboot-4yf
+      inputs:
+        artifacts:
+          - name: rds-instance-reboot-4yf
+            path: /tmp/chaosengine-rds-instance-reboot-4yf.yaml
+            raw:
+              data: |
+                apiVersion: litmuschaos.io/v1alpha1
+                kind: ChaosEngine
+                metadata:
+                  namespace: "{{workflow.parameters.adminModeNamespace}}"
+                  generateName: rds-instance-reboot-4yf
+                  labels:
+                    name: rds-instance-reboot
+                    app.kubernetes.io/part-of: litmus
+                    app.kubernetes.io/component: experiment-job
+                    app.kubernetes.io/enableAWSAccessViaSecrets: disable
+                    app.kubernetes.io/version: ci
+                spec:
+                  engineState: active
+                  chaosServiceAccount: litmus-admin
+                  experiments:
+                    - name: rds-instance-reboot
+                      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                      imagePullPolicy: Always
+                      args:
+                        - -c
+                        - ./experiments -name rds-instance-reboot
+                      command:
+                        - /bin/bash
+                      spec:
+                        components:
+                          statusCheckTimeouts:
+                            delay: 2
+                            timeout: 400
+                          env:
+                            - name: TOTAL_CHAOS_DURATION
+                              value: "30"
+                            - name: RAMP_TIME
+                              value: ""
+                            - name: CHAOS_INTERVAL
+                              value: "10"
+                            - name: CLUSTER_NAME
+                              value: ''
+                            - name: RDS_INSTANCE_IDENTIFIER
+                              value: ''
+                            - name: REGION
+                              value: ''
+                            - name: FAILOVER
+                              value: 'false'
+                            - name: INSTANCE_AFFECTED_PERC
+                              value: '100'
+                            - name: AWS_SHARED_CREDENTIALS_FILE
+                              value: /tmp/cloud_config.yml
+                            - name: DEFAULT_HEALTH_CHECK
+                              value: 'false'
+                            - name: SEQUENCE
+                              value: 'parallel'
+                          secrets:
+                            - name: cloud-secret
+                              mountPath: /tmp/
+                        probe:
+                          - name: pre-healthcheck
+                            type: cmdProbe
+                            mode: SOT
+                            runProperties:
+                              probeTimeout: 5s
+                              retry: 0
+                              interval: 1s
+                              stopOnFailure: false
+                            cmdProbe/inputs:
+                              command: ./healthcheck -name aws-rds-pre-chaos
+                              source:
+                                image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                                inheritInputs: true
+                                volumeMount:
+                                  - mountPath: /var/run/secrets/eks.amazonaws.com/serviceaccount
+                                    name: aws-iam-token
+                                    readOnly: true
+                                volumes:
+                                  - name: aws-iam-token
+                                    projected:
+                                      defaultMode: 420
+                                      sources:
+                                        - serviceAccountToken:
+                                            audience: sts.amazonaws.com
+                                            expirationSeconds: 86400
+                                            path: token
+                              comparator:
+                                type: string
+                                criteria: contains
+                                value: "[P000]"
+                          - name: post-healthcheck
+                            type: cmdProbe
+                            mode: EOT
+                            runProperties:
+                              probeTimeout: 5s
+                              retry: 0
+                              interval: 1s
+                              stopOnFailure: false
+                            cmdProbe/inputs:
+                              command: ./healthcheck -name aws-rds-post-chaos
+                              source:
+                                image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                                inheritInputs: true
+                                volumeMount:
+                                  - mountPath: /var/run/secrets/eks.amazonaws.com/serviceaccount
+                                    name: aws-iam-token
+                                    readOnly: true
+                                volumes:
+                                  - name: aws-iam-token
+                                    projected:
+                                      defaultMode: 420
+                                      sources:
+                                        - serviceAccountToken:
+                                            audience: sts.amazonaws.com
+                                            expirationSeconds: 86400
+                                            path: token
+                              comparator:
+                                type: string
+                                criteria: contains
+                                value: "[P000]"
+      metadata:
+        labels:
+          weight: "10"
+      container:
+        name: ""
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+        command:
+          - ./chaos-checker
+        args:
+          - -file=/tmp/chaosengine-rds-instance-reboot-4yf.yaml
+          - -saveName=/tmp/engine-name
+    - name: cleanup-chaos-resources
+      container:
+        name: ""
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+        command:
+          - sh
+          - -c
+        args:
+          - kubectl delete chaosengine -l workflow_run_id={{workflow.uid}} -n
+            {{workflow.parameters.adminModeNamespace}}
+  entrypoint: custom-chaos
+  arguments:
+    parameters:
+      - name: adminModeNamespace
+        value: litmus
+  serviceAccountName: argo-chaos
+  securityContext:
+    runAsUser: 1000
+    runAsNonRoot: true

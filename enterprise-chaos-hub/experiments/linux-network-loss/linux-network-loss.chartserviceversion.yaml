@@ -1,0 +1,29 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: linux-network-loss
+  version: 0.1.0
+  annotations:
+    categories: linux-network-loss
+    chartDescription: Injects network loss chaos into a Linux machine.
+spec:
+  displayName: Linux Network Loss
+  categoryDescription: >-
+    This fault injects network loss to a Linux machine.
+
+    - Simulates loss of connectivity access by blocking the network requests on the machine.
+  faults:
+    - name: linux-network-loss
+      description: Injects network loss chaos into a Linux machine.
+  keywords:
+    - Linux
+    - GCP
+    - Azure
+  plan:
+    - team
+  platforms:
+    - Linux
+  icon:
+    - url:
+      mediatype: ""

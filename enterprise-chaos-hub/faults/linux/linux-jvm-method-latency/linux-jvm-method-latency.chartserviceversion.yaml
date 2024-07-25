@@ -1,0 +1,32 @@
+---
+apiVersion: litmuchaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  createdAt: 2023-03-19T10:28:08Z
+  name: linux-jvm-method-latency
+  version: 0.1.0
+  annotations:
+    categories: Linux
+    vendor: Harness
+spec:
+  displayName: linux-jvm-method-latency
+  categoryDescription: |
+    This fault injects JVM method latency for a Java process executing in a Linux machine.
+  keywords:
+    - Linux
+    - JVM
+    - Latency
+  plan:
+    - team
+  maturity: alpha
+  labels:
+    app.kubernetes.io/component: chartserviceversion
+    app.kubernetes.io/version: ci
+  links:
+    - name: Documentation
+      url: https://developer.harness.io/docs/chaos-engineering/technical-reference/chaos-faults/linux/
+  icon:
+    - url:
+      mediatype: ""
+  experiments:
+    - linux-jvm-method-latency

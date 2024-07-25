@@ -1,0 +1,33 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: nginx-pod-memory-hog-exec
+  version: 0.1.0
+  annotations:
+    categories: nginx-pod-memory-hog-exec
+    chartDescription: Injects memory hog by running dd via exec command on pod(s) identified by specified labels ("app=nginx" by default)
+spec:
+  displayName: Nginx Pod Memory Hog Exec
+  categoryDescription: >
+    Injects memory hog by running dd via exec command on pod(s) identified by specified labels ("app=nginx" by default)
+  faults:
+    - name: pod-memory-hog-exec
+      description: Injects memory hog by running dd via exec command on pod(s) identified by specified labels ("app=nginx" by default)
+  keywords:
+    - Kubernetes
+  plan:
+    - free
+  platforms:
+    - GKE
+    - Konvoy
+    - Packet(Kubeadm)
+    - Minikube
+    - EKS
+    - AKS
+    - Kind
+    - Rancher
+    - OpenShift(OKD)
+  icon:
+    - url:
+      mediatype: ""

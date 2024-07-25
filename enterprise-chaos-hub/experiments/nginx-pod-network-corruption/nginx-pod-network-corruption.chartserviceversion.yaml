@@ -1,0 +1,29 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: nginx-pod-network-corruption
+  version: 0.1.0
+  annotations:
+    categories: nginx-pod-network-corruption
+    chartDescription: Injects network packet corruption on pod(s) identified by the specified labels ("app=nginx" by default)
+spec:
+  displayName: Nginx Pod Network Corruption
+  categoryDescription: >
+    Injects network packet corruption on pod(s) identified by the specified labels ("app=nginx" by default)
+  faults:
+    - name: pod-network-corruption
+      description: Injects network packet corruption on pod(s) identified by the specified labels ("app=nginx" by default)
+  keywords:
+    - Kubernetes
+  plan:
+    - free
+  platforms:
+    - GKE
+    - Packet(Kubeadm)
+    - Minikube
+    - EKS
+    - AKS
+  icon:
+    - url:
+      mediatype: ""

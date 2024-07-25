@@ -1,0 +1,102 @@
+---
+kind: Workflow
+apiVersion: argoproj.io/v1alpha1
+metadata:
+  name: boutique-cart-delete
+  namespace: litmus
+
+spec:
+  templates:
+    - name: custom-chaos
+      steps:
+        - - name: pod-delete
+            template: pod-delete
+    - name: pod-delete
+      inputs:
+        artifacts:
+          - name: pod-delete
+            path: /tmp/chaosengine-pod-delete.yaml
+            raw:
+              data: |
+                apiVersion: litmuschaos.io/v1alpha1
+                kind: ChaosEngine
+                metadata:
+                  namespace: "{{workflow.parameters.adminModeNamespace}}"
+                  generateName: pod-delete
+                  labels:
+                    name: pod-delete
+                    app.kubernetes.io/part-of: litmus
+                    app.kubernetes.io/component: experiment-job
+                    app.kubernetes.io/version: ci
+                spec:
+                  appinfo:
+                    appns: litmus
+                    applabel: app=cartservice
+                    appkind: deployment
+                  engineState: active
+                  chaosServiceAccount: litmus-admin
+                  experiments:
+                    - name: pod-delete
+                      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                      imagePullPolicy: Always
+                      args:
+                        - -c
+                        - ./experiments -name pod-delete
+                      command:
+                        - /bin/bash
+                      spec:
+                        components:
+                          env:
+                            - name: TOTAL_CHAOS_DURATION
+                              value: "30"
+                            - name: RAMP_TIME
+                              value: ""
+                            - name: FORCE
+                              value: "true"
+                            - name: CHAOS_INTERVAL
+                              value: "10"
+                            - name: PODS_AFFECTED_PERC
+                              value: ""
+                            - name: TARGET_PODS
+                              value: ""
+                            - name: SEQUENCE
+                              value: parallel
+                        probe:
+                          - name: http-cartservice-probe
+                            type: httpProbe
+                            mode: Continuous
+                            runProperties:
+                              probeTimeout: 5s
+                              retry: 1
+                              interval: 1s
+                              stopOnFailure: false
+                            httpProbe/inputs:
+                              url: http://frontend/cart
+                              method:
+                                get:
+                                  criteria: ==
+                                  responseCode: "200"
+                              responseTimeout: 15
+                  annotationCheck: "false"
+      metadata:
+        labels:
+          weight: "10"
+      container:
+        name: ""
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+        command:
+          - ./chaos-checker
+        args:
+          - -file=/tmp/chaosengine-pod-delete.yaml
+          - -saveName=/tmp/engine-name
+  entrypoint: custom-chaos
+  arguments:
+    parameters:
+      - name: adminModeNamespace
+        value: litmus
+  serviceAccountName: argo-chaos
+  podGC:
+    strategy: OnWorkflowCompletion
+  securityContext:
+    runAsUser: 1000
+    runAsNonRoot: true

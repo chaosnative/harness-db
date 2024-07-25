@@ -1,0 +1,27 @@
+---
+apiVersion: litmuchaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: aws-ecs-container-volume-detach
+  version: 0.1.0
+  annotations:
+    categories: aws-ecs-container-volume-detach
+    chartDescription: Injects ecs container volume detach chaos on a target ECS fargate service/task for a specified duration
+spec:
+  displayName: AWS ECS Container Volume Detach
+  categoryDescription: >
+    Injects ECS container volume detach chaos on a target ECS service for a specified duration
+  faults:
+    - name: ecs-fargate-cpu-hog
+      description: Injects ECS container volume detach chaos on a target ECS service for a specified duration
+  keywords:
+    - AWS
+  platforms:
+    - GKE
+    - Minikube
+    - Packet(Kubeadm)
+    - EKS
+    - AKS
+  icon:
+    - url:
+      mediatype: ""

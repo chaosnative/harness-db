@@ -1,0 +1,29 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: aws-ecs-container-network-loss
+  version: 0.1.0
+  annotations:
+    categories: aws-ecs-container-network-loss
+    chartDescription: Injects network loss on an ECS container that runs a given task
+spec:
+  displayName: AWS ECS Container Network Loss
+  categoryDescription: >
+    Injects network loss on an ECS container that runs a given task
+  faults:
+    - name: ecs-container-network-loss
+      description: Injects network loss on an ECS container that runs a given task
+  keywords:
+    - AWS
+  plan:
+    - team
+  platforms:
+    - GKE
+    - Minikube
+    - Packet(Kubeadm)
+    - EKS
+    - AKS
+  icon:
+    - url:
+      mediatype: ""

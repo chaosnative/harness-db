@@ -1,0 +1,136 @@
+---
+kind: Workflow
+apiVersion: argoproj.io/v1alpha1
+metadata:
+  name: alb-az-down-1658828120
+  namespace: litmus
+spec:
+  templates:
+    - name: custom-chaos
+      steps:
+        - - name: alb-az-down-1ap
+            template: alb-az-down-1ap
+        - - name: cleanup-chaos-resources
+            template: cleanup-chaos-resources
+
+    - name: alb-az-down-1ap
+      inputs:
+        artifacts:
+          - name: alb-az-down-1ap
+            path: /tmp/chaosengine-alb-az-down-1ap.yaml
+            raw:
+              data: |
+                apiVersion: litmuschaos.io/v1alpha1
+                kind: ChaosEngine
+                metadata:
+                  namespace: "{{workflow.parameters.adminModeNamespace}}"
+                  generateName: alb-az-down-1ap
+                  labels:
+                    name: alb-az-down
+                    app.kubernetes.io/part-of: litmus
+                    app.kubernetes.io/component: experiment-job
+                    app.kubernetes.io/enableAWSAccessViaSecrets: disable
+                    app.kubernetes.io/version: ci
+                spec:
+                  engineState: active
+                  chaosServiceAccount: litmus-admin
+                  experiments:
+                    - name: alb-az-down
+                      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                      imagePullPolicy: Always
+                      args:
+                        - -c
+                        - ./experiments -name alb-az-down
+                      command:
+                        - /bin/bash
+                      spec:
+                        components:
+                          env:
+                            - name: TOTAL_CHAOS_DURATION
+                              value: "30"
+                            - name: RAMP_TIME
+                              value: ""
+                            - name: CHAOS_INTERVAL
+                              value: "30"
+                            - name: LOAD_BALANCER_ARN
+                              value: ""
+                            - name: REGION
+                              value: ""
+                            - name: SEQUENCE
+                              value: parallel
+                            - name: ZONES
+                              value: ""
+                            - name: AWS_SHARED_CREDENTIALS_FILE
+                              value: /tmp/cloud_config.yml
+                            - name: DEFAULT_HEALTH_CHECK
+                              value: 'false'
+                          secrets:
+                            - name: cloud-secret
+                              mountPath: /tmp/
+                        probe:
+                          - name: healthcheck
+                            type: cmdProbe
+                            mode: Edge
+                            runProperties:
+                              probeTimeout: 5s
+                              retry: 0
+                              interval: 1s
+                              stopOnFailure: false
+                            cmdProbe/inputs:
+                              command: ./healthcheck -name aws-alb
+                              source:
+                                image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                                inheritInputs: true
+                                volumeMount:
+                                  - mountPath: /var/run/secrets/eks.amazonaws.com/serviceaccount
+                                    name: aws-iam-token
+                                    readOnly: true
+                                volumes:
+                                  - name: aws-iam-token
+                                    projected:
+                                      defaultMode: 420
+                                      sources:
+                                        - serviceAccountToken:
+                                            audience: sts.amazonaws.com
+                                            expirationSeconds: 86400
+                                            path: token
+                              comparator:
+                                type: string
+                                criteria: contains
+                                value: "[P000]"
+                  annotationCheck: "false"
+
+      metadata:
+        labels:
+          weight: "10"
+      container:
+        name: ""
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+        command:
+          - ./chaos-checker
+        args:
+          - -file=/tmp/chaosengine-alb-az-down-1ap.yaml
+          - -saveName=/tmp/engine-name
+
+    - name: cleanup-chaos-resources
+      container:
+        name: ""
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+        command:
+          - sh
+          - -c
+        args:
+          - "kubectl delete chaosengine -l 'instance_id in
+            (6c836c65-aaa8-44d6-8b83-9a481bb1c99f, )' -n
+            {{workflow.parameters.adminModeNamespace}} "
+  entrypoint: custom-chaos
+  arguments:
+    parameters:
+      - name: adminModeNamespace
+        value: litmus
+  serviceAccountName: argo-chaos
+  podGC:
+    strategy: OnWorkflowCompletion
+  securityContext:
+    runAsUser: 1000
+    runAsNonRoot: true

@@ -1,0 +1,63 @@
+---
+packageName: linux
+experiments:
+  - name: linux-cpu-stress
+    CSV: linux-cpu-stress.chartserviceversion.yaml
+    desc: "linux-cpu-stress"
+  - name: linux-process-kill
+    CSV: linux-process-kill.chartserviceversion.yaml
+    desc: "linux-process-kill"
+  - name: linux-service-restart
+    CSV: linux-service-restart.chartserviceversion.yaml
+    desc: "linux-service-restart"
+  - name: linux-time-chaos
+    CSV: linux-time-chaos.chartserviceversion.yaml
+    desc: "linux-time-chaos"
+  - name: linux-network-latency
+    CSV: linux-network-latency.chartserviceversion.yaml
+    desc: "linux-network-latency"
+  - name: linux-network-loss
+    CSV: linux-network-loss.chartserviceversion.yaml
+    desc: "linux-network-loss"
+  - name: linux-network-corruption
+    CSV: linux-network-corruption.chartserviceversion.yaml
+    desc: "linux-network-corruption"
+  - name: linux-network-duplication
+    CSV: linux-network-duplication.chartserviceversion.yaml
+    desc: "linux-network-duplication"
+  - name: linux-network-rate-limit
+    CSV: linux-network-rate-limit.chartserviceversion.yaml
+    desc: "linux-network-rate-limit"
+  - name: linux-dns-error
+    CSV: linux-dns-error.chartserviceversion.yaml
+    desc: "linux-dns-error"
+  - name: linux-dns-spoof
+    CSV: linux-dns-spoof.chartserviceversion.yaml
+    desc: "linux-dns-spoof"
+  - name: linux-memory-stress
+    CSV: linux-memory-stress.chartserviceversion.yaml
+    desc: "linux-memory-stress"
+  - name: linux-disk-io-stress
+    CSV: linux-disk-io-stress.chartserviceversion.yaml
+    desc: "linux-disk-io-stress"
+  - name: linux-disk-fill
+    CSV: linux-disk-fill.chartserviceversion.yaml
+    desc: "linux-disk-fill"
+  - name: linux-jvm-cpu-stress
+    CSV: linux-jvm-cpu-stress.chartserviceversion.yaml
+    desc: "linux-jvm-cpu-stress"
+  - name: linux-jvm-memory-stress
+    CSV: linux-jvm-memory-stress.chartserviceversion.yaml
+    desc: "linux-jvm-memory-stress"
+  - name: linux-jvm-method-exception
+    CSV: linux-jvm-method-exception.chartserviceversion.yaml
+    desc: "linux-jvm-method-exception"
+  - name: linux-jvm-method-latency
+    CSV: linux-jvm-method-latency.chartserviceversion.yaml
+    desc: "linux-jvm-method-latency"
+  - name: linux-jvm-modify-return
+    CSV: linux-jvm-modify-return.chartserviceversion.yaml
+    desc: "linux-jvm-modify-return"
+  - name: linux-jvm-trigger-gc
+    CSV: linux-jvm-trigger-gc.chartserviceversion.yaml
+    desc: "linux-jvm-trigger-gc"

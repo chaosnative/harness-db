@@ -1,0 +1,37 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  createdAt: 2022-07-18T10:28:08Z
+  name: ecs-container-http-status-code
+  version: 0.1.0
+  annotations:
+    categories: AWS
+    vendor: Harness
+spec:
+  displayName: ECS Container HTTP Status Code
+  categoryDescription: |
+    ECS container HTTP status code fault disrupts the state of AWS ECS service. This fault modifies the HTTP status code for a specified task container running on the ECS cluster.
+    - Modifies the HTTP status code in the task container running on the ECS Cluster.
+    - It helps to check the response of the task/application running on the ECS cluster when subject to modified HTTP status codes.
+  keywords:
+    - AWS
+  platforms:
+    - GKE
+    - Minikube
+    - EKS
+    - AKS
+  plan:
+    - team
+  experiments:
+    - aws-ecs-container-http-status-code
+  minKubeVersion: 1.12.0
+  labels:
+    app.kubernetes.io/component: chartserviceversion
+    app.kubernetes.io/version: ci
+  links:
+    - name: Documentation
+      url: https://docs.harness.io/category/kl0mxwpfw1-hce-category
+  icon:
+    - url:
+      mediatype: ""

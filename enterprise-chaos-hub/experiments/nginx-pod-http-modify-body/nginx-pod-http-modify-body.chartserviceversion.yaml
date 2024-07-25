@@ -1,0 +1,25 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: nginx-pod-http-modify-body
+  version: 0.1.0
+  annotations:
+    categories: nginx-pod-http-modify-body
+    chartDescription: Injects erroneous body in HTTP responses on pod(s) identified by the specified labels ("app=nginx" by default)
+spec:
+  displayName: Nginx Pod HTTP Modify Body
+  categoryDescription: >
+    Injects erroneous body in HTTP responses on pod(s) identified by the specified labels ("app=nginx" by default)
+  faults:
+    - name: pod-http-modify-body
+      description: Injects erroneous body in HTTP responses on pod(s) identified by the specified labels ("app=nginx" by default)
+  keywords:
+    - Kubernetes
+  plan:
+    - free
+  platforms:
+    - "Minikube"
+  icon:
+    - url:
+      mediatype: ""

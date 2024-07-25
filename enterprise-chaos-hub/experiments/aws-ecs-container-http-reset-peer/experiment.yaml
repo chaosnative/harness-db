@@ -1,0 +1,144 @@
+---
+kind: Workflow
+apiVersion: argoproj.io/v1alpha1
+metadata:
+  name: ecs-http-reset-peer-1661942519
+  namespace: litmus
+
+spec:
+  templates:
+    - name: custom-chaos
+      steps:
+        - - name: ecs-http-reset-peer-b8w
+            template: ecs-http-reset-peer-b8w
+        - - name: cleanup-chaos-resources
+            template: cleanup-chaos-resources
+    - name: ecs-http-reset-peer-b8w
+      inputs:
+        artifacts:
+          - name: ecs-http-reset-peer-b8w
+            path: /tmp/chaosengine-ecs-http-reset-peer-b8w.yaml
+            raw:
+              data: |
+                apiVersion: litmuschaos.io/v1alpha1
+                kind: ChaosEngine
+                metadata:
+                  namespace: "{{workflow.parameters.adminModeNamespace}}"
+                  generateName: ecs-http-reset-peer-b8w
+                  labels:
+                    name: ecs-http-reset-peer
+                    app.kubernetes.io/part-of: litmus
+                    app.kubernetes.io/component: experiment-job
+                    app.kubernetes.io/enableAWSAccessViaSecrets: disable
+                    app.kubernetes.io/version: ci
+                spec:
+                  engineState: active
+                  chaosServiceAccount: litmus-admin
+                  experiments:
+                    - name: ecs-http-reset-peer
+                      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                      imagePullPolicy: Always
+                      args:
+                        - -c
+                        - ./experiments -name ecs-container-http-reset-peer
+                      command:
+                        - /bin/bash
+                      spec:
+                        components:
+                          env:
+                            - name: TOTAL_CHAOS_DURATION
+                              value: "60"
+                            - name: CLUSTER_NAME
+                              value: ''
+                            - name: SERVICE_NAME
+                              value: ''
+                            - name: RAMP_TIME
+                              value: ""
+                            - name: REGION
+                              value: ""
+                            - name: TASK_REPLICA_ID
+                              value: ""
+                            - name: TASK_REPLICA_AFFECTED_PERC
+                              value: '100'
+                            - name: NETWORK_INTERFACE
+                              value: eth0
+                            - name: TARGET_SERVICE_PORT
+                              value: "80"
+                            - name: RESET_TIMEOUT
+                              value: "0"
+                            - name: SEQUENCE
+                              value: 'parallel'
+                            - name: PROXY_PORT
+                              value: '20000'
+                            - name: AWS_SHARED_CREDENTIALS_FILE
+                              value: /tmp/cloud_config.yml
+                          secrets:
+                            - name: cloud-secret
+                              mountPath: /tmp/
+                        probe:
+                          - name: healthcheck
+                            type: cmdProbe
+                            mode: Edge
+                            runProperties:
+                              probeTimeout: 5s
+                              retry: 0
+                              interval: 1s
+                              stopOnFailure: false
+                            cmdProbe/inputs:
+                              command: ./healthcheck -name aws-ecs-container
+                              source:
+                                image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                                inheritInputs: true
+                                volumeMount:
+                                  - mountPath: /var/run/secrets/eks.amazonaws.com/serviceaccount
+                                    name: aws-iam-token
+                                    readOnly: true
+                                volumes:
+                                  - name: aws-iam-token
+                                    projected:
+                                      defaultMode: 420
+                                      sources:
+                                        - serviceAccountToken:
+                                            audience: sts.amazonaws.com
+                                            expirationSeconds: 86400
+                                            path: token
+                              comparator:
+                                type: string
+                                criteria: contains
+                                value: "[P000]"
+      metadata:
+        labels:
+          weight: "10"
+      container:
+        name: ""
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+        command:
+          - ./chaos-checker
+        args:
+          - -file=/tmp/chaosengine-ecs-http-reset-peer-b8w.yaml
+          - -saveName=/tmp/engine-name
+    - name: cleanup-chaos-resources
+      container:
+        name: ""
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+        command:
+          - sh
+          - -c
+        args:
+          - "kubectl delete chaosengine -l 'instance_id in
+            (ff79ac4b-0d48-43e8-a330-dc2ad6e72fe0, )' -n
+            {{workflow.parameters.adminModeNamespace}} "
+  entrypoint: custom-chaos
+  arguments:
+    parameters:
+      - name: adminModeNamespace
+        value: litmus
+  serviceAccountName: argo-chaos
+  podGC:
+    strategy: OnWorkflowCompletion
+  securityContext:
+    runAsUser: 1000
+    runAsNonRoot: true
+status:
+  startedAt:
+  finishedAt:

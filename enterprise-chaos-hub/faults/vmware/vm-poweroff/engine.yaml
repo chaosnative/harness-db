@@ -1,0 +1,78 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChaosEngine
+metadata:
+  name: vmware-vm-poweroff
+  namespace: default
+  labels:
+    name: vmware-vm-poweroff
+    app.kubernetes.io/part-of: litmus
+    app.kubernetes.io/component: experiment-job
+    app.kubernetes.io/version: ci
+spec:
+  engineState: "active"
+  terminationGracePeriodSeconds: 30
+  chaosServiceAccount: litmus-admin
+  experiments:
+    - name: vmware-vm-poweroff
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+      imagePullPolicy: Always
+      args:
+        - -c
+        - ./experiments -name vm-poweroff
+      spec:
+        components:
+          env:
+            - name: TOTAL_CHAOS_DURATION
+              value: "30"
+
+            - name: CHAOS_INTERVAL
+              value: "30"
+
+            - name: RAMP_TIME
+              value: ""
+
+            - name: VCENTERSERVER
+              valueFrom:
+                secretKeyRef:
+                  name: vcenter-secret
+                  key: VCENTERSERVER
+
+            - name: VCENTERUSER
+              valueFrom:
+                secretKeyRef:
+                  name: vcenter-secret
+                  key: VCENTERUSER
+
+            - name: VCENTERPASS
+              valueFrom:
+                secretKeyRef:
+                  name: vcenter-secret
+                  key: VCENTERPASS
+
+            - name: APP_VM_MOIDS
+              value: ""
+
+            - name: SEQUENCE
+              value: "parallel"
+
+            - name: DEFAULT_HEALTH_CHECK
+              value: "false"
+        probe:
+          - name: healthcheck
+            type: cmdProbe
+            mode: Edge
+            runProperties:
+              probeTimeout: 20s
+              retry: 0
+              interval: 1s
+              stopOnFailure: false
+            cmdProbe/inputs:
+              command: ./healthcheck -name vmware-vm
+              source:
+                image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                inheritInputs: true
+              comparator:
+                type: string
+                criteria: contains
+                value: "[P000]"

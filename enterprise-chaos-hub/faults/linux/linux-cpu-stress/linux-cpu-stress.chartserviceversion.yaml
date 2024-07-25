@@ -1,0 +1,34 @@
+---
+apiVersion: litmuchaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  createdAt: 2023-03-19T10:28:08Z
+  name: linux-cpu-stress
+  version: 0.1.0
+  annotations:
+    categories: Linux
+    vendor: Harness
+spec:
+  displayName: linux-cpu-stress
+  categoryDescription: |
+    This fault injects CPU stress into a Linux machine.
+    - Induces CPU consumption and exhaustion on the target Linux machines.
+    - Simulates a lack of CPU for processes running on the application, which degrades their performance.
+    - Simulates slow application traffic or exhaustion of the resources, leading to degradation in the performance of processes on the machine.
+  keywords:
+    - Linux
+    - CPU
+  plan:
+    - team
+  maturity: alpha
+  labels:
+    app.kubernetes.io/component: chartserviceversion
+    app.kubernetes.io/version: ci
+  links:
+    - name: Documentation
+      url: https://developer.harness.io/docs/chaos-engineering/technical-reference/chaos-faults/linux/
+  icon:
+    - url:
+      mediatype: ""
+  experiments:
+    - linux-cpu-stress

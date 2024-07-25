@@ -1,0 +1,13 @@
+---
+apiVersion: litmuchaos.io/v1alpha1
+kind: LinuxFault
+metadata:
+  name: linux-cpu-stress
+  labels:
+    name: cpu-stress
+spec:
+  stressChaos/inputs:
+    load: 100
+    workers: 1
+    duration: 30s
+    rampTime: ""

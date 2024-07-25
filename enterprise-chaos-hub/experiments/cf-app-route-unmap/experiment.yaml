@@ -1,0 +1,29 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: LinuxChaosExperiment
+metadata:
+  name: cf-app-route-unmap-a89
+  labels:
+    context: cf-app-route-unmap
+    name: cf-app-route-unmap-a89
+spec:
+  steps:
+    - - name: cf-app-route-unmap-a89
+  tasks:
+    - name: cf-app-route-unmap-a89
+      taskType: "chaos"
+      weight: 10
+      definition:
+        chaos:
+          experiment: cf-app-route-unmap
+          cfAppRouteUnmap/inputs:
+            duration: 30s
+            faultInjectorLocation: "local"
+            app: ""
+            organization: ""
+            space: ""
+            host: ""
+            path: ""
+            port: ""
+            faultInjectorPort: 50320
+            skipSSLValidation: false

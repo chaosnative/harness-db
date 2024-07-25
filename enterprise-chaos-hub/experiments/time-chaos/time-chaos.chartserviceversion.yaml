@@ -1,0 +1,26 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: time-chaos
+  version: 0.1.0
+  annotations:
+    categories: time-chaos
+    chartDescription: Time chaos fault alters the system time of the Kubernetes pod container based on a given offset. This fault injects time chaos based on label and namespace selectors.
+spec:
+  displayName: Time Chaos
+  categoryDescription: >
+    Time chaos fault alters the system time of the Kubernetes pod container based on a given offset. This fault injects time chaos based on label and namespace selectors.
+  faults:
+    - name: time-chaos
+      description: Time chaos fault alters the system time of the Kubernetes pod container based on a given offset. This fault injects time chaos based on label and namespace selectors.
+  keywords:
+    - Kubernetes
+  plan:
+    - free
+  platforms:
+    - GKE
+    - Minikube
+  icon:
+    - url:
+      mediatype: ""

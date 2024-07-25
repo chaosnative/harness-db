@@ -1,0 +1,30 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: k8s-node-network-latency
+  version: 0.1.0
+  annotations:
+    categories: k8s-node-network-latency
+    chartDescription: Injects network latency on a given interface in the target Kubernetes node for the specified duration
+spec:
+  displayName: Kubernetes Node Network Latency
+  categoryDescription: >
+    Injects network latency on a given interface in the target Kubernetes node for the specified duration
+  faults:
+    - name: node-network-latency
+      description: Injects network latency on a given interface in the target Kubernetes node for the specified duration
+  keywords:
+    - Kubernetes
+  plan:
+    - free
+  platforms:
+    - GKE
+    - AWS(KOPS)
+    - Packet(Kubeadm)
+    - Konvoy
+    - EKS
+    - AKS
+  icon:
+    - url:
+      mediatype: ""

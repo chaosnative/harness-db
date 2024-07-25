@@ -1,0 +1,135 @@
+---
+kind: Workflow
+apiVersion: argoproj.io/v1alpha1
+metadata:
+  name: pod-cpu-hog-1658477155
+  namespace: litmus
+
+spec:
+  templates:
+    - name: custom-chaos
+      steps:
+        - - name: pod-cpu-hog-wmv
+            template: pod-cpu-hog-wmv
+        - - name: cleanup-chaos-resources
+            template: cleanup-chaos-resources
+
+    - name: pod-cpu-hog-wmv
+      inputs:
+        artifacts:
+          - name: pod-cpu-hog-wmv
+            path: /tmp/chaosengine-pod-cpu-hog-wmv.yaml
+            raw:
+              data: |
+                apiVersion: litmuschaos.io/v1alpha1
+                kind: ChaosEngine
+                metadata:
+                  namespace: "{{workflow.parameters.adminModeNamespace}}"
+                  generateName: pod-cpu-hog-wmv
+                  labels:
+                    name: pod-cpu-hog
+                    app.kubernetes.io/part-of: litmus
+                    app.kubernetes.io/component: experiment-job
+                    app.kubernetes.io/runtime-api-usage: "true"
+                    app.kubernetes.io/version: ci
+                spec:
+                  engineState: active
+                  appinfo:
+                    appns: default
+                    applabel: app=nginx
+                    appkind: deployment
+                  chaosServiceAccount: litmus-admin
+                  experiments:
+                    - name: pod-cpu-hog
+                      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                      imagePullPolicy: Always
+                      args:
+                        - -c
+                        - ./experiments -name pod-cpu-hog
+                      command:
+                        - /bin/bash
+                      spec:
+                        components:
+                          env:
+                            - name: TOTAL_CHAOS_DURATION
+                              value: "60"
+                            - name: CPU_CORES
+                              value: "1"
+                            - name: CPU_LOAD
+                              value: "100"
+                            - name: PODS_AFFECTED_PERC
+                              value: ""
+                            - name: RAMP_TIME
+                              value: ""
+                            - name: LIB_IMAGE
+                              value: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                            - name: STRESS_IMAGE
+                              value: alexeiled/stress-ng:latest-ubuntu
+                            - name: CONTAINER_RUNTIME
+                              value: 'containerd'
+                            - name: SOCKET_PATH
+                              value: '/run/containerd/containerd.sock'
+                            - name: DEFAULT_HEALTH_CHECK
+                              value: 'false'
+                            - name: TARGET_PODS
+                              value: ""
+                            - name: TARGET_CONTAINER
+                              value: ''
+                            - name: NODE_LABEL
+                              value: ""
+                            - name: SEQUENCE
+                              value: parallel
+                        probe:
+                          - name: healthcheck
+                            type: cmdProbe
+                            mode: Edge
+                            runProperties:
+                              probeTimeout: 180s
+                              retry: 0
+                              interval: 1s
+                              stopOnFailure: false
+                            cmdProbe/inputs:
+                              command: ./healthcheck -name pod-level
+                              source:
+                                image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                                inheritInputs: true
+                              comparator:
+                                type: string
+                                criteria: contains
+                                value: "[P000]"
+      metadata:
+        labels:
+          weight: "10"
+      container:
+        name: ""
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+        command:
+          - ./chaos-checker
+        args:
+          - -file=/tmp/chaosengine-pod-cpu-hog-wmv.yaml
+          - -saveName=/tmp/engine-name
+    - name: cleanup-chaos-resources
+      container:
+        name: ""
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+        command:
+          - sh
+          - -c
+        args:
+          - "kubectl delete chaosengine -l 'instance_id in
+            (fd6491b4-acf1-4225-805c-a8926b172080, )' -n
+            {{workflow.parameters.adminModeNamespace}} "
+  entrypoint: custom-chaos
+  arguments:
+    parameters:
+      - name: adminModeNamespace
+        value: litmus
+  serviceAccountName: argo-chaos
+  podGC:
+    strategy: OnWorkflowCompletion
+  securityContext:
+    runAsUser: 1000
+    runAsNonRoot: true
+status:
+  startedAt:
+  finishedAt:

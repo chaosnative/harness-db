@@ -1,0 +1,30 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: spring-boot-app-kill
+  version: 0.1.0
+  annotations:
+    categories: spring-boot-app-kill
+    chartDescription: It targets random pods with a Spring Boot application and allows configuring the assaults to inject app-kill
+spec:
+  displayName: Spring Boot App Kill
+  categoryDescription: >
+    It targets random pods with a Spring Boot application and allows configuring the assaults to inject app-kill
+  faults:
+    - name: spring-boot-app-kill
+      description: It targets random pods with a Spring Boot application and allows configuring the assaults to inject app-kill
+  keywords:
+    - Spring Boot
+  plan:
+    - free
+  platforms:
+    - GKE
+    - AWS(KOPS)
+    - Packet(Kubeadm)
+    - Konvoy
+    - EKS
+    - AKS
+  icon:
+    - url:
+      mediatype: ""

@@ -1,0 +1,29 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: aws-ssm-chaos-by-id
+  version: 0.1.0
+  annotations:
+    categories: aws-ssm-chaos-by-id
+    chartDescription: Injects desired chaos processes (specified by the SSM document) within EC2 instance specified by ID
+spec:
+  displayName: AWS SSM Chaos By ID
+  categoryDescription: >
+    Injects desired chaos processes (specified by the SSM document) within EC2 instance specified by ID
+  faults:
+    - name: aws-ssm-chaos-by-id
+      description: Injects desired chaos processes (specified by the SSM document) within EC2 instance specified by ID
+  keywords:
+    - AWS
+  plan:
+    - team
+  platforms:
+    - GKE
+    - Minikube
+    - Packet(Kubeadm)
+    - EKS
+    - AKS
+  icon:
+    - url:
+      mediatype: ""

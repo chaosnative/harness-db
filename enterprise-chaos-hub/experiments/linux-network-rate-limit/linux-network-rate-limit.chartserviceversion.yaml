@@ -1,0 +1,29 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: linux-network-rate-limit
+  version: 0.1.0
+  annotations:
+    categories: linux-network-rate-limit
+    chartDescription: Injects network rate limit chaos into a Linux machine.
+spec:
+  displayName: Linux Network Rate Limit
+  categoryDescription: >-
+    This fault injects network rate limit to a Linux machine.
+
+    - Simulates network connectivity slowness by rate limiting the network on the machine.
+  faults:
+    - name: linux-network-rate-limit
+      description: Injects network rate limit chaos into a Linux machine.
+  keywords:
+    - Linux
+    - GCP
+    - Azure
+  plan:
+    - team
+  platforms:
+    - Linux
+  icon:
+    - url:
+      mediatype: ""

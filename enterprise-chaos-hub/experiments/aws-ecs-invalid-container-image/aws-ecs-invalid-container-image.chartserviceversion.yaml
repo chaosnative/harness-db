@@ -1,0 +1,27 @@
+---
+apiVersion: litmuchaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: aws-ecs-invalid-container-image
+  version: 0.1.0
+  annotations:
+    categories: aws-ecs-invalid-container-image
+    chartDescription: Injects an invalid container image to a target ECS service for a specified duration
+spec:
+  displayName: AWS ECS Invalid Container Image
+  categoryDescription: >
+    Injects an invalid container image to a target ECS service for a specified duration
+  faults:
+    - name: ecs-invalid-container-image
+      description: Injects an invalid container image to a target ECS service for a specified duration
+  keywords:
+    - AWS
+  plan:
+    - team
+  platforms:
+    - GKE
+    - EKS
+    - AKS
+  icon:
+    - url:
+      mediatype: ""

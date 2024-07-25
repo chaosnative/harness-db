@@ -1,0 +1,25 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: vmware-windows-process-kill
+  version: 0.1.0
+  annotations:
+    categories: vmware-windows-process-kill
+    chartDescription: Kills a specified process on the target VMware Windows VMs and wait for the specified duration
+spec:
+  displayName: VMware Windows Process Kill
+  categoryDescription: >
+    Kills a specified process on the target VMware Windows VMs and wait for the specified duration
+  faults:
+    - name: vmware-windows-process-kill
+      description: Kills a specified process on the target VMware Windows VMs
+  keywords:
+    - VMware
+  plan:
+    - team
+  platforms:
+    - VMware
+  icon:
+    - url:
+      mediatype: ""

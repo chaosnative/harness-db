@@ -1,0 +1,46 @@
+---
+apiVersion: litmuchaos.io/v1alpha1
+kind: K8sFault
+metadata:
+  name: pod-delete
+spec:
+  definition:
+    targets:
+      appinfo:
+        applabel: ""
+        appkind: ""
+        appns: ""
+    chaos:
+      experiment: pod-delete
+      serviceAccountName: litmus-admin
+      image: docker.io/harness/chaos-ddcr-faults:main-latest
+      imagePullPolicy: Always
+      env:
+        - name: TOTAL_CHAOS_DURATION
+          value: "30"
+
+        - name: CHAOS_INTERVAL
+          value: "10"
+
+        - name: FORCE
+          value: "false"
+
+        # Period to wait before and after injection of chaos in sec
+        - name: RAMP_TIME
+          value: ""
+
+        ## percentage of total pods to target
+        - name: POD_AFFECTED_PERCENTAGE
+          value: ""
+
+        - name: TARGET_PODS
+          value: ""
+
+        # To select pods on specific node(s)
+        - name: NODE_LABEL
+          value: ""
+
+        ## it defines the sequence of chaos execution for multiple target pods
+        ## supported values: serial, parallel
+        - name: SEQUENCE
+          value: "parallel"

@@ -1,0 +1,25 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: azure-web-app-access-restrict
+  version: 0.1.0
+  annotations:
+    categories: azure-web-app-access-restrict
+    chartDescription: Injects access restriction to the target Azure web app for a specified chaos duration
+spec:
+  displayName: Azure Web App Access Restrict
+  categoryDescription: >
+    Injects access restriction to the target Azure web app for a specified chaos duration
+  faults:
+    - name: azure-web-app-access-restrict
+      description: Injects access restriction to the target Azure web app for a specified chaos duration
+  keywords:
+    - Azure
+  plan:
+    - team
+  platforms:
+    - Azure
+  icon:
+    - url:
+      mediatype: ""

@@ -1,0 +1,33 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  createdAt: 2022-08-31T10:28:08Z
+  name: ec2-dns-chaos
+  version: 0.1.0
+  annotations:
+    categories: AWS
+    vendor: Harness
+spec:
+  displayName: EC2 DNS Chaos
+  categoryDescription: |
+    EC2 DNS chaos fault disrupts the DNS state of the EC2 instance. This fault injects DNS error on the target EC2 instances.
+    - Causes DNS chaos on target EC2 instances.
+    - It helps to check the performance of the application running on the EC2 instance when subject to DNS chaos.
+
+  keywords:
+    - AWS
+  plan:
+    - team
+  platforms:
+    - GKE
+    - EKS
+  experiments:
+    - aws-ec2-dns-chaos
+  minKubeVersion: 1.12.0
+  labels:
+    app.kubernetes.io/component: chartserviceversion
+    app.kubernetes.io/version: ci
+  icon:
+    - url:
+      mediatype: ""

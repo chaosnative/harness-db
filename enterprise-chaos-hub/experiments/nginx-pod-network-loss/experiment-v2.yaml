@@ -1,0 +1,51 @@
+---
+kind: KubernetesChaosExperiment
+apiVersion: litmuschaos.io/v1alpha1
+metadata:
+  name: nginx-pod-network-loss
+  namespace: litmus
+spec:
+  tasks:
+    - name: pod-network-loss-y6pht
+      definition:
+        targets:
+          selectors:
+            workloads:
+              - kind: deployment
+                namespace: default
+                names: nginx
+                labels: ''
+            pods: null
+        chaos:
+          cleanupPolicy: ''
+          experiment: pod-network-loss
+          image: docker.io/harness/chaos-ddcr-faults:main-latest
+          imagePullPolicy: Always
+          labels: null
+          annotations: null
+          command: null
+          args: null
+          serviceAccountName: litmus-admin
+          defaultHealthCheck: false
+          env:
+            - name: TOTAL_CHAOS_DURATION
+              value: "60"
+            - name: NETWORK_PACKET_LOSS_PERCENTAGE
+              value: "100"
+            - name: CONTAINER_RUNTIME
+              value: containerd
+            - name: SOCKET_PATH
+              value: /run/containerd/containerd.sock
+            - name: LIB_IMAGE
+              value: docker.io/harness/chaos-ddcr-faults:main-latest
+            - name: PODS_AFFECTED_PERC
+          probes: null
+          components:
+            resources: {}
+  experimentId: ''
+  experimentRunId: ''
+  steps:
+    - - name: pod-network-loss-y6pht
+        status: ''
+  serviceAccountName: litmus
+  cleanupPolicy: ''

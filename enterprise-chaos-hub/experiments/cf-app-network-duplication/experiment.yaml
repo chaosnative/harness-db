@@ -1,0 +1,36 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: LinuxChaosExperiment
+metadata:
+  name: cf-app-network-duplication-a89
+  labels:
+    context: cf-app-network-duplication
+    name: cf-app-network-duplication-a89
+spec:
+  steps:
+    - - name: cf-app-network-duplication-a89
+  tasks:
+    - name: cf-app-network-duplication-a89
+      taskType: "chaos"
+      weight: 10
+      definition:
+        chaos:
+          experiment: cf-app-network-duplication
+          cfAppNetworkChaos/inputs:
+            duration: 30s
+            faultInjectorLocation: "local"
+            deploymentModel: ""
+            app: ""
+            organization: ""
+            space: ""
+            networkInterface: "eth0"
+            boshDeployment: ""
+            destinationHosts: ""
+            destinationIPs: ""
+            sourcePorts: ""
+            destinationPorts: ""
+            packetDuplicationPercentage: 100
+            instanceAffectedPercentage: 0
+            faultInjectorPort: 50320
+            skipSSLValidation: false
+            rampTime: ""

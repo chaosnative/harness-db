@@ -1,0 +1,25 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: vmware-vm-poweroff
+  version: 0.1.0
+  annotations:
+    categories: vmware-vm-poweroff
+    chartDescription: Injects forced shutdown (poweroff) on the target VMware VM(s) for the specified duration
+spec:
+  displayName: VMware VM Power Off
+  categoryDescription: >
+    Injects forced shutdown (poweroff) on the target VMware VM(s) for the specified duration
+  faults:
+    - name: vmware-vm-poweroff
+      description: Injects forced shutdown (poweroff) on the target VMware VM(s) for the specified duration
+  keywords:
+    - VMware
+  plan:
+    - free
+  platforms:
+    - VMware
+  icon:
+    - url:
+      mediatype: ""

@@ -1,0 +1,12 @@
+---
+packageName: windows
+experiments:
+  - name: windows-cpu-stress
+    CSV: windows-cpu-stress.chartserviceversion.yaml
+    desc: "windows-cpu-stress"
+  - name: windows-memory-stress
+    CSV: windows-memory-stress.chartserviceversion.yaml
+    desc: "windows-memory-stress"
+  - name: windows-blackhole-chaos
+    CSV: windows-blackhole-chaos.chartserviceversion.yaml
+    desc: "windows-blackhole-chaos"

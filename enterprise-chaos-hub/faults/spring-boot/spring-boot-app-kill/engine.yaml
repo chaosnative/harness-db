@@ -1,0 +1,80 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChaosEngine
+metadata:
+  name: spring-boot-app-kill
+  namespace: default
+  labels:
+    name: spring-boot-app-kill
+    app.kubernetes.io/part-of: litmus
+    app.kubernetes.io/component: experiment-job
+    app.kubernetes.io/version: ci
+spec:
+  appinfo:
+    appns: ""
+    applabel: ""
+    appkind: ""
+  # It can be active/stop
+  engineState: "active"
+  terminationGracePeriodSeconds: 30
+  chaosServiceAccount: spring-boot-app-kill-sa
+  experiments:
+    - name: spring-boot-app-kill
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+      imagePullPolicy: Always
+      args:
+        - -c
+        - ./experiments -name spring-boot-app-kill
+      command:
+        - /bin/bash
+      spec:
+        components:
+          env:
+            # port of the spring boot application
+            - name: CM_PORT
+              value: ""
+
+            #it contains number of requests are to be attacked
+            # n value means nth request will be affected
+            - name: CM_LEVEL
+              value: "1"
+
+            # it limits watched packages/classes/methods
+            - name: CM_WATCHED_CUSTOM_SERVICES
+              value: ""
+
+            # provide name of watcher
+            # it supports controller, restController, service, repository, component, webClient
+            - name: CM_WATCHERS
+              value: "restController"
+
+            ## percentage of total pods to target
+            - name: PODS_AFFECTED_PERC
+              value: ""
+
+            ## Period to wait before and after injection of chaos
+            - name: RAMP_TIME
+              value: ""
+
+            ## it defines the sequence of chaos execution for multiple target pods
+            ## supported values: serial, parallel
+            - name: SEQUENCE
+              value: "parallel"
+        probe:
+          - name: healthcheck
+            type: cmdProbe
+            mode: Edge
+            runProperties:
+              probeTimeout: 180s
+              retry: 0
+              interval: 1s
+              stopOnFailure: false
+            cmdProbe/inputs:
+              command: ./healthcheck -name pod-level
+              source:
+                image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                inheritInputs: true
+              comparator:
+                type: string
+                criteria: contains
+                value: "[P000]"

@@ -1,0 +1,90 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChaosEngine
+metadata:
+  name: vmware-dns-chaos
+  namespace: default
+  labels:
+    name: vmware-dns-chaos
+    app.kubernetes.io/part-of: litmus
+    app.kubernetes.io/component: experiment-job
+    app.kubernetes.io/version: ci
+spec:
+  engineState: "active"
+  terminationGracePeriodSeconds: 30
+  chaosServiceAccount: litmus-admin
+  experiments:
+    - name: vmware-dns-chaos
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+      imagePullPolicy: Always
+      args:
+        - -c
+        - ./experiments -name vmware-dns-chaos
+      command:
+        - /bin/bash
+      spec:
+        components:
+          env:
+            - name: VM_NAME
+              value: ""
+
+            - name: VM_USER_NAME
+              value: ""
+
+            - name: VM_PASSWORD
+              value: ""
+
+            - name: PORT
+              value: "54"
+
+            - name: TOTAL_CHAOS_DURATION
+              value: "30"
+
+            - name: CHAOS_INTERVAL
+              value: "10"
+
+            - name: RAMP_TIME
+              value: ""
+
+            - name: GOVC_URL
+              valueFrom:
+                secretKeyRef:
+                  name: vcenter-secret
+                  key: VCENTERSERVER
+
+            - name: GOVC_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: vcenter-secret
+                  key: VCENTERUSER
+
+            - name: GOVC_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: vcenter-secret
+                  key: VCENTERPASS
+
+            - name: GOVC_INSECURE
+              value: "true"
+            - name: SEQUENCE
+              value: "parallel"
+            - name: DEFAULT_HEALTH_CHECK
+              value: "false"
+        probe:
+          - name: healthcheck
+            type: cmdProbe
+            mode: Edge
+            runProperties:
+              probeTimeout: 20s
+              retry: 0
+              interval: 1s
+              stopOnFailure: false
+            cmdProbe/inputs:
+              command: ./healthcheck -name vmware-dns-chaos
+              source:
+                image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                inheritInputs: true
+              comparator:
+                type: string
+                criteria: contains
+                value: "[P000]"

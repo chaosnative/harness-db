@@ -1,0 +1,35 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  createdAt: 2023-02-17T10:28:08Z
+  name: windows-ec2-memory-hog
+  version: 0.1.0
+  annotations:
+    categories: AWS
+    vendor: Harness
+spec:
+  displayName: Windows EC2 Memory Hog
+  categoryDescription: |
+    Windows EC2 memory hog fault disrupts the state of the windows EC2 instance. This fault injects memory hog on the target windows EC2 instances.
+    - Causes memory hog in the target windows EC2 instances.
+    - It helps to check the performance of the application running on the windows EC2 instance when subject to memory stress. keywords:
+    - AWS
+    - Windows
+  platforms:
+    - GKE
+    - EKS
+  plan:
+    - team
+  experiments:
+    - aws-windows-ec2-memory-hog
+  minKubeVersion: 1.12.0
+  labels:
+    app.kubernetes.io/component: chartserviceversion
+    app.kubernetes.io/version: ci
+  links:
+    - name: Documentation
+      url: https://docs.harness.io/category/kl0mxwpfw1-hce-category
+  icon:
+    - url:
+      mediatype: ""

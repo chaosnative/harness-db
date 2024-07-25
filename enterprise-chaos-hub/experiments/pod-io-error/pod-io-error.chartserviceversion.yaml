@@ -1,0 +1,26 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: pod-io-error
+  version: 0.1.0
+  annotations:
+    categories: pod-io-error
+    chartDescription: It injects the IO error on the files present inside the mounted volume. It filters the target pods based on label and namespace selectors.
+spec:
+  displayName: Pod Io Latency
+  categoryDescription: >
+    It injects the IO error on the files present inside the mounted volume. It filters the target pods based on label and namespace selectors..
+  faults:
+    - name: pod-io-error
+      description: It injects the IO error on the files present inside the mounted volume. It filters the target pods based on label and namespace selectors.
+  keywords:
+    - Kubernetes
+  plan:
+    - enterprise
+  platforms:
+    - GKE
+    - Minikube
+  icon:
+    - url:
+      mediatype: ""

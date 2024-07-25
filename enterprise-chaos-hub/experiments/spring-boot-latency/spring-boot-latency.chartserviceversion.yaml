@@ -1,0 +1,30 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: spring-boot-latency
+  version: 0.1.0
+  annotations:
+    categories: spring-boot-latency
+    chartDescription: It targets random pods with a Spring Boot application and allows configuring the assaults to inject latency. It tests the resiliency of the system when some applications are having unexpected faulty behavior.
+spec:
+  displayName: Spring Boot Latency
+  categoryDescription: >
+    It targets random pods with a Spring Boot application and allows configuring the assaults to inject latency. It tests the resiliency of the system when some applications are having unexpected faulty behavior
+  faults:
+    - name: spring-boot-latency
+      description: It targets random pods with a Spring Boot application and allows configuring the assaults to inject latency. It tests the resiliency of the system when some applications are having unexpected faulty behavior
+  keywords:
+    - Spring Boot
+  plan:
+    - free
+  platforms:
+    - GKE
+    - AWS(KOPS)
+    - Packet(Kubeadm)
+    - Konvoy
+    - EKS
+    - AKS
+  icon:
+    - url:
+      mediatype: ""

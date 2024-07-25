@@ -1,0 +1,79 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChaosEngine
+metadata:
+  name: azure-instance-stop
+  namespace: default
+  labels:
+    name: azure-instance-stop
+    app.kubernetes.io/part-of: litmus
+    app.kubernetes.io/component: experiment-job
+    app.kubernetes.io/version: ci
+spec:
+  engineState: "active"
+  terminationGracePeriodSeconds: 30
+  chaosServiceAccount: litmus-admin
+  experiments:
+    - name: azure-instance-stop
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+      imagePullPolicy: Always
+      args:
+        - -c
+        - ./experiments -name azure-instance-stop
+      command:
+        - /bin/bash
+      spec:
+        components:
+          env:
+            - name: TOTAL_CHAOS_DURATION
+              value: "30"
+
+            - name: CHAOS_INTERVAL
+              value: "30"
+
+            # Period to wait before and after injection of chaos in sec
+            - name: RAMP_TIME
+              value: ""
+
+            # provide the target instance name(s) (comma separated if multiple)
+            - name: AZURE_INSTANCE_NAMES
+              value: ""
+
+            # provide the resource group of the instance
+            - name: RESOURCE_GROUP
+              value: ""
+
+            # accepts enable/disable, default is disable
+            - name: SCALE_SET
+              value: ""
+
+            # Provide the path of aks credentials mounted from secret
+            - name: AZURE_AUTH_LOCATION
+              value: "/tmp/azure.auth"
+
+            - name: SEQUENCE
+              value: "parallel"
+
+            - name: DEFAULT_HEALTH_CHECK
+              value: "false"
+          secrets:
+            - name: cloud-secret
+              mountPath: /tmp/
+        probe:
+          - name: healthcheck
+            type: cmdProbe
+            mode: Edge
+            runProperties:
+              probeTimeout: 5s
+              retry: 0
+              interval: 1s
+              stopOnFailure: false
+            cmdProbe/inputs:
+              command: ./healthcheck -name azure-vm
+              source:
+                image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                inheritInputs: true
+              comparator:
+                type: string
+                criteria: contains
+                value: "[P000]"

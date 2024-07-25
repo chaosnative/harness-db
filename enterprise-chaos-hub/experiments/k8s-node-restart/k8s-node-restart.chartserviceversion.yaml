@@ -1,0 +1,30 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: k8s-node-restart
+  version: 0.1.0
+  annotations:
+    categories: k8s-node-restart
+    chartDescription: Injects node restart on the target Kubernetes node
+spec:
+  displayName: Kubernetes Node Restart
+  categoryDescription: >
+    Injects node restart on the target Kubernetes node
+  faults:
+    - name: node-restart
+      description: Injects node restart on the target Kubernetes node
+  keywords:
+    - Kubernetes
+  plan:
+    - free
+  platforms:
+    - GKE
+    - AWS(KOPS)
+    - Packet(Kubeadm)
+    - Konvoy
+    - EKS
+    - AKS
+  icon:
+    - url:
+      mediatype: ""

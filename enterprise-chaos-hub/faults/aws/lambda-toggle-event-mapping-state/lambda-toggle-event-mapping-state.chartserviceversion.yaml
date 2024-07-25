@@ -1,0 +1,34 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  createdAt: 2022-11-11T10:28:08Z
+  name: lambda-toggle-event-mapping-state
+  version: 0.1.0
+  annotations:
+    categories: AWS
+    vendor: Harness
+spec:
+  displayName: Lambda Toggle Event Mapping State
+  categoryDescription: |
+    This fault causes toggle of an event source mapping state for a certain chaos duration.
+    - Causes toggle of event source mapping state to Disabled state for a specific chaos duration.
+    - It helps to check the performance/bhaviour of the lambda function when event source mapping state is Disbled.
+  keywords:
+    - AWS
+  plan:
+    - enterprise
+  platforms:
+    - AWS
+  experiments:
+    - aws-lambda-toggle-event-mapping-state
+  chaosType: infra
+  labels:
+    app.kubernetes.io/component: chartserviceversion
+    app.kubernetes.io/version: ci
+  links:
+    - name: Documentation
+      url: https://docs.harness.io/category/kl0mxwpfw1-hce-category
+  icon:
+    - url:
+      mediatype: ""

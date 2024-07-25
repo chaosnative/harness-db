@@ -1,0 +1,26 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: nginx-pod-network-partition
+  version: 0.1.0
+  annotations:
+    categories: nginx-pod-network-partition
+    chartDescription: Injects network partition on pod(s) identified by the specified label ("app=nginx" by default)
+spec:
+  displayName: Nginx Pod Network Partition
+  categoryDescription: >
+    Injects network partition on pod(s) identified by the specified label ("app=nginx" by default)
+  faults:
+    - name: pod-network-partition
+      description: Injects network partition pod(s) identified by the specified label ("app=nginx" by default)
+  keywords:
+    - Kubernetes
+  plan:
+    - free
+  platforms:
+    - Minikube
+    - Packet(Kubeadm)
+  icon:
+    - url:
+      mediatype: ""

@@ -1,0 +1,23 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: aws-resource-access-restrict
+  version: 0.1.0
+  annotations:
+    categories: aws-resource-access-restrict
+    chartDescription: Injects resource access restrict chaos on a target service for a specified duration
+spec:
+  displayName: AWS Resource Access Restrict
+  categoryDescription: >
+    Injects resource access restrict chaos on an aws service for a specified duration
+  faults:
+    - name: resource-access-restrict
+      description: Injects resource access restrict chaos on a target service for a specified duration
+  keywords:
+    - AWS
+  platforms:
+    - EKS
+  icon:
+    - url:
+      mediatype: ""

@@ -1,0 +1,25 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: azure-disk-loss
+  version: 0.1.0
+  annotations:
+    categories: azure-disk-loss
+    chartDescription: Injects a disk loss on a target Azure VM instance for the specified duration
+spec:
+  displayName: Azure Disk Loss
+  categoryDescription: >
+    Injects a disk loss on a target Azure VM instance for the specified duration
+  faults:
+    - name: azure-disk-loss
+      description: Injects a disk loss on a target Azure VM instance for the specified duration
+  keywords:
+    - Azure
+  plan:
+    - free
+  platforms:
+    - Azure
+  icon:
+    - url:
+      mediatype: ""

@@ -1,0 +1,151 @@
+---
+kind: Workflow
+apiVersion: argoproj.io/v1alpha1
+metadata:
+  name: aws-ssm-chaos-by-id-1658944758
+  namespace: litmus
+
+spec:
+  templates:
+    - name: custom-chaos
+      steps:
+        - - name: aws-ssm-chaos-by-id-gke
+            template: aws-ssm-chaos-by-id-gke
+        - - name: cleanup-chaos-resources
+            template: cleanup-chaos-resources
+    - name: aws-ssm-chaos-by-id-gke
+      inputs:
+        artifacts:
+          - name: aws-ssm-chaos-by-id-gke
+            path: /tmp/chaosengine-aws-ssm-chaos-by-id-gke.yaml
+            raw:
+              data: |
+                apiVersion: litmuschaos.io/v1alpha1
+                kind: ChaosEngine
+                metadata:
+                  namespace: "{{workflow.parameters.adminModeNamespace}}"
+                  generateName: aws-ssm-chaos-by-id-gke
+                  labels:
+                    name: aws-ssm-chaos-by-id
+                    app.kubernetes.io/part-of: litmus
+                    app.kubernetes.io/component: experiment-job
+                    app.kubernetes.io/enableAWSAccessViaSecrets: disable
+                    app.kubernetes.io/version: ci
+                spec:
+                  engineState: active
+                  chaosServiceAccount: litmus-admin
+                  experiments:
+                    - name: aws-ssm-chaos-by-id
+                      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                      imagePullPolicy: Always
+                      args:
+                        - -c
+                        - ./experiments -name aws-ssm-chaos-by-id
+                      command:
+                        - /bin/bash
+                      spec:
+                        components:
+                          env:
+                            - name: TOTAL_CHAOS_DURATION
+                              value: "60"
+                            - name: CHAOS_INTERVAL
+                              value: "60"
+                            - name: RAMP_TIME
+                              value: ""
+                            - name: EC2_INSTANCE_ID
+                              value: ""
+                            - name: REGION
+                              value: ""
+                            - name: SEQUENCE
+                              value: parallel
+                            - name: AWS_SHARED_CREDENTIALS_FILE
+                              value: /tmp/cloud_config.yml
+                            - name: INSTALL_DEPENDENCIES
+                              value: "True"
+                            - name: NUMBER_OF_WORKERS
+                              value: "1"
+                            - name: MEMORY_PERCENTAGE
+                              value: "80"
+                            - name: CPU_CORE
+                              value: "0"
+                            - name: DEFAULT_HEALTH_CHECK
+                              value: 'false'
+                            - name: DOCUMENT_NAME
+                              value: 'LitmusChaos-AWS-SSM-Doc'
+                            - name: DOCUMENT_TYPE
+                              value: 'Command'
+                            - name: DOCUMENT_FORMAT
+                              value: 'YAML'
+                            - name: DOCUMENT_PATH
+                              value: 'Litmus-AWS-SSM-Docs-For-EC2-CPU-Hog.yml'
+                            - name: INSTALL_DEPENDENCIES
+                              value: 'True'
+                          secrets:
+                            - name: cloud-secret
+                              mountPath: /tmp/
+                        probe:
+                          - name: healthcheck
+                            type: cmdProbe
+                            mode: Edge
+                            runProperties:
+                              probeTimeout: 5s
+                              retry: 0
+                              interval: 1s
+                              stopOnFailure: false
+                            cmdProbe/inputs:
+                              command: ./healthcheck -name aws-ssm-by-id
+                              source:
+                                image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                                inheritInputs: true
+                                volumeMount:
+                                  - mountPath: /var/run/secrets/eks.amazonaws.com/serviceaccount
+                                    name: aws-iam-token
+                                    readOnly: true
+                                volumes:
+                                  - name: aws-iam-token
+                                    projected:
+                                      defaultMode: 420
+                                      sources:
+                                        - serviceAccountToken:
+                                            audience: sts.amazonaws.com
+                                            expirationSeconds: 86400
+                                            path: token
+                              comparator:
+                                type: string
+                                criteria: contains
+                                value: "[P000]"
+      metadata:
+        labels:
+          weight: "10"
+      container:
+        name: ""
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+        command:
+          - ./chaos-checker
+        args:
+          - -file=/tmp/chaosengine-aws-ssm-chaos-by-id-gke.yaml
+          - -saveName=/tmp/engine-name
+
+    - name: cleanup-chaos-resources
+      container:
+        name: ""
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+        command:
+          - sh
+          - -c
+        args:
+          - "kubectl delete chaosengine -l 'instance_id in
+            (58ab33b9-5c52-4b8d-9905-2172016ebf5a, )' -n
+            {{workflow.parameters.adminModeNamespace}} "
+
+  entrypoint: custom-chaos
+  arguments:
+    parameters:
+      - name: adminModeNamespace
+        value: litmus
+  serviceAccountName: argo-chaos
+  podGC:
+    strategy: OnWorkflowCompletion
+  securityContext:
+    runAsUser: 1000
+    runAsNonRoot: true

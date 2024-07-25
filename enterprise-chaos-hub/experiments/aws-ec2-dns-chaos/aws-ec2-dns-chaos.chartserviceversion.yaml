@@ -1,0 +1,29 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: aws-ec2-dns-chaos
+  version: 0.1.0
+  annotations:
+    categories: aws-ec2-dns-chaos
+    chartDescription: Injects DNS error on an AWS EC2 instance for a specified chaos duration
+spec:
+  displayName: AWS EC2 DNS Chaos
+  categoryDescription: >
+    Injects DNS error on an AWS EC2 instance for a specified chaos duration
+  faults:
+    - name: aws-ec2-dns-chaos
+      description: Injects DNS error on an AWS EC2 instance for a specified chaos duration
+  keywords:
+    - AWS
+  plan:
+    - team
+  platforms:
+    - GKE
+    - Minikube
+    - Packet(Kubeadm)
+    - EKS
+    - AKS
+  icon:
+    - url:
+      mediatype: ""

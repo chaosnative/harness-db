@@ -1,0 +1,37 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: node-network-latency
+  version: 0.1.0
+  annotations:
+    categories: Kubernetes
+    vendor: Harness
+spec:
+  displayName: Node Network Latency
+  categoryDescription: >
+    Node network latency fault injects network packet latency for the provided nodes through a certain chaos duration.
+  keywords:
+    - Kubernetes
+  plan:
+    - free
+  platforms:
+    - GKE
+    - AWS(KOPS)
+    - Packet(Kubeadm)
+    - Konvoy
+    - EKS
+    - AKS
+  experiments:
+    - k8s-node-network-latency
+  chaosType: infra
+  minKubeVersion: 1.12.0
+  labels:
+    app.kubernetes.io/component: chartserviceversion
+    app.kubernetes.io/version: ci
+  links:
+    - name: Documentation
+      url: https://docs.harness.io/category/kl0mxwpfw1-hce-category
+  icon:
+    - url: ""
+      mediatype: ""

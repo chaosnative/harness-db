@@ -1,0 +1,117 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChaosEngine
+metadata:
+  name: vmware-http-latency
+  namespace: default
+  labels:
+    name: vmware-http-latency
+    app.kubernetes.io/part-of: litmus
+    app.kubernetes.io/component: experiment-job
+    app.kubernetes.io/version: ci
+spec:
+  engineState: "active"
+  terminationGracePeriodSeconds: 30
+  chaosServiceAccount: litmus-admin
+  experiments:
+    - name: vmware-http-latency
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+      imagePullPolicy: Always
+      args:
+        - -c
+        - ./experiments -name vmware-http-latency
+      command:
+        - /bin/bash
+      spec:
+        components:
+          env:
+            # provide lib image
+            - name: LIB_IMAGE
+              value: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+
+            - name: LATENCY
+              value: "" #in ms
+
+            - name: NETWORK_INTERFACE
+              value: "ens160"
+
+            # port of the target service
+            - name: TARGET_SERVICE_PORT
+              value: "80"
+
+            # port on which the proxy will listen
+            - name: PROXY_PORT
+              value: "8080"
+
+            - name: TOXICITY
+              value: "100"
+
+            - name: TOTAL_CHAOS_DURATION
+              value: "60" # in seconds
+
+            - name: CHAOS_INTERVAL
+              value: "60"
+
+            # set chaos interval (in sec) as desired
+            - name: CHAOS_INTERVAL
+              value: '60'
+
+            # Time period to wait before and after injection of chaos in sec
+            - name: RAMP_TIME
+              value: ""
+
+            - name: VM_NAME
+              value: ""
+
+            - name: VM_USER_NAME
+              value: ""
+
+            - name: VM_PASSWORD
+              value: ""
+
+            ## it defines the sequence of chaos execution for multiple target vms
+            ## supported values: serial, parallel
+            - name: SEQUENCE
+              value: "parallel"
+
+            - name: DEFAULT_HEALTH_CHECK
+              value: "false"
+
+            - name: GOVC_URL
+              valueFrom:
+                secretKeyRef:
+                  name: vcenter-secret
+                  key: VCENTERSERVER
+
+            - name: GOVC_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: vcenter-secret
+                  key: VCENTERUSER
+
+            - name: GOVC_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: vcenter-secret
+                  key: VCENTERPASS
+
+            - name: GOVC_INSECURE
+              value: "true"
+        probe:
+          - name: healthcheck
+            type: cmdProbe
+            mode: Edge
+            runProperties:
+              probeTimeout: 20s
+              retry: 0
+              interval: 1s
+              stopOnFailure: false
+            cmdProbe/inputs:
+              command: ./healthcheck -name vmware-http-chaos
+              source:
+                image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                inheritInputs: true
+              comparator:
+                type: string
+                criteria: contains
+                value: "[P000]"

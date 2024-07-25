@@ -1,0 +1,29 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  createdAt: 2023-10-31T10:28:08Z
+  name: ssh-chaos
+  version: 0.1.0
+  annotations:
+    categories: SSH
+    vendor: Harness
+spec:
+  displayName: SSH Chaos
+  categoryDescription: |
+    Injects chaos on the target VM over ssh connection with the custom chaos logic.
+  keywords:
+    - Load
+  platforms:
+    - AWS
+  plan:
+    - team
+  experiments:
+    - ssh-chaos
+  minKubeVersion: 1.12.0
+  labels:
+    app.kubernetes.io/component: chartserviceversion
+    app.kubernetes.io/version: ci
+  icon:
+    - url:
+      mediatype: ""

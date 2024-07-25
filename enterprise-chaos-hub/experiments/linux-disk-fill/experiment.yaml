@@ -1,0 +1,24 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: LinuxChaosExperiment
+metadata:
+  name: linux-disk-fill-4ap
+  labels:
+    context: linux-disk-fill
+    name: linux-disk-fill-4ap
+spec:
+  steps:
+    - - name: linux-disk-fill-4ap
+  tasks:
+    - name: linux-disk-fill-4ap
+      taskType: "chaos"
+      weight: 10
+      definition:
+        chaos:
+          experiment: linux-disk-fill
+          diskFillChaos/inputs:
+            duration: 30s
+            fillPath: ""
+            fillStorage: 50%
+            dataBlockSize: 256k
+            rampTime: ""

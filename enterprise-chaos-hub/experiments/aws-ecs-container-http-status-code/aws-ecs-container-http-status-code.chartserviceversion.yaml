@@ -1,0 +1,27 @@
+---
+apiVersion: litmuchaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: aws-ecs-container-http-status-code
+  version: 0.1.0
+  annotations:
+    categories: aws-ecs-container-http-status-code
+    chartDescription: Injects a specific HTTP status code on an AWS ECS task for a specified chaos duration
+spec:
+  displayName: AWS ECS Container HTTP Status Code
+  categoryDescription: >
+    Injects a specific HTTP status code on an AWS ECS task Container for a specified chaos duration
+  faults:
+    - name: ecs-container-http-status-code
+      description: Injects a specific HTTP status code on an AWS ECS task Container for a specified chaos duration
+  keywords:
+    - AWS
+  plan:
+    - team
+  platforms:
+    - GKE
+    - EKS
+    - AKS
+  icon:
+    - url:
+      mediatype: ""

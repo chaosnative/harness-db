@@ -1,0 +1,27 @@
+---
+apiVersion: litmuchaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: aws-ecs-fargate-memory-hog
+  version: 0.1.0
+  annotations:
+    categories: aws-ecs-fargate-memory-hog
+    chartDescription: Injects memory stress chaos on a target ECS fargate service/task for a specified duration
+spec:
+  displayName: AWS ECS Fargate Memory Hog
+  categoryDescription: >
+    Injects Fargate Memory Hog chaos on a target ECS service for a specified duration
+  faults:
+    - name: ecs-fargate-memory-hog
+      description: Injects fargate Memory hog chaos on a target ECS service for a specified duration
+  keywords:
+    - AWS
+  platforms:
+    - GKE
+    - Minikube
+    - Packet(Kubeadm)
+    - EKS
+    - AKS
+  icon:
+    - url:
+      mediatype: ""

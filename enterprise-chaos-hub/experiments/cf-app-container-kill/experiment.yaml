@@ -1,0 +1,30 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: LinuxChaosExperiment
+metadata:
+  name: cf-app-container-kill-a89
+  labels:
+    context: cf-app-container-kill
+    name: cf-app-container-kill-a89
+spec:
+  steps:
+    - - name: cf-app-container-kill-a89
+  tasks:
+    - name: cf-app-container-kill-a89
+      taskType: "chaos"
+      weight: 10
+      definition:
+        chaos:
+          experiment: cf-app-container-kill
+          cfAppContainerKill/inputs:
+            duration: 30s
+            faultInjectorLocation: "local"
+            deploymentModel: ""
+            app: ""
+            organization: ""
+            space: ""
+            boshDeployment: ""
+            signal: SIGKILL
+            instanceAffectedPercentage: 0
+            faultInjectorPort: 50320
+            skipSSLValidation: false

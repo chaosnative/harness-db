@@ -1,0 +1,139 @@
+---
+kind: Workflow
+apiVersion: argoproj.io/v1alpha1
+metadata:
+  name: vmware-memory-hog-1658844764
+  namespace: litmus
+
+spec:
+  templates:
+    - name: custom-chaos
+      steps:
+        - - name: vmware-memory-hog-1tr
+            template: vmware-memory-hog-1tr
+        - - name: cleanup-chaos-resources
+            template: cleanup-chaos-resources
+
+    - name: vmware-memory-hog-1tr
+      inputs:
+        artifacts:
+          - name: vmware-memory-hog-1tr
+            path: /tmp/chaosengine-vmware-memory-hog-1tr.yaml
+            raw:
+              data: |
+                apiVersion: litmuschaos.io/v1alpha1
+                kind: ChaosEngine
+                metadata:
+                  namespace: "{{workflow.parameters.adminModeNamespace}}"
+                  generateName: vmware-memory-hog-1tr
+                  labels:
+                    name: vmware-memory-hog
+                    app.kubernetes.io/part-of: litmus
+                    app.kubernetes.io/component: experiment-job
+                    app.kubernetes.io/version: ci
+                spec:
+                  engineState: active
+                  chaosServiceAccount: litmus-admin
+                  experiments:
+                    - name: vmware-memory-hog
+                      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                      imagePullPolicy: Always
+                      args:
+                        - -c
+                        - ./experiments -name vmware-memory-hog
+                      command:
+                        - /bin/bash
+                      spec:
+                        components:
+                          env:
+                            - name: TOTAL_CHAOS_DURATION
+                              value: "30"
+                            - name: CHAOS_INTERVAL
+                              value: "10"
+                            - name: RAMP_TIME
+                              value: ""
+                            - name: MEMORY_CONSUMPTION_MEBIBYTES
+                              value: ""
+                            - name: MEMORY_CONSUMPTION_PERCENTAGE
+                              value: "30"
+                            - name: NUMBER_OF_WORKERS
+                              value: "4"
+                            - name: VM_NAME
+                              value: ""
+                            - name: VM_USER_NAME
+                              value: ""
+                            - name: VM_PASSWORD
+                              value: ""
+                            - name: GOVC_URL
+                              valueFrom:
+                                secretKeyRef:
+                                  name: vcenter-secret
+                                  key: VCENTERSERVER
+                            - name: GOVC_USERNAME
+                              valueFrom:
+                                secretKeyRef:
+                                  name: vcenter-secret
+                                  key: VCENTERUSER
+                            - name: GOVC_PASSWORD
+                              valueFrom:
+                                secretKeyRef:
+                                  name: vcenter-secret
+                                  key: VCENTERPASS
+                            - name: GOVC_INSECURE
+                              value: "true"
+                            - name: SEQUENCE
+                              value: parallel
+                            - name: DEFAULT_HEALTH_CHECK
+                              value: 'false'
+                        probe:
+                          - name: healthcheck
+                            type: cmdProbe
+                            mode: Edge
+                            runProperties:
+                              probeTimeout: 20s
+                              retry: 0
+                              interval: 1s
+                              stopOnFailure: false
+                            cmdProbe/inputs:
+                              command: ./healthcheck -name vmware-stress-chaos
+                              source:
+                                image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                                inheritInputs: true
+                              comparator:
+                                type: string
+                                criteria: contains
+                                value: "[P000]"
+      metadata:
+        labels:
+          weight: "10"
+      container:
+        name: ""
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+        command:
+          - ./chaos-checker
+        args:
+          - -file=/tmp/chaosengine-vmware-memory-hog-1tr.yaml
+          - -saveName=/tmp/engine-name
+
+    - name: cleanup-chaos-resources
+      container:
+        name: ""
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+        command:
+          - sh
+          - -c
+        args:
+          - "kubectl delete chaosengine -l 'instance_id in
+            (1121ad1d-6019-49d7-ad3b-6b56b00f2852, )' -n
+            {{workflow.parameters.adminModeNamespace}} "
+  entrypoint: custom-chaos
+  arguments:
+    parameters:
+      - name: adminModeNamespace
+        value: litmus
+  serviceAccountName: argo-chaos
+  podGC:
+    strategy: OnWorkflowCompletion
+  securityContext:
+    runAsUser: 1000
+    runAsNonRoot: true

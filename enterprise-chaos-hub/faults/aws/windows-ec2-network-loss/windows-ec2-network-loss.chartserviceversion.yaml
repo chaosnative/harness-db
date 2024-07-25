@@ -1,0 +1,40 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  createdAt: 2023-07-04T00:00:00Z
+  name: windows-ec2-network-loss
+  version: 0.1.0
+  annotations:
+    categories: AWS
+    vendor: Harness
+spec:
+  displayName: EC2 Windows Network Loss
+  categoryDescription: |
+    EC2 Windows network loss fault disrupts the network communication on Windows EC2 instances. This fault introduces network loss on the target Windows EC2 instances.
+    - Causes network loss in the target Windows EC2 instances.
+    - Helps evaluate the application's behavior under network loss conditions.
+  keywords:
+    - AWS
+    - Windows
+    - Network
+    - Loss
+  platforms:
+    - GKE
+    - EKS
+    - AKS
+    - Minikube
+  plan:
+    - team
+  experiments:
+    - windows-ec2-network-loss
+  minKubeVersion: 1.12.0
+  labels:
+    app.kubernetes.io/component: chartserviceversion
+    app.kubernetes.io/version: ci
+  links:
+    - name: Documentation
+      url: https://docs.harness.io/category/kl0mxwpfw1-hce-category
+  icon:
+    - url:
+      mediatype: ""

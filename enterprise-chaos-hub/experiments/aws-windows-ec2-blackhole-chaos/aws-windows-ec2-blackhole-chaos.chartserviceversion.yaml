@@ -1,0 +1,29 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: aws-windows-ec2-blackhole-chaos
+  version: 0.1.0
+  annotations:
+    categories: aws-windows-ec2-blackhole-chaos
+    chartDescription: Injects blackhole chaos on an AWS windows EC2 instance for a specified chaos duration
+spec:
+  displayName: AWS Windows EC2 Blackhole Chaos
+  categoryDescription: >
+    Injects blackhole chaos on an AWS Windows EC2 instance for a specified chaos duration
+  faults:
+    - name: windows-ec2-blackhole-chaos
+      description: Injects blackhole chaos on an AWS windows EC2 instance for a specified chaos duration
+  keywords:
+    - AWS
+  plan:
+    - team
+  platforms:
+    - GKE
+    - Minikube
+    - Packet(Kubeadm)
+    - EKS
+    - AKS
+  icon:
+    - url:
+      mediatype: ""

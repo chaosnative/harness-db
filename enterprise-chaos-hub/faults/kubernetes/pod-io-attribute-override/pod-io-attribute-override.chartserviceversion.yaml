@@ -1,0 +1,36 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: pod-io-attribute-override
+  version: 0.1.0
+  annotations:
+    categories: Kubernetes
+    vendor: Harness
+spec:
+  displayName: Pod IO Attribute Override
+  categoryDescription: |
+    pod-io-attribute-override overrides the attributes of the files present inside the mounted volume of the pod
+  keywords:
+    - Kubernetes
+  plan:
+    - enterprise
+  platforms:
+    - GKE
+    - Packet(Kubeadm)
+    - Minikube
+    - EKS
+    - AKS
+    - Kind
+  experiments:
+    - pod-io-attribute-override
+  minKubeVersion: 1.12.0
+  labels:
+    app.kubernetes.io/component: chartserviceversion
+    app.kubernetes.io/version: ci
+  links:
+    - name: Documentation
+      url: https://docs.harness.io/category/kl0mxwpfw1-hce-category
+  icon:
+    - base64data: ""
+      mediatype: ""

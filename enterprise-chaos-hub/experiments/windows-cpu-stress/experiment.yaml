@@ -1,0 +1,27 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: MachineChaosExperiment
+metadata:
+  name: windows-cpu-stress-4ap
+  labels:
+    context: windows-cpu-stress
+    name: windows-cpu-stress-4ap
+spec:
+  infraType: "windows"
+  steps:
+    - - name: windows-cpu-stress-4ap
+  tasks:
+    - name: windows-cpu-stress-4ap
+      infraId: ""
+      definition:
+        chaos:
+          fault: windows-cpu-stress
+          env:
+            - name: CPU_CORES
+              value: ""
+            - name: CPU_PERCENTAGE
+              value: "50"
+            - name: DURATION
+              value: "30s"
+            - name: RAMP_TIME
+              value: ""

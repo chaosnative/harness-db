@@ -1,0 +1,41 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  createdAt: 2022-07-18T10:28:08Z
+  name: ecs-instance-stop
+  version: 0.1.0
+  annotations:
+    categories: Kube AWS
+    vendor: Harness
+spec:
+  displayName: ECS Instance Stop
+  categoryDescription: |
+    ECS instance stop fault disrupts the state of EC2 instance associated with ECS cluster. This fault can inject chaos to stop the EC2 instances that are running the ECS tasks and restarts it after the given chaos duration.
+    - It helps to check the performance of the task/application running on the EC2 instance of the ECS cluster when subject ecs-instance-stop fault.
+  keywords:
+    - AWS
+  plan:
+    - team
+  platforms:
+    - GKE
+    - Konvoy
+    - Packet(Kubeadm)
+    - Minikube
+    - EKS
+    - AKS
+    - Kind
+    - Rancher
+    - OpenShift(OKD)
+  experiments:
+    - aws-ecs-instance-stop
+  minKubeVersion: 1.12.0
+  labels:
+    app.kubernetes.io/component: chartserviceversion
+    app.kubernetes.io/version: ci
+  links:
+    - name: Documentation
+      url: https://docs.harness.io/category/kl0mxwpfw1-hce-category
+  icon:
+    - url:
+      mediatype: ""

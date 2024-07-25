@@ -1,0 +1,18 @@
+---
+apiVersion: litmuchaos.io/v1alpha1
+kind: MachineFault
+metadata:
+  name: windows-cpu-stress
+  labels:
+    name: cpu-stress
+spec:
+  infraType: windows
+  env:
+    - name: CPU_CORES
+      value: ""
+    - name: CPU_PERCENTAGE
+      value: "50"
+    - name: DURATION
+      value: "30s"
+    - name: RAMP_TIME
+      value: ""

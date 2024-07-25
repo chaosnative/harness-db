@@ -1,0 +1,28 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: nginx-pod-network-rate-limit
+  version: 0.1.0
+  annotations:
+    categories: nginx-pod-network-rate-limit
+    chartDescription: Injects network rate limit on pod(s) identified by the specified labels ("app=nginx" by default)
+spec:
+  displayName: Nginx Pod Network Rate Limit
+  categoryDescription: >
+    Injects network rate limit on pod(s) identified by the specified labels ("app=nginx" by default)
+  faults:
+    - name: pod-network-rate-limit
+      description: Injects network rate limit on pod(s) identified by the specified labels ("app=nginx" by default)
+  keywords:
+    - Kubernetes
+  plan:
+    - enterprise
+  platforms:
+    - GKE
+    - Minikube
+    - Packet(Kubeadm)
+    - EKS
+  icon:
+    - url:
+      mediatype: ""

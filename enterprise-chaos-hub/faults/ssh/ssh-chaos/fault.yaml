@@ -1,0 +1,89 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+description:
+  message: |
+    It inject chaos on the target VM over ssh connection with the custom chaos logic.
+kind: ChaosExperiment
+metadata:
+  name: ssh-chaos
+  labels:
+    name: ssh-chaos
+    app.kubernetes.io/part-of: litmus
+    app.kubernetes.io/component: chaosexperiment
+    app.kubernetes.io/version: ci
+spec:
+  definition:
+    scope: Namespaced
+    permissions:
+      # Create and monitor the experiment & helper pods
+      - apiGroups: [""]
+        resources: ["pods"]
+        verbs: ["create", "delete", "get", "list", "patch", "update", "deletecollection"]
+      # Performs CRUD operations on the events inside chaosengine and chaosresult
+      - apiGroups: [""]
+        resources: ["events"]
+        verbs: ["create", "get", "list", "patch", "update"]
+      # Fetch configmaps details and mount it to the experiment pod (if specified)
+      - apiGroups: [""]
+        resources: ["configmaps"]
+        verbs: ["get", "list"]
+      # Track and get the runner, experiment, and helper pods log
+      - apiGroups: [""]
+        resources: ["pods/log"]
+        verbs: ["get", "list", "watch"]
+      # for creating and managing to execute commands inside target container
+      - apiGroups: [""]
+        resources: ["pods/exec"]
+        verbs: ["get", "list", "create"]
+      # for configuring and monitor the experiment job by the chaos-runner pod
+      - apiGroups: ["batch"]
+        resources: ["jobs"]
+        verbs: ["create", "list", "get", "delete", "deletecollection"]
+      # performs CRUD operations on the network policies
+      - apiGroups: ["networking.k8s.io"]
+        resources: ["networkpolicies"]
+        verbs: ["create", "delete", "list", "get"]
+      # for creation, status polling and deletion of litmus chaos resources used within a chaos workflow
+      - apiGroups: ["litmuschaos.io"]
+        resources: ["chaosengines", "chaosexperiments", "chaosresults"]
+        verbs: ["create", "list", "get", "patch", "update", "delete"]
+    image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+    imagePullPolicy: Always
+    args:
+      - -c
+      - ./experiments -name ssh-chaos
+    command:
+      - /bin/bash
+    env:
+      - name: RAMP_TIME
+        value: ""
+      - name: PRIVATE_KEY
+        value: ''
+      - name: CHAOS_SCRIPT_PATH
+        value: '/tmp/chaos-script/script.sh'
+      - name: ABORT_SCRIPT_PATH
+        value: '/tmp/abort-script/abort-script.sh'
+      - name: HOST
+        value: ""
+      - name: USERNAME
+        value: ""
+      - name: PASSWORD
+        value: ""
+      - name: CHAOS_PARAMETER
+        value: ""
+      - name: ABORT_PARAMETER
+        value: ""
+    labels:
+      name: ssh-chaos
+      app.kubernetes.io/part-of: litmus
+      app.kubernetes.io/component: experiment-job
+      app.kubernetes.io/version: ci
+      app.kubernetes.io/enableSSHAccessViaSecrets: disable
+    secrets:
+      - name: ssh-secret
+        mountPath: /tmp/ssh-secret
+    configMaps:
+      - name: chaos-script
+        mountPath: /tmp/chaos-script
+      - name: abort-script
+        mountPath: /tmp/abort-script

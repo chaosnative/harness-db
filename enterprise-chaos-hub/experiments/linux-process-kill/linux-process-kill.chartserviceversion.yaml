@@ -1,0 +1,31 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: linux-process-kill
+  version: 0.1.0
+  annotations:
+    categories: linux-process-kill
+    chartDescription: Injects process kill chaos into a Linux machine.
+spec:
+  displayName: Linux Process Kill
+  categoryDescription: >-
+    This fault kills the processes running in a Linux machine.
+
+    - Disrupts the application-critical processes such as databases or message queues by killing the underlying processes or threads.
+
+    - Determines the resilience of applications when processes on a Linux machine are unexpectedly killed (or disrupted).
+  faults:
+    - name: linux-process-kill
+      description: Injects process kill chaos into a Linux machine.
+  keywords:
+    - Linux
+    - GCP
+    - Azure
+  plan:
+    - team
+  platforms:
+    - Linux
+  icon:
+    - url:
+      mediatype: ""

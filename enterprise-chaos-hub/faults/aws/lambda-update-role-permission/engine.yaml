@@ -1,0 +1,92 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChaosEngine
+metadata:
+  name: lambda-update-role-permission
+  namespace: default
+  labels:
+    name: lambda-update-role-permission
+    app.kubernetes.io/part-of: litmus
+    app.kubernetes.io/component: experiment-job
+    app.kubernetes.io/version: ci
+    app.kubernetes.io/enableAWSAccessViaSecrets: disable
+spec:
+  engineState: "active"
+  terminationGracePeriodSeconds: 30
+  chaosServiceAccount: litmus-admin
+  experiments:
+    - name: lambda-update-role-permission
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+      imagePullPolicy: Always
+      args:
+        - -c
+        - ./experiments -name lambda-update-role-permission
+      command:
+        - /bin/bash
+      spec:
+        components:
+          env:
+            - name: TOTAL_CHAOS_DURATION
+              value: "30"
+
+            - name: CHAOS_INTERVAL
+              value: "30"
+
+            # Period to wait before and after injection of chaos in sec
+            - name: RAMP_TIME
+              value: ""
+
+            # Name of the function to update
+            - name: FUNCTION_NAME
+              value: ""
+
+            - name: POLICY_ARN
+              value: ""
+
+            - name: ROLE_ARN
+              value: ""
+
+            - name: REGION
+              value: ""
+
+            - name: SEQUENCE
+              value: "parallel"
+
+            # Provide the path of AWS credentials mounted from secret
+            - name: AWS_SHARED_CREDENTIALS_FILE
+              value: "/tmp/cloud_config.yml"
+
+            - name: SEQUENCE
+              value: "parallel"
+
+        probe:
+          - name: healthcheck
+            type: cmdProbe
+            mode: Edge
+            runProperties:
+              probeTimeout: 5s
+              retry: 0
+              interval: 1s
+              stopOnFailure: false
+            cmdProbe/inputs:
+              command: ./healthcheck -name lambda-update-function
+              source:
+                image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                inheritInputs: true
+                volumeMount:
+                  - mountPath: /var/run/secrets/eks.amazonaws.com/serviceaccount
+                    name: aws-iam-token
+                    readOnly: true
+                volumes:
+                  - name: aws-iam-token
+                    projected:
+                      defaultMode: 420
+                      sources:
+                        - serviceAccountToken:
+                            audience: sts.amazonaws.com
+                            expirationSeconds: 86400
+                            path: token
+              comparator:
+                type: string
+                criteria: contains
+                value: "[P000]"

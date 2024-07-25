@@ -1,0 +1,29 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: aws-ec2-stop-by-tag
+  version: 0.1.0
+  annotations:
+    categories: aws-ec2-stop-by-tag
+    chartDescription: Injects AWS EC2 stop for instance(s) identified by tag for specified chaos duration
+spec:
+  displayName: AWS EC2 Stop By Tag
+  categoryDescription: >
+    Injects AWS EC2 stop for instance(s) identified by tag for specified chaos duration
+  faults:
+    - name: ec2-stop-by-tag
+      description: Injects AWS EC2 stop for instance(s) identified by tag for specified chaos duration
+  keywords:
+    - AWS
+  plan:
+    - team
+  platforms:
+    - GKE
+    - Minikube
+    - Packet(Kubeadm)
+    - EKS
+    - AKS
+  icon:
+    - url:
+      mediatype: ""

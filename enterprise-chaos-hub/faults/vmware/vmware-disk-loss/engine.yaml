@@ -1,0 +1,88 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChaosEngine
+metadata:
+  name: vmware-engine
+  labels:
+    name: vmware-disk-loss
+    app.kubernetes.io/part-of: litmus
+    app.kubernetes.io/component: experiment-job
+    app.kubernetes.io/version: ci
+spec:
+  engineState: "active"
+  terminationGracePeriodSeconds: 30
+  chaosServiceAccount: litmus-admin
+  experiments:
+    - name: vmware-disk-loss
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+      imagePullPolicy: Always
+      args:
+        - -c
+        - ./experiments -name vmware-disk-loss
+      command:
+        - /bin/bash
+      spec:
+        components:
+          env:
+            - name: VCENTERSERVER
+              valueFrom:
+                secretKeyRef:
+                  name: vcenter-secret
+                  key: VCENTERSERVER
+
+            - name: VCENTERUSER
+              valueFrom:
+                secretKeyRef:
+                  name: vcenter-secret
+                  key: VCENTERUSER
+
+            - name: VCENTERPASS
+              valueFrom:
+                secretKeyRef:
+                  name: vcenter-secret
+                  key: VCENTERPASS
+
+            # set chaos duration (in sec) as desired
+            - name: TOTAL_CHAOS_DURATION
+              value: "30"
+
+            # set chaos interval (in sec) as desired
+            - name: CHAOS_INTERVAL
+              value: "30"
+
+            # period to wait before and after injection of chaos in sec
+            - name: RAMP_TIME
+              value: ""
+
+            # provide disk names as comma separated values
+            - name: VIRTUAL_DISK_NAMES
+              value: ""
+
+            # provide VM moids as comma separated values for the corresponding disk ids
+            - name: APP_VM_MOIDS
+              value: ""
+
+            # parallel or serial; determines how chaos is injected
+            - name: SEQUENCE
+              value: "parallel"
+
+            - name: DEFAULT_HEALTH_CHECK
+              value: "false"
+        probe:
+          - name: healthcheck
+            type: cmdProbe
+            mode: Edge
+            runProperties:
+              probeTimeout: 20s
+              retry: 0
+              interval: 1s
+              stopOnFailure: false
+            cmdProbe/inputs:
+              command: ./healthcheck -name vmware-disk
+              source:
+                image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                inheritInputs: true
+              comparator:
+                type: string
+                criteria: contains
+                value: "[P000]"

@@ -1,0 +1,27 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  createdAt: 2022-08-31T10:28:08Z
+  name: vmware-dns-chaos
+  version: 0.1.0
+  annotations:
+    categories: VMWare
+    vendor: Harness
+    chartDescription: Injects DNS error on the target VMware VM for the specified duration
+spec:
+  displayName: VMware DNS Chaos
+  categoryDescription: |
+    Injects DNS error on the target VMware VM for the specified duration
+  faults:
+    - name: vmware-dns-chaos
+      description: Injects DNS error on the target VMware VM for the specified duration
+  keywords:
+    - VMware
+  plan:
+    - team
+  platforms:
+    - VMware
+  icon:
+    - url:
+      mediatype: ""

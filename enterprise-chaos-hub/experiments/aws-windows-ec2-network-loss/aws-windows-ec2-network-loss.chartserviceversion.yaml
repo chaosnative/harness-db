@@ -1,0 +1,29 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: aws-windows-ec2-network-loss
+  version: 0.1.0
+  annotations:
+    categories: aws-windows-ec2-network-loss
+    chartDescription: Injects network loss on an AWS Windows EC2 instance for a specified duration
+spec:
+  displayName: AWS Windows EC2 Network Loss
+  categoryDescription: >
+    Injects network loss on an AWS Windows EC2 instance for a specified duration
+  faults:
+    - name: windows-ec2-network-loss
+      description: This chaos fault introduces network loss on an AWS Windows EC2 instance for a specified duration.
+  keywords:
+    - AWS
+  plan:
+    - team
+  platforms:
+    - GKE
+    - Minikube
+    - Packet(Kubeadm)
+    - EKS
+    - AKS
+  icon:
+    - url:
+      mediatype: ""

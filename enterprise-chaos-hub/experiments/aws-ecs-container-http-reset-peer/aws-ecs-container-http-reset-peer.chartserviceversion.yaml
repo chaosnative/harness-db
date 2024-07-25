@@ -1,0 +1,27 @@
+---
+apiVersion: litmuchaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: aws-ecs-container-http-reset-peer
+  version: 0.1.0
+  annotations:
+    categories: aws-ecs-container-http-reset-peer
+    chartDescription: Resets the TCP connection with a peer for a specified chaos duration on an AWS ECS task
+spec:
+  displayName: AWS ECS Container HTTP Reset Peer
+  categoryDescription: >
+    Resets the HTTP connection with a peer for a specified chaos duration on an AWS ECS task Container
+  faults:
+    - name: ecs-container-http-reset-peer
+      description: Resets the HTTP connection with a peer for a specified chaos duration on an AWS ECS task Container
+  keywords:
+    - AWS
+  plan:
+    - team
+  platforms:
+    - GKE
+    - EKS
+    - AKS
+  icon:
+    - url:
+      mediatype: ""

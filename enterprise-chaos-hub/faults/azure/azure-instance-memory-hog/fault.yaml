@@ -1,0 +1,138 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+description:
+  message: |
+    Injects memory stress on the Azure VM instance for a certain chaos duration
+kind: ChaosExperiment
+metadata:
+  name: azure-instance-memory-hog
+  labels:
+    name: azure-instance-memory-hog
+    app.kubernetes.io/part-of: litmus
+    app.kubernetes.io/component: chaosexperiment
+    app.kubernetes.io/version: ci
+spec:
+  definition:
+    scope: Cluster
+    permissions:
+      - apiGroups:
+          - ""
+        resources:
+          - pods
+        verbs:
+          - create
+          - delete
+          - get
+          - list
+          - patch
+          - update
+          - deletecollection
+      - apiGroups:
+          - ""
+        resources:
+          - events
+        verbs:
+          - create
+          - get
+          - list
+          - patch
+          - update
+      - apiGroups:
+          - ""
+        resources:
+          - secrets
+          - configmaps
+        verbs:
+          - get
+          - list
+      - apiGroups:
+          - ""
+        resources:
+          - pods/log
+        verbs:
+          - get
+          - list
+          - watch
+      - apiGroups:
+          - ""
+        resources:
+          - pods/exec
+        verbs:
+          - get
+          - list
+          - create
+      - apiGroups:
+          - batch
+        resources:
+          - jobs
+        verbs:
+          - create
+          - list
+          - get
+          - delete
+          - deletecollection
+      - apiGroups:
+          - litmuschaos.io
+        resources:
+          - chaosengines
+          - chaosexperiments
+          - chaosresults
+        verbs:
+          - create
+          - list
+          - get
+          - patch
+          - update
+          - delete
+    image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+    imagePullPolicy: Always
+    args:
+      - -c
+      - ./experiments -name azure-instance-memory-hog
+    command:
+      - /bin/bash
+    env:
+      - name: TOTAL_CHAOS_DURATION
+        value: "30"
+
+      - name: CHAOS_INTERVAL
+        value: "30"
+
+      - name: RAMP_TIME
+        value: ""
+
+      - name: AZURE_INSTANCE_NAMES
+        value: ""
+
+      - name: RESOURCE_GROUP
+        value: ""
+
+      - name: SCALE_SET
+        value: ""
+
+      - name: MEMORY_CONSUMPTION
+        value: "500"
+
+      - name: MEMORY_PERCENTAGE
+        value: "0"
+
+      - name: NUMBER_OF_WORKERS
+        value: "1"
+
+      - name: AZURE_AUTH_LOCATION
+        value: /tmp/azure.auth
+
+      - name: SEQUENCE
+        value: parallel
+
+      - name: DEFAULT_HEALTH_CHECK
+        value: "false"
+
+    labels:
+      name: azure-instance-memory-hog
+      app.kubernetes.io/part-of: litmus
+      app.kubernetes.io/component: experiment-job
+      app.kubernetes.io/version: ci
+    secrets:
+      - name: cloud-secret
+        mountPath: /tmp/

@@ -1,0 +1,98 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChaosEngine
+metadata:
+  name: ecs-container-memory-hog
+  namespace: default
+  labels:
+    name: ecs-container-memory-hog
+    app.kubernetes.io/part-of: litmus
+    app.kubernetes.io/component: experiment-job
+    app.kubernetes.io/version: ci
+    app.kubernetes.io/enableAWSAccessViaSecrets: disable
+spec:
+  engineState: "active"
+  terminationGracePeriodSeconds: 30
+  chaosServiceAccount: litmus-admin
+  experiments:
+    - name: ecs-container-memory-hog
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+      imagePullPolicy: Always
+      args:
+        - -c
+        - ./experiments -name ecs-container-memory-hog
+      command:
+        - /bin/bash
+      spec:
+        components:
+          env:
+            - name: TOTAL_CHAOS_DURATION
+              value: "30"
+
+            - name: RAMP_TIME
+              value: ""
+
+            - name: CLUSTER_NAME
+              value: ""
+
+            - name: SERVICE_NAME
+              value: ""
+
+            # set memory consumption (in MBs) as desired
+            - name: MEMORY_CONSUMPTION
+              value: "100"
+
+            - name: MEMORY_PERCENTAGE
+              value: "0"
+
+            - name: NUMBER_OF_WORKERS
+              value: "1"
+
+            - name: REGION
+              value: ""
+
+            - name: INSTALL_DEPENDENCIES
+              value: "True"
+
+            - name: DEFAULT_HEALTH_CHECK
+              value: "false"
+
+            - name: AWS_SHARED_CREDENTIALS_FILE
+              value: "/tmp/cloud_config.yml"
+
+            - name: INSTALL_DEPENDENCIES
+              value: "True"
+
+            - name: SEQUENCE
+              value: "parallel"
+        probe:
+          - name: healthcheck
+            type: cmdProbe
+            mode: Edge
+            runProperties:
+              probeTimeout: 5s
+              retry: 0
+              interval: 1s
+              stopOnFailure: false
+            cmdProbe/inputs:
+              command: ./healthcheck -name aws-ecs-container
+              source:
+                image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                inheritInputs: true
+                volumeMount:
+                  - mountPath: /var/run/secrets/eks.amazonaws.com/serviceaccount
+                    name: aws-iam-token
+                    readOnly: true
+                volumes:
+                  - name: aws-iam-token
+                    projected:
+                      defaultMode: 420
+                      sources:
+                        - serviceAccountToken:
+                            audience: sts.amazonaws.com
+                            expirationSeconds: 86400
+                            path: token
+              comparator:
+                type: string
+                criteria: contains
+                value: "[P000]"

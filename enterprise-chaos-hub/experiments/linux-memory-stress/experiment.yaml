@@ -1,0 +1,23 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: LinuxChaosExperiment
+metadata:
+  name: linux-memory-stress-4ap
+  labels:
+    context: linux-memory-stress
+    name: linux-memory-stress-4ap
+spec:
+  steps:
+    - - name: linux-memory-stress-4ap
+  tasks:
+    - name: linux-memory-stress-4ap
+      taskType: "chaos"
+      weight: 10
+      definition:
+        chaos:
+          experiment: linux-memory-stress
+          stressChaos/inputs:
+            memory: 50%
+            workers: 1
+            duration: 30s
+            rampTime: ""

@@ -1,0 +1,29 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: aws-ecs-container-memory-hog
+  version: 0.1.0
+  annotations:
+    categories: aws-ecs-container-memory-hog
+    chartDescription: Injects memory hog (resource exhaustion) on an ECS container that runs a given task
+spec:
+  displayName: AWS ECS Container Memory Hog
+  categoryDescription: >
+    Injects memory hog (resource exhaustion) on an ECS container that runs a given task
+  faults:
+    - name: ecs-container-memory-hog
+      description: Injects memory hog (resource exhaustion) on an ECS container that runs a given task
+  keywords:
+    - AWS
+  plan:
+    - team
+  platforms:
+    - GKE
+    - Minikube
+    - Packet(Kubeadm)
+    - EKS
+    - AKS
+  icon:
+    - url:
+      mediatype: ""

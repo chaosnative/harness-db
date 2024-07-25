@@ -1,0 +1,29 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: aws-ebs-loss-by-tag
+  version: 0.1.0
+  annotations:
+    categories: aws-ebs-loss-by-tag
+    chartDescription: Injects AWS EBS disk loss based on disk tags for EC2 instance(s) for a specified chaos duration
+spec:
+  displayName: AWS EBS Loss By Tag
+  categoryDescription: >
+    Injects AWS EBS disk loss based on disk tags for EC2 instance(s) for a specified chaos duration
+  faults:
+    - name: ebs-loss-by-tag
+      description: Injects AWS EBS disk loss based on disk tags for EC2 instance(s) for a specified chaos duration
+  keywords:
+    - AWS
+  plan:
+    - free
+  platforms:
+    - GKE
+    - Minikube
+    - Packet(Kubeadm)
+    - EKS
+    - AKS
+  icon:
+    - url:
+      mediatype: ""

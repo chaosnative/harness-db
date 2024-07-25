@@ -1,0 +1,25 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: LinuxChaosExperiment
+metadata:
+  name: linux-process-kill-4ap
+  labels:
+    context: linux-process-kill
+    name: linux-process-kill-4ap
+spec:
+  steps:
+    - - name: linux-process-kill-4ap
+  tasks:
+    - name: linux-process-kill-4ap
+      taskType: "chaos"
+      weight: 10
+      definition:
+        chaos:
+          experiment: linux-process-kill
+          processKillChaos/inputs:
+            processIDs: ""
+            processNames: ""
+            processCommand: ""
+            forceKill: false
+            duration: 30s
+            rampTime: ""

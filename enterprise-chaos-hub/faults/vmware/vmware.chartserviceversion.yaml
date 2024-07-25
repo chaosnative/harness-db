@@ -1,0 +1,101 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: vmware
+  version: 0.1.0
+  annotations:
+    categories: VMware
+    chartDescription: Injects faults on VMware system
+    executionPlane: "kubernetes"
+spec:
+  displayName: VMware
+  categoryDescription: >
+    VMware chaos contains different experiments for VMware platform. It uses VMware apis to carry out the fault logic for different components.
+  faults:
+    - name: vm-poweroff
+      description: It injects power-off chaos on VMware VMs.
+      displayName: "VMware VM Poweroff"
+      plan:
+        - free
+    - name: vmware-disk-loss
+      description: It injects disk loss chaos for VMware VMs.
+      displayName: "VMware Disk Loss"
+    - name: vm-process-kill
+      description: It injects process kill chaos on a VMware VM.
+      displayName: "VMware VM Process Kill"
+    - name: vm-service-stop
+      description: It injects service stop chaos on a VMware VM.
+      displayName: "VMware VM Service Stop"
+    - name: vmware-network-latency
+      description: It injects network latency chaos on the provided VMware VMs.
+      displayName: "VMware Network Latency"
+    - name: vmware-network-loss
+      description: It injects network loss chaos on the provided VMware VMs.
+      displayName: "VMware Network Loss"
+    - name: vmware-network-rate-limit
+      description: It injects network rate limit chaos on the provided VMware VMs.
+      displayName: "VMware Network Rate Limit"
+    - name: vmware-http-latency
+      description: It injects HTTP latency chaos on the provided VMware VMs.
+      displayName: "VMware HTTP Latency"
+    - name: vmware-http-reset-peer
+      description: It injects HTTP reset peer chaos on the provided VMware VMs.
+      displayName: "VMware HTTP Reset Peer"
+    - name: vmware-http-response-modify
+      description: It injects HTTP response modify chaos on the provided VMs.
+      displayName: "VMware HTTP Response Modify"
+    - name: vmware-cpu-hog
+      description: It injects VMware CPU hog chaos on the provided VMs.
+      displayName: "VMware CPU Hog"
+    - name: vmware-memory-hog
+      description: It injects VMware memory hog chaos on the provided VMs.
+      displayName: "VMware Memory Hog"
+    - name: vmware-io-stress
+      description: It injects VMware IO stress chaos on the provided VMs.
+      displayName: "VMware IO Stress"
+    - name: vmware-dns-chaos
+      description: It injects VMware DNS error chaos on the provided VMs.
+      displayName: "VMware DNS Chaos"
+    - name: vmware-host-reboot
+      description: It injects VMware host reboot chaos on the provided Hosts.
+      displayName: "VMware Host Reboot"
+    - name: vmware-windows-cpu-hog
+      description: It injects VMware windows CPU hog chaos on the provided VMs.
+      displayName: "VMware Windows CPU Hog"
+    - name: vmware-windows-memory-hog
+      description: It injects VMware windows memory hog chaos on the provided VMs.
+      displayName: "VMware Windows Memory Hog"
+    - name: vmware-windows-service-stop
+      description: It injects VMware windows service stop chaos on the provided VMs.
+      displayName: "VMware Windows Service Stop"
+    - name: vmware-windows-process-kill
+      description: It injects VMware windows process kill chaos on the provided VMs.
+      displayName: "VMware Windows Process kill"
+    - name: vmware-windows-disk-stress
+      description: It injects VMware windows disk stress chaos on the provided VMs.
+      displayName: "VMware Windows Disk Stress"
+    - name: vmware-windows-network-loss
+      description: It injects VMware windows Network loss chaos on the provided VMs.
+      displayName: "VMware Windows Network Loss"
+    - name: vmware-windows-network-latency
+      description: It injects VMware windows Network Latency chaos on the provided VMs.
+      displayName: "VMware Windows Network Latency"
+    - name: vmware-windows-network-corruption
+      description: It injects VMware windows Network Corruption chaos on the provided VMs.
+      displayName: "VMware Windows Network Corruption"
+    - name: vmware-windows-network-duplication
+      description: It injects VMware windows Network Duplication chaos on the provided VMs.
+      displayName: "VMware Windows Network Duplication"
+    - name: vmware-windows-blackhole-chaos
+      description: It injects VMware windows Blackhole chaos on the provided VMs.
+      displayName: "VMware Windows Blackhole Chaos"
+    - name: vmware-windows-time-chaos
+      description: It injects VMware windows time chaos on the provided VMs.
+      displayName: "VMware Windows Time Chaos"
+  keywords:
+    - VMware
+  minKubeVersion: 1.12.0
+  icon:
+    - url: https://raw.githubusercontent.com/litmuschaos/charthub.litmuschaos.io/master/public/litmus.ico
+      mediatype: image/png

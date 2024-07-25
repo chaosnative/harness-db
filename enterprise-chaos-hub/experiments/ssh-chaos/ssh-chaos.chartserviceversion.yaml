@@ -1,0 +1,25 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: ssh-chaos
+  version: 0.1.0
+  annotations:
+    categories: ssh
+    chartDescription: Injects chaos on the target VM over ssh connection with the custom chaos logic for a specified chaos duration.
+spec:
+  displayName: SSH Chaos
+  categoryDescription: >
+    Injects chaos on the target VM over ssh connection with the custom chaos logic for a specified chaos duration.
+  faults:
+    - name: ssh-chaos
+      description: Injects chaos on the target VM over ssh connection with the custom chaos logic for a specified chaos duration.
+  keywords:
+    - SSH
+  plan:
+    - free
+  platforms:
+    - AWS
+  icon:
+    - url:
+      mediatype: ""

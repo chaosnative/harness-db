@@ -1,0 +1,34 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  createdAt: 2023-02-17T10:28:08Z
+  name: resource-access-restrict
+  version: 0.1.0
+  annotations:
+    categories: AWS
+    vendor: Harness
+spec:
+  displayName: Resource Access Restrict
+  categoryDescription: |
+    AWS resource access restrict fault blocks the network access in the specified resource. This fault can inject loss of the network that can cause failures in the AWS service.
+    - It helps to check the performance of the task/application running in an AWS region.
+  keywords:
+    - AWS
+  platforms:
+    - GKE
+    - Konvoy
+    - Packet(Kubeadm)
+    - Minikube
+  experiments:
+    - aws-resource-access-restrict
+  minKubeVersion: 1.12.0
+  labels:
+    app.kubernetes.io/component: chartserviceversion
+    app.kubernetes.io/version: ci
+  links:
+    - name: Documentation
+      url: https://docs.harness.io/category/kl0mxwpfw1-hce-category
+  icon:
+    - url:
+      mediatype: ""

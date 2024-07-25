@@ -1,0 +1,29 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: cf-app-network-duplication
+  version: 0.1.0
+  annotations:
+    categories: cf-app-network-duplication
+    chartDescription: Injects app network duplication chaos for a CF app.
+spec:
+  displayName: CF App Network Duplication
+  categoryDescription: >-
+    This fault injects app network duplication chaos in the Cloud Foundry platform.
+
+    - Checks resilience against network packet duplication in app instances
+
+    - Helps validate the effectiveness of disaster recovery and high availability of the app
+  faults:
+    - name: cf-app-network-duplication
+      description: Injects app network duplication chaos for a CF app.
+  keywords:
+    - Cloud Foundry
+  plan:
+    - enterprise
+  platforms:
+    - Cloud Foundry
+  icon:
+    - url:
+      mediatype: ""

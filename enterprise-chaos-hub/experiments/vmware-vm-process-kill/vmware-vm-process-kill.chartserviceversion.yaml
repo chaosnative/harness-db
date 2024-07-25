@@ -1,0 +1,25 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: vmware-vm-process-kill
+  version: 0.1.0
+  annotations:
+    categories: vmware-vm-process-kill
+    chartDescription: Injects process kill of given process(es) running in the target VMware VM(s)
+spec:
+  displayName: VMware VM Process Kill
+  categoryDescription: >
+    Injects process kill of given process(es) running in the target VMware VM(s)
+  faults:
+    - name: vmware-vm-process-kill
+      description: Injects process kill of given process(es) running in the target VMware VM(s)
+  keywords:
+    - VMware
+  plan:
+    - team
+  platforms:
+    - VMware
+  icon:
+    - url:
+      mediatype: ""

@@ -1,0 +1,75 @@
+---
+apiVersion: litmuchaos.io/v1alpha1
+kind: K8sFault
+metadata:
+  name: pod-network-loss
+spec:
+  definition:
+    targets:
+      appinfo:
+        applabel: ""
+        appkind: ""
+        appns: ""
+    chaos:
+      experiment: pod-network-loss
+      serviceAccountName: litmus-admin
+      image: docker.io/harness/chaos-ddcr-faults:main-latest
+      imagePullPolicy: Always
+      env:
+        - name: TOTAL_CHAOS_DURATION
+          value: "60" # in seconds
+
+        - name: NETWORK_PACKET_LOSS_PERCENTAGE
+          value: "100"
+
+        # provide the name of container runtime
+        # for litmus LIB, it supports docker, containerd, crio
+        - name: CONTAINER_RUNTIME
+          value: "containerd"
+
+        # provide the socket file path
+        - name: SOCKET_PATH
+          value: "/run/containerd/containerd.sock"
+        - name: LIB_IMAGE
+          value: docker.io/harness/chaos-ddcr-faults:main-latest
+
+        ## percentage of total pods to target
+        - name: POD_AFFECTED_PERCENTAGE
+          value: ""
+
+        - name: NETWORK_INTERFACE
+          value: "eth0"
+
+        # time period to wait before and after injection of chaos in sec
+        - name: RAMP_TIME
+          value: ""
+
+        - name: TARGET_PODS
+          value: ""
+
+        # To select pods on specific node(s)
+        - name: NODE_LABEL
+          value: ""
+
+        # provide the destination ips
+        # chaos injection will be triggered for these destination ips
+        - name: DESTINATION_IPS
+          value: ""
+
+        # provide the destination hosts
+        # chaos injection will be triggered for these destination hosts
+        - name: DESTINATION_HOSTS
+          value: ""
+
+        # provide the comma seperated source ports
+        - name: SOURCE_PORTS
+          value: ""
+
+        # provide the comma seperated destination ports
+        - name: DESTINATION_PORTS
+          value: ""
+
+        ## it defines the sequence of chaos execution for multiple target pods
+        ## supported values: serial, parallel
+        - name: SEQUENCE
+          value: "parallel"

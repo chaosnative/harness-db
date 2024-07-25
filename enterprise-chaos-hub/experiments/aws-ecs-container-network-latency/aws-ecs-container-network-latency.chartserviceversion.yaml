@@ -1,0 +1,29 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: aws-ecs-container-network-latency
+  version: 0.1.0
+  annotations:
+    categories: aws-ecs-container-network-latency
+    chartDescription: Injects network latency on an ECS container that runs a given task
+spec:
+  displayName: AWS ECS Container Network Latency
+  categoryDescription: >
+    Injects network latency on an ECS container that runs a given task
+  faults:
+    - name: ecs-container-network-latency
+      description: Injects network latency on an ECS container that runs a given task
+  keywords:
+    - AWS
+  plan:
+    - team
+  platforms:
+    - GKE
+    - Minikube
+    - Packet(Kubeadm)
+    - EKS
+    - AKS
+  icon:
+    - url:
+      mediatype: ""

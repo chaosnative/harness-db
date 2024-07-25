@@ -1,0 +1,32 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  createdAt: 2022-07-19T10:28:08Z
+  name: vmware-vm-process-kill
+  version: 0.1.0
+  annotations:
+    categories: VMWare
+    vendor: Harness
+spec:
+  displayName: VMware VM Process Kill
+  categoryDescription: |
+      VMware-VM-Process-Kill fault kills provided process in target VMs for a certain chaos duration.
+      - It can verify the process/application resiliency running on the targeted VMs.
+  keywords:
+    - VMware
+
+  platforms:
+    - VMware
+  experiments:
+    - vmware-vm-process-kill
+  minKubeVersion: 1.12.0
+  labels:
+    app.kubernetes.io/component: chartserviceversion
+    app.kubernetes.io/version: ci
+  links:
+    - name: Documentation
+      url: https://docs.harness.io/category/kl0mxwpfw1-hce-category
+  icon:
+    - url:
+      mediatype: ""

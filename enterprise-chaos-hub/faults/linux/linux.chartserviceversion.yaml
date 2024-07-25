@@ -1,0 +1,128 @@
+---
+apiVersion: litmuchaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: linux
+  annotations:
+    categories: Linux
+    chartDescription: Injects chaos in linux VM
+    executionPlane: "linux"
+spec:
+  displayName: Linux
+  categoryDescription: >
+    It contains chaos to disrupt state of a linux VM
+  faults:
+    - name: linux-cpu-stress
+      description: It injects cpu stress to a linux VM.
+      displayName: "Linux CPU Stress"
+      plan:
+        - team
+    - name: linux-process-kill
+      description: It can kill the processes running on a Linux VM.
+      displayName: "Linux Process Kill"
+      plan:
+        - team
+    - name: linux-service-restart
+      description: It stops and then restarts services running on a Linux VM.
+      displayName: "Linux Service Restart"
+      plan:
+        - team
+    - name: linux-time-chaos
+      description: It offsets the system time for a certain duration in a Linux VM.
+      displayName: "Linux Time Chaos"
+      plan:
+        - team
+    - name: linux-network-latency
+      description: It injects network latency to a linux VM.
+      displayName: "Linux Network Latency"
+      plan:
+        - team
+    - name: linux-network-loss
+      description: It injects network loss to a linux VM.
+      displayName: "Linux Network Loss"
+      plan:
+        - team
+    - name: linux-network-corruption
+      description: It injects network corruption to a linux VM.
+      displayName: "Linux Network Corruption"
+      plan:
+        - team
+    - name: linux-network-duplication
+      description: It injects network duplication to a linux VM.
+      displayName: "Linux Network Duplication"
+      plan:
+        - team
+    - name: linux-network-rate-limit
+      description: It injects network rate limit to a linux VM.
+      displayName: "Linux Network Rate Limit"
+      plan:
+        - team
+    - name: linux-dns-error
+      description: It injects dns error to a linux VM.
+      displayName: "Linux DNS Error"
+      plan:
+        - team
+    - name: linux-dns-spoof
+      description: It injects dns spoof to a linux VM.
+      displayName: "Linux DNS Spoof"
+      plan:
+        - team
+    - name: linux-memory-stress
+      description: It injects memory stress to a linux VM.
+      displayName: "Linux Memory Stress"
+      plan:
+        - team
+    - name: linux-disk-io-stress
+      description: It injects Disk I/O stress to a linux VM.
+      displayName: "Linux Disk I/O Stress"
+      plan:
+        - team
+    - name: linux-disk-fill
+      description: It injects disk fill to a linux VM.
+      displayName: "Linux Disk Fill"
+      plan:
+        - team
+    - name: linux-jvm-cpu-stress
+      description: It injects jvm cpu stress into a Java process executing on a linux VM.
+      displayName: "Linux JVM CPU Stress"
+      plan:
+        - team
+    - name: linux-jvm-memory-stress
+      description: It injects jvm memory stress into a Java process executing on a linux VM.
+      displayName: "Linux JVM Memory Stress"
+      plan:
+        - team
+    - name: linux-jvm-method-exception
+      description: It injects jvm method exception into a Java process executing on a linux VM.
+      displayName: "Linux JVM Method Exception"
+      plan:
+        - team
+    - name: linux-jvm-method-latency
+      description: It injects jvm method latency into a Java process executing on a linux VM.
+      displayName: "Linux JVM Method Latency"
+      plan:
+        - team
+    - name: linux-jvm-modify-return
+      description: It injects jvm modify return into a Java process executing on a linux VM.
+      displayName: "Linux JVM Modify Return"
+      plan:
+        - team
+    - name: linux-jvm-trigger-gc
+      description: It injects jvm trigger gc into a Java process executing on a linux VM.
+      displayName: "Linux JVM Trigger GC"
+      plan:
+        - team
+  keywords:
+    - Linux
+    - CPU
+    - Memory
+    - Disk I/O
+    - Network
+    - DNS
+    - Process
+    - Service
+    - Time
+    - Disk
+    - GCP
+    - Azure
+    - Cloud Foundry

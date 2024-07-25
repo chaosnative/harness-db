@@ -1,0 +1,69 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChaosEngine
+metadata:
+  name: spring-boot-chaos
+  namespace: default
+  labels:
+    name: spring-boot-memory-stress
+    app.kubernetes.io/part-of: litmus
+    app.kubernetes.io/component: experiment-job
+    app.kubernetes.io/version: ci
+spec:
+  appinfo:
+    appns: ''
+    applabel: ''
+    appkind: ''
+  # It can be active/stop
+  engineState: 'active'
+  chaosServiceAccount: spring-boot-memory-stress-sa
+  experiments:
+    - name: spring-boot-memory-stress
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+      imagePullPolicy: Always
+      args:
+        - -c
+        - ./experiments -name spring-boot-memory-stress
+      command:
+        - /bin/bash
+      spec:
+        components:
+          env:
+            # it contains fraction of memory to be stressed(0.70 equals 70%)
+            # it supports value in range [0.01,0.95]
+            - name: MEMORY_FILL_FRACTION
+              value: "0.70"
+
+              # port of the spring boot application
+            - name: CM_PORT
+              value: ""
+
+              # it contains number of requests are to be attacked
+              # n value means nth request will be affected
+            - name: CM_LEVEL
+              value: "1"
+
+              # it limits watched packages/classes/methods
+            - name: CM_WATCHED_CUSTOM_SERVICES
+              value: ""
+
+            # provide name of watcher
+            # it supports controller, restController, service, repository, component, webClient
+            - name: CM_WATCHERS
+              value: "restController"
+
+            - name: TOTAL_CHAOS_DURATION
+              value: "30"
+
+            ## percentage of total pods to target
+            - name: PODS_AFFECTED_PERC
+              value: ""
+
+            ## Period to wait before and after injection of chaos
+            - name: RAMP_TIME
+              value: ""
+
+            ## it defines the sequence of chaos execution for multiple target pods
+            ## supported values: serial, parallel
+            - name: SEQUENCE
+              value: "parallel"

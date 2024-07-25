@@ -1,0 +1,25 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: load
+  version: 0.1.0
+  annotations:
+    categories: Load
+    chartDescription: Injects load on the given target hosts
+spec:
+  displayName: Load
+  categoryDescription: >
+    Load chaos contains different chaos experiments that causes load generation on the given target hosts for a specified chaos duration.
+  faults:
+    - name: locust-loadgen-chaos
+      description: It injects load on the given target hosts for a specified chaos duration
+      displayName: "Locust Loadgen Chaos"
+      plan:
+        - team
+  keywords:
+    - Load
+  minKubeVersion: 1.12.0
+  icon:
+    - url: https://raw.githubusercontent.com/litmuschaos/charthub.litmuschaos.io/master/public/litmus.ico
+      mediatype: image/png

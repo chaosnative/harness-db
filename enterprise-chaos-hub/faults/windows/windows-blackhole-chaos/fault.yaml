@@ -1,0 +1,20 @@
+---
+apiVersion: litmuchaos.io/v1alpha1
+kind: MachineFault
+metadata:
+  name: windows-blackhole-chaos
+  labels:
+    name: blackhole-chaos
+spec:
+  infraType: windows
+  env:
+    - name: DESTINATION_HOSTS
+      value: ""
+    - name: IP_ADDRESSES
+      value: ""
+    - name: DURATION
+      value: "30s"
+    - name: SERVER_HOST
+      value: ''
+    - name: RAMP_TIME
+      value: ""

@@ -1,0 +1,29 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  createdAt: 2023-07-19T00:00:00Z
+  name: vmware-windows-time-chaos
+  version: 0.1.0
+  annotations:
+    categories: VMWare
+    vendor: Harness
+spec:
+  displayName: VMware Windows Time Chaos
+  categoryDescription: |
+    VMware windows time chaos fault contains chaos to manipulate system time of the VM(s).
+    - It can cause time-related issues in the machine or the processes/applications running on it due to time deviations.
+  keywords:
+    - VMware
+    - Windows
+  platforms:
+    - VMware
+  experiments:
+    - vmware-windows-time-chaos
+  minKubeVersion: 1.12.0
+  labels:
+    app.kubernetes.io/component: chartserviceversion
+    app.kubernetes.io/version: ci
+  icon:
+    - url:
+      mediatype: ""

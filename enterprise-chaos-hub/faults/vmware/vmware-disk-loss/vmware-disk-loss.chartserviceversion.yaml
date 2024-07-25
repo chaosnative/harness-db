@@ -1,0 +1,30 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  createdAt: 2022-07-19T10:28:08Z
+  name: vmware-disk-loss
+  version: 0.1.0
+  annotations:
+    categories: VMWare
+    vendor: Harness
+spec:
+  displayName: VMware Disk Loss
+  categoryDescription: |
+    VMware Disk Loss fault causes the detachment of Virtual Disks attached to a VM for a specified duration of time and later attaches them back to the VM.
+  keywords:
+    - VMware
+  platforms:
+    - VMware
+  experiments:
+    - vmware-disk-loss
+  minKubeVersion: 1.12.0
+  labels:
+    app.kubernetes.io/component: chartserviceversion
+    app.kubernetes.io/version: ci
+  links:
+    - name: Documentation
+      url: https://docs.harness.io/category/kl0mxwpfw1-hce-category
+  icon:
+    - url:
+      mediatype: ""

@@ -1,0 +1,29 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  createdAt: 2023-07-10T00:00:00Z
+  name: vmware-windows-blackhole-chaos
+  version: 0.1.0
+  annotations:
+    categories: VMware
+    vendor: Harness
+spec:
+  displayName: VMware Windows Blackhole Chaos
+  categoryDescription: |
+    VMware Windows Blackhole Chaos fault simulates network blackhole by blocking network traffic on the target VMware VM(s).
+    - It can disrupt network connectivity and communication on the affected machine or between applications/services.
+  keywords:
+    - VMware
+    - Windows
+  platforms:
+    - VMware
+  experiments:
+    - vmware-windows-blackhole-chaos
+  minKubeVersion: 1.12.0
+  labels:
+    app.kubernetes.io/component: chartserviceversion
+    app.kubernetes.io/version: ci
+  icon:
+    - url:
+      mediatype: ""

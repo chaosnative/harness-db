@@ -1,0 +1,143 @@
+---
+kind: Workflow
+apiVersion: argoproj.io/v1alpha1
+metadata:
+  name: time-chaos-1658939319
+  namespace: litmus
+
+spec:
+  templates:
+    - name: custom-chaos
+      steps:
+        - - name: time-chaos-t3s
+            template: time-chaos-t3s
+        - - name: cleanup-chaos-resources
+            template: cleanup-chaos-resources
+
+    - name: time-chaos-t3s
+      inputs:
+        artifacts:
+          - name: time-chaos-t3s
+            path: /tmp/chaosengine-time-chaos-t3s.yaml
+            raw:
+              data: |
+                apiVersion: litmuschaos.io/v1alpha1
+                kind: ChaosEngine
+                metadata:
+                  namespace: "{{workflow.parameters.adminModeNamespace}}"
+                  generateName: time-chaos-t3s
+                  labels:
+                    name: time-chaos
+                    app.kubernetes.io/part-of: litmus
+                    app.kubernetes.io/component: experiment-job
+                    app.kubernetes.io/version: ci
+                spec:
+                  appinfo:
+                    appns: default
+                    applabel: app=nginx
+                    appkind: deployment
+                  # It can be active/stop
+                  engineState: 'active'
+                  chaosServiceAccount: litmus-admin
+                  experiments:
+                    - name: time-chaos
+                      image: harness/chaos-go-runner-time:1.38.2
+                      imagePullPolicy: Always
+                      args:
+                      - -c
+                      - ./experiments -name time-chaos
+                      command:
+                      - /bin/bash
+                      spec:
+                        components:
+                          env:
+                            - name: TOTAL_CHAOS_DURATION
+                              value: '60' # in seconds
+                            # time period to wait before and after injection of chaos in sec
+                            - name: RAMP_TIME
+                              value: ''
+                            # offset for altering the time
+                            - name: OFFSET
+                              value: '3600s'
+                            # target system clock id; refer 'uapi/linux/time.h' for more details
+                            - name: CLOCK_IDS
+                              value: 'CLOCK_REALTIME'
+                            - name: TARGET_CONTAINER
+                              value: ''
+                            # provide lib image
+                            - name: LIB_IMAGE
+                              value: harness/chaos-go-runner-time:1.38.2
+                            # percentage of total pods to target
+                            - name: PODS_AFFECTED_PERC
+                              value: ''
+                            - name: DEFAULT_HEALTH_CHECK
+                              value: 'false'
+                            - name: TARGET_PODS
+                              value: ''
+                            # To select pods on specific node(s)
+                            - name: NODE_LABEL
+                              value: ''
+                            # provide the name of container runtime
+                            # for litmus LIB, it supports docker, containerd, crio
+                            - name: CONTAINER_RUNTIME
+                              value: 'containerd'
+                            # provide the socket file path
+                            - name: SOCKET_PATH
+                              value: '/run/containerd/containerd.sock'
+                            ## it defines the sequence of chaos execution for multiple target pods
+                            ## supported values: serial, parallel
+                            - name: SEQUENCE
+                              value: 'parallel'
+                        probe:
+                          - name: healthcheck
+                            type: cmdProbe
+                            mode: Edge
+                            runProperties:
+                              probeTimeout: 180s
+                              retry: 0
+                              interval: 1s
+                              stopOnFailure: false
+                            cmdProbe/inputs:
+                              command: ./healthcheck -name pod-level
+                              source:
+                                image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                                inheritInputs: true
+                              comparator:
+                                type: string
+                                criteria: contains
+                                value: "[P000]"
+      metadata:
+        labels:
+          weight: "10"
+      container:
+        name: ""
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+        command:
+          - ./chaos-checker
+        args:
+          - -file=/tmp/chaosengine-time-chaos-t3s.yaml
+          - -saveName=/tmp/engine-name
+
+    - name: cleanup-chaos-resources
+      container:
+        name: ""
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+        command:
+          - sh
+          - -c
+        args:
+          - "kubectl delete chaosengine -l 'instance_id in
+            (9cf6250c-8173-4c98-b6de-f7147f13e4e2, )' -n
+            {{workflow.parameters.adminModeNamespace}} "
+
+  entrypoint: custom-chaos
+  arguments:
+    parameters:
+      - name: adminModeNamespace
+        value: litmus
+  serviceAccountName: argo-chaos
+  podGC:
+    strategy: OnWorkflowCompletion
+  securityContext:
+    runAsUser: 1000
+    runAsNonRoot: true

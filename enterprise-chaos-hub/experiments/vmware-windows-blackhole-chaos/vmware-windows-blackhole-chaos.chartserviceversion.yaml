@@ -1,0 +1,25 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: vmware-windows-blackhole-chaos
+  version: 0.1.0
+  annotations:
+    categories: vmware-windows-blackhole-chaos
+    chartDescription: Simulates network blackhole by blocking network traffic on the target VMware VMs for the specified duration
+spec:
+  displayName: VMware Windows Blackhole Chaos
+  categoryDescription: >
+    Simulates network blackhole by blocking network traffic on the target VMware windows VMs for the specified duration
+  faults:
+    - name: vmware-windows-blackhole-chaos
+      description: Simulates network blackhole by blocking network traffic on the target VMware VMs for the specified duration
+  keywords:
+    - VMware
+  plan:
+    - team
+  platforms:
+    - VMware
+  icon:
+    - url:
+      mediatype: ""

@@ -1,0 +1,23 @@
+---
+apiVersion: litmuchaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: linux-network-loss
+  annotations:
+    categories: Linux
+spec:
+  displayName: linux-network-loss
+  categoryDescription: |
+    This fault injects network loss to a Linux machine.
+    - Simulates loss of connectivity access by blocking the network requests on the machine.
+  keywords:
+    - Linux
+    - Network
+  plan:
+    - team
+  maturity: alpha
+  labels:
+    app.kubernetes.io/component: chartserviceversion
+    app.kubernetes.io/version: ci
+  experiments:
+    - linux-network-loss

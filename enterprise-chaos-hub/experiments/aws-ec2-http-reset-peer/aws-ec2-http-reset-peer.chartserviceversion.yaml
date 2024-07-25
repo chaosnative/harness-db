@@ -1,0 +1,27 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: aws-ec2-http-reset-peer
+  version: 0.1.0
+  annotations:
+    categories: aws-ec2-http-reset-peer
+    chartDescription: Injects HTTP connection reset by error on an AWS EC2 instance for a specified chaos duration
+spec:
+  displayName: AWS EC2 HTTP Reset Peer
+  categoryDescription: >
+    Injects HTTP connection reset by error on an AWS EC2 instance for a specified chaos duration
+  faults:
+    - name: ec2-http-reset-peer
+      description: Injects HTTP connection reset by error on an AWS EC2 instance for a specified chaos duration
+  keywords:
+    - AWS
+  plan:
+    - team
+  platforms:
+    - GKE
+    - EKS
+    - AKS
+  icon:
+    - url:
+      mediatype: ""

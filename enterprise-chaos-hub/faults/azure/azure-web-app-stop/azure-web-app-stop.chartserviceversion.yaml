@@ -1,0 +1,30 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  createdAt: 2022-07-18T10:28:08Z
+  name: azure-web-app-stop
+  version: 0.1.0
+  annotations:
+    categories: Azure
+    vendor: Harness
+spec:
+  displayName: Azure Web App Stop
+  categoryDescription: |
+    Azure web app stop fault disrupts the state of Azure web application. This fault injects access loss on the target web app for a certain duration.
+  keywords:
+    - Azure
+  platforms:
+    - Azure
+  experiments:
+    - azure-web-app-stop
+  minKubeVersion: 1.12.0
+  labels:
+    app.kubernetes.io/component: chartserviceversion
+    app.kubernetes.io/version: ci
+  links:
+    - name: Documentation
+      url: https://docs.harness.io/category/kl0mxwpfw1-hce-category
+  icon:
+    - url:
+      mediatype: ""

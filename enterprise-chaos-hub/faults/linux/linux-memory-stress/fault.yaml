@@ -1,0 +1,13 @@
+---
+apiVersion: litmuchaos.io/v1alpha1
+kind: LinuxFault
+metadata:
+  name: linux-memory-stress
+  labels:
+    name: memory-stress
+spec:
+  stressChaos/inputs:
+    memory: 50%
+    workers: 1
+    duration: 30s
+    rampTime: ""

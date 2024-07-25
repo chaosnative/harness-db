@@ -1,0 +1,21 @@
+---
+apiVersion: litmuchaos.io/v1alpha1
+kind: LinuxFault
+metadata:
+  name: linux-network-rate-limit
+  labels:
+    name: network-rate-limit
+spec:
+  networkChaos/inputs:
+    networkBandwidth: "1mbit"
+    burst: "32kb"
+    limit: "2mb"
+    minBurst: ""
+    peakRate: ""
+    networkInterfaces: ""
+    duration: 30s
+    destinationHosts: ""
+    destinationIPs: ""
+    sourcePorts: ""
+    destinationPorts: ""
+    rampTime: ""

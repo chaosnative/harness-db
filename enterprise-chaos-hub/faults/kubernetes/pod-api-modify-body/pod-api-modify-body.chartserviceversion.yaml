@@ -1,0 +1,31 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: pod-api-modify-body
+  version: 0.1.0
+  annotations:
+    categories: kubernetes
+spec:
+  displayName: Pod API Modify Body
+  categoryDescription: >
+    - API request and response body is modified by replacing any portions that match a specified regular expression with a provided value
+    - The application pod should be healthy once chaos is stopped. Service-requests should be served despite chaos.
+  keywords:
+    - kubernetes
+  plan:
+    - free
+  platforms:
+    - "Minikube"
+  experiments:
+    - nginx-pod-api-modify-body
+  minKubeVersion: 1.12.0
+  labels:
+    app.kubernetes.io/component: chartserviceversion
+    app.kubernetes.io/version: ci
+  links:
+    - name: Documentation
+      url: https://docs.harness.io/category/kl0mxwpfw1-hce-category
+  icon:
+    - base64data: ""
+      mediatype: ""

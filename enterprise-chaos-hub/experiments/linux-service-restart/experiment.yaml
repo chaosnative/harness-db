@@ -1,0 +1,25 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: LinuxChaosExperiment
+metadata:
+  name: linux-service-restart-4ap
+  labels:
+    context: linux-service-restart
+    name: linux-service-restart-4ap
+spec:
+  steps:
+    - - name: linux-service-restart-4ap
+  tasks:
+    - name: linux-service-restart-4ap
+      taskType: "chaos"
+      weight: 10
+      definition:
+        chaos:
+          experiment: linux-service-restart
+          serviceRestartChaos/inputs:
+            services: ""
+            selfHealingServices: false
+            sequence: "parallel"
+            duration: 30s
+            interval: 30
+            rampTime: ""

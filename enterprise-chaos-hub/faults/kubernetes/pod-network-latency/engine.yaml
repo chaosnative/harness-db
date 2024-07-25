@@ -1,0 +1,124 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChaosEngine
+metadata:
+  name: pod-network-latency
+  namespace: default
+  labels:
+    name: pod-network-latency
+    app.kubernetes.io/part-of: litmus
+    app.kubernetes.io/component: experiment-job
+    app.kubernetes.io/runtime-api-usage: "true"
+    app.kubernetes.io/version: ci
+spec:
+  # It can be active/stop
+  engineState: "active"
+  terminationGracePeriodSeconds: 30
+  appinfo:
+    appns: ""
+    # FYI, To see app label, apply kubectl get pods --show-labels
+    applabel: ""
+    appkind: ""
+  chaosServiceAccount: pod-network-latency-sa
+  experiments:
+    - name: pod-network-latency
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+      imagePullPolicy: Always
+      args:
+        - -c
+        - ./experiments -name pod-network-latency
+      command:
+        - /bin/bash
+      spec:
+        components:
+          env:
+            - name: TARGET_CONTAINER
+              value: ""
+
+            - name: NETWORK_INTERFACE
+              value: "eth0"
+
+            # provide lib image
+            - name: LIB_IMAGE
+              value: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+
+            - name: TC_IMAGE
+              value: "gaiadocker/iproute2"
+
+            - name: NETWORK_LATENCY
+              value: "2000" #in ms
+
+            - name: TOTAL_CHAOS_DURATION
+              value: "60" # in seconds
+
+            # Time period to wait before and after injection of chaos in sec
+            - name: RAMP_TIME
+              value: ""
+
+            - name: JITTER
+              value: "0"
+
+            ## percentage of total pods to target
+            - name: PODS_AFFECTED_PERC
+              value: ""
+
+            - name: TARGET_PODS
+              value: ""
+
+            # provide the name of container runtime
+            # for litmus LIB, it supports docker, containerd, crio
+            # for pumba LIB, it supports docker only
+            - name: CONTAINER_RUNTIME
+              value: "containerd"
+
+            - name: DEFAULT_HEALTH_CHECK
+              value: "false"
+
+            # provide the destination ips
+            # chaos injection will be triggered for these destination ips
+            - name: DESTINATION_IPS
+              value: ""
+
+            # provide the destination hosts
+            # chaos injection will be triggered for these destination hosts
+            - name: DESTINATION_HOSTS
+              value: ""
+
+            # provide the comma seperated source ports
+            - name: SOURCE_PORTS
+              value: ""
+
+            # provide the comma seperated destination ports
+            - name: DESTINATION_PORTS
+              value: ""
+
+            # provide the socket file path
+            - name: SOCKET_PATH
+              value: "/run/containerd/containerd.sock"
+
+            # To select pods on specific node(s)
+            - name: NODE_LABEL
+              value: ""
+
+            ## it defines the sequence of chaos execution for multiple target pods
+            ## supported values: serial, parallel
+            - name: SEQUENCE
+              value: "parallel"
+        probe:
+          - name: healthcheck
+            type: cmdProbe
+            mode: Edge
+            runProperties:
+              probeTimeout: 180s
+              retry: 0
+              interval: 1s
+              stopOnFailure: false
+            cmdProbe/inputs:
+              command: ./healthcheck -name pod-level
+              source:
+                image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                inheritInputs: true
+              comparator:
+                type: string
+                criteria: contains
+                value: "[P000]"

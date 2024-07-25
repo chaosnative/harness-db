@@ -1,0 +1,27 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: nginx-disk-fill
+  version: 0.1.0
+  annotations:
+    categories: nginx-disk-fill
+    chartDescription: Injects disk fill (ephemeral storage) on pod(s) identified by the specified label ("app=nginx" by default)
+spec:
+  displayName: Nginx Disk Fill
+  categoryDescription: >
+    Injects disk fill (ephemeral storage) on pod(s) identified by the specified label ("app=nginx" by default)
+  faults:
+    - name: disk-fill
+      description: Injects disk fill (ephemeral storage) on pod(s) identified by the specified label ("app=nginx" by default)
+  keywords:
+    - Kubernetes
+  plan:
+    - free
+  platforms:
+    - GKE
+    - EKS
+    - AKS
+  icon:
+    - url:
+      mediatype: ""

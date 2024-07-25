@@ -1,0 +1,136 @@
+---
+kind: Workflow
+apiVersion: argoproj.io/v1alpha1
+metadata:
+  name: node-network-loss-1658939319
+  namespace: litmus
+
+spec:
+  templates:
+    - name: custom-chaos
+      steps:
+        - - name: node-network-loss-t3s
+            template: node-network-loss-t3s
+        - - name: cleanup-chaos-resources
+            template: cleanup-chaos-resources
+
+    - name: node-network-loss-t3s
+      inputs:
+        artifacts:
+          - name: node-network-loss-t3s
+            path: /tmp/chaosengine-node-network-loss-t3s.yaml
+            raw:
+              data: |
+                apiVersion: litmuschaos.io/v1alpha1
+                kind: ChaosEngine
+                metadata:
+                  namespace: "{{workflow.parameters.adminModeNamespace}}"
+                  generateName: node-network-loss-t3s
+                  labels:
+                    name: node-network-loss
+                    app.kubernetes.io/part-of: litmus
+                    app.kubernetes.io/component: experiment-job
+                    app.kubernetes.io/runtime-api-usage: "true"
+                    app.kubernetes.io/version: ci
+                spec:
+                  engineState: active
+                  auxiliaryAppInfo: ""
+                  chaosServiceAccount: litmus-admin
+                  experiments:
+                    - name: node-network-loss
+                      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                      imagePullPolicy: Always
+                      args:
+                        - -c
+                        - ./experiments -name node-network-loss
+                      command:
+                        - /bin/bash
+                      spec:
+                        components:
+                          statusCheckTimeouts:
+                            delay: 2
+                            timeout: 240
+                          env:
+                            - name: TARGET_CONTAINER
+                              value: ""
+                            - name: LIB_IMAGE
+                              value: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                            - name: NETWORK_INTERFACE
+                              value: eth0
+                            - name: NETWORK_PACKET_LOSS_PERCENTAGE
+                              value: "100"
+                            - name: TOTAL_CHAOS_DURATION
+                              value: "60"
+                            - name: RAMP_TIME
+                              value: ""
+                            - name: TARGET_NODES
+                              value: ""
+                            - name: NODES_AFFECTED_PERC
+                              value: ""
+                            - name: NODE_LABEL
+                              value: ""
+                            - name: CONTAINER_RUNTIME
+                              value: "containerd"
+                            - name: DESTINATION_IPS
+                              value: ""
+                            - name: DESTINATION_HOSTS
+                              value: ""
+                            - name: SOCKET_PATH
+                              value: "/run/containerd/containerd.sock"
+                            - name: SEQUENCE
+                              value: parallel
+                            - name: DEFAULT_HEALTH_CHECK
+                              value: "false"
+                        probe:
+                          - name: healthcheck
+                            type: cmdProbe
+                            mode: Edge
+                            runProperties:
+                              probeTimeout: 180s
+                              retry: 0
+                              interval: 1s
+                              stopOnFailure: false
+                            cmdProbe/inputs:
+                              command: ./healthcheck -name node-level
+                              source:
+                                image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                                inheritInputs: true
+                              comparator:
+                                type: string
+                                criteria: contains
+                                value: "[P000]"
+      metadata:
+        labels:
+          weight: "10"
+      container:
+        name: ""
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+        command:
+          - ./chaos-checker
+        args:
+          - -file=/tmp/chaosengine-node-network-loss-t3s.yaml
+          - -saveName=/tmp/engine-name
+
+    - name: cleanup-chaos-resources
+      container:
+        name: ""
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+        command:
+          - sh
+          - -c
+        args:
+          - "kubectl delete chaosengine -l 'instance_id in
+            (9cf6250c-8173-4c98-b6de-f7147f13e4e2, )' -n
+            {{workflow.parameters.adminModeNamespace}} "
+
+  entrypoint: custom-chaos
+  arguments:
+    parameters:
+      - name: adminModeNamespace
+        value: litmus
+  serviceAccountName: argo-chaos
+  podGC:
+    strategy: OnWorkflowCompletion
+  securityContext:
+    runAsUser: 1000
+    runAsNonRoot: true

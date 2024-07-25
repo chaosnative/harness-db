@@ -1,0 +1,29 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: kube-resilience
+  version: 0.1.0
+  annotations:
+    categories: kube-resilience
+    chartDescription: Stress tests the kubernetes platform
+    executionPlane: "kubernetes"
+spec:
+  displayName: Kube Resilience
+  categoryDescription: >
+    Kube Resilience category contains experiments that stress test the Kubernetes platform.
+  faults:
+    - name: kubelet-density
+      description: It simulates a pod storm (with a specified count) on the cluster and verifies readiness within a desired timeout.
+      displayName: "Kubelet Density"
+  keywords:
+    - Kube Resilience
+    - Pods
+    - Kubernetes
+  minKubeVersion: 1.12.0
+  links:
+    - name: Documentation
+      url: ""
+  icon:
+    - url: ""
+      mediatype: ""

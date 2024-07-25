@@ -1,0 +1,72 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChaosEngine
+metadata:
+  name: locust-loadgen-chaos
+  namespace: default
+  labels:
+    name: locust-loadgen-chaos
+    app.kubernetes.io/part-of: litmus
+    app.kubernetes.io/component: experiment-job
+    app.kubernetes.io/version: ci
+spec:
+  engineState: "active"
+  terminationGracePeriodSeconds: 30
+  chaosServiceAccount: litmus-admin
+  experiments:
+    - name: locust-loadgen-chaos
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+      imagePullPolicy: Always
+      args:
+        - -c
+        - ./experiments -name locust-loadgen-chaos
+      command:
+        - /bin/bash
+      spec:
+        components:
+          env:
+            - name: TOTAL_CHAOS_DURATION
+              value: "60"
+            - name: CHAOS_INTERVAL
+              value: "60"
+            - name: USERS
+              value: "50"
+            - name: SPAWN_RATE
+              value: "50"
+            - name: HOST
+              value: https://google.com
+            - name: LOAD_TYPE
+              value: post
+            - name: GRANT_TYPE
+              value: client_credentials
+            - name: NODE_NAMES
+              value: ""
+            - name: REPLICA
+              value: "1"
+            - name: CONFIG_MAP_FILE
+              value: /tmp/load/config.py
+            - name: RAMP_TIME
+              value: ""
+            - name: LOAD_IMAGE
+              value: chaosnative/locust-loadgen:latest
+          configMaps:
+            - name: load
+              mountPath: /tmp/load
+        probe:
+          - name: healthcheck
+            type: cmdProbe
+            mode: Edge
+            runProperties:
+              probeTimeout: 5s
+              retry: 0
+              interval: 1s
+              stopOnFailure: false
+            cmdProbe/inputs:
+              command: ./healthcheck -name web-app
+              source:
+                image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                inheritInputs: true
+              comparator:
+                type: string
+                criteria: contains
+                value: "[P000]"

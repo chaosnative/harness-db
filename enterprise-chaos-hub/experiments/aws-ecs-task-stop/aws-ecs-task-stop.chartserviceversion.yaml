@@ -1,0 +1,29 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: aws-ecs-task-stop
+  version: 0.1.0
+  annotations:
+    categories: aws-ecs-task-stop
+    chartDescription: Injects task stop chaos on a target ECS service/task for a specified duration
+spec:
+  displayName: AWS ECS Task Stop
+  categoryDescription: >
+    Injects task stop chaos on a target ECS service/task for a specified duration
+  faults:
+    - name: ecs-task-stop
+      description: Injects task stop chaos on a target ECS service/task for a specified duration
+  keywords:
+    - AWS
+  plan:
+    - team
+  platforms:
+    - GKE
+    - Minikube
+    - Packet(Kubeadm)
+    - EKS
+    - AKS
+  icon:
+    - url:
+      mediatype: ""

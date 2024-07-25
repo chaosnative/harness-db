@@ -1,0 +1,25 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: nginx-pod-api-status-code
+  version: 0.1.0
+  annotations:
+    categories: nginx-pod-api-status-code
+    chartDescription: Injects erroneous status codes in API responses on pod(s) identified by the specified label ("app=nginx" by default)
+spec:
+  displayName: Nginx Pod API Status Code
+  categoryDescription: >
+    Injects erroneous status codes in API responses on pod(s) identified by the specified label ("app=nginx" by default)
+  faults:
+    - name: pod-api-status-code
+      description: Injects erroneous status codes in API responses on pod(s) identified by the specified label ("app=nginx" by default)
+  keywords:
+    - Kubernetes
+  plan:
+    - free
+  platforms:
+    - "Minikube"
+  icon:
+    - url:
+      mediatype: ""

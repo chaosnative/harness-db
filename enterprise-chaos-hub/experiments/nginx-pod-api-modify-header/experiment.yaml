@@ -1,0 +1,188 @@
+---
+kind: Workflow
+apiVersion: argoproj.io/v1alpha1
+metadata:
+  name: pod-api-modify-header
+  namespace: litmus
+
+spec:
+  templates:
+    - name: custom-chaos
+      steps:
+        - - name: pod-api-modify-header-via
+            template: pod-api-modify-header-via
+        - - name: cleanup-chaos-resources
+            template: cleanup-chaos-resources
+
+    - name: pod-api-modify-header-via
+      inputs:
+        artifacts:
+          - name: pod-api-modify-header-via
+            path: /tmp/chaosengine-pod-api-modify-header-via.yaml
+            raw:
+              data: |
+                apiVersion: litmuschaos.io/v1alpha1
+                kind: ChaosEngine
+                metadata:
+                  namespace: "{{workflow.parameters.adminModeNamespace}}"
+                  generateName: pod-api-modify-header-via
+                  labels:
+                    name: pod-api-modify-header
+                    app.kubernetes.io/part-of: litmus
+                    app.kubernetes.io/component: experiment-job
+                    app.kubernetes.io/runtime-api-usage: "true"
+                    app.kubernetes.io/version: ci
+                spec:
+                  engineState: active
+                  appinfo:
+                    appns: default
+                    applabel: app=nginx
+                    appkind: deployment
+                  chaosServiceAccount: litmus-admin
+                  experiments:
+                    - name: pod-api-modify-header
+                      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                      imagePullPolicy: Always
+                      args:
+                        - -c
+                        - ./experiments -name pod-api-modify-header
+                      command:
+                        - /bin/bash
+                      spec:
+                        components:
+                          env:
+                            - name: TARGET_CONTAINER
+                              value: ''
+                            # provide lib image
+                            - name: LIB_IMAGE
+                              value: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                            # provide the header keys and values to be overridden
+                            - name: HEADERS_MAP
+                              value: '{"KEY1": "Value1"}'
+                            # port of the target service
+                            - name: TARGET_SERVICE_PORT
+                              value: "80"
+                            # port on which the proxy will listen
+                            - name: PROXY_PORT
+                              value: "20000"
+                            # network interface on which the proxy will listen
+                            - name: NETWORK_INTERFACE
+                              value: "eth0"
+                            - name: TOTAL_CHAOS_DURATION
+                              value: '30' # in seconds
+                            # api path filter
+                            - name: PATH_FILTER
+                              value: '/status'
+                            # http headers filter
+                            - name: HEADERS_FILTERS
+                              value: ''
+                            # http methods filter
+                            - name: METHODS
+                              value: ''
+                            # query params filter
+                            - name: QUERY_PARAMS
+                              value: ''
+                            # source hosts filter for ingress traffic
+                            - name: SOURCE_HOSTS
+                              value: ''
+                            # source ips filter for ingress traffic
+                            - name: SOURCE_IPS
+                              value: ''
+                            # destination hosts filter for egress traffic
+                            - name: DESTINATION_HOSTS
+                              value: ''
+                            # destination ips filter for egress traffic
+                            - name: DESTINATION_IPS
+                              value: ''
+                            - name: SERVICE_DIRECTION
+                              value: 'ingress'
+                            - name: DATA_DIRECTION
+                              value: 'response'
+                            # Time period to wait before and after injection of chaos in sec
+                            - name: RAMP_TIME
+                              value: ''
+                            # enable the https for ingress and egress traffic
+                            - name: HTTPS_ENABLED
+                              value: ''
+                            # provide the base64 encoded custom certificates
+                            - name: CUSTOM_CERTIFICATES
+                              value: ''
+                            # provide the default root CA certificate path
+                            - name: HTTPS_ROOT_CERT_PATH
+                              value: '/etc/ssl/certs'
+                            # provide the default root CA certificate file name
+                            - name: HTTPS_ROOT_CERT_FILE_NAME
+                              value: 'ca-certificates.crt'
+                            # comma seperated destination ports
+                            - name: DESTINATION_PORTS
+                              value: ''
+                            # percentage of total pods to target
+                            - name: PODS_AFFECTED_PERC
+                              value: ''
+                            - name: TARGET_PODS
+                              value: ''
+                            # provide the name of container runtime
+                            # it supports docker, containerd, crio
+                            - name: CONTAINER_RUNTIME
+                              value: 'containerd'
+                            # provide the socket file path
+                            - name: SOCKET_PATH
+                              value: '/run/containerd/containerd.sock'
+                            # To select pods on specific node(s)
+                            - name: NODE_LABEL
+                              value: ''
+                            ## it defines the sequence of chaos execution for multiple target pods
+                            ## supported values: serial, parallel
+                            - name: SEQUENCE
+                              value: 'parallel'
+                        probe:
+                          - name: healthcheck
+                            type: cmdProbe
+                            mode: Edge
+                            runProperties:
+                              probeTimeout: 180s
+                              retry: 0
+                              interval: 1s
+                              stopOnFailure: false
+                            cmdProbe/inputs:
+                              command: ./healthcheck -name pod-level
+                              source:
+                                image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                                inheritInputs: true
+                              comparator:
+                                type: string
+                                criteria: contains
+                                value: "[P000]"
+      metadata:
+        labels:
+          weight: "10"
+      container:
+        name: ""
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+        command:
+          - ./chaos-checker
+        args:
+          - -file=/tmp/chaosengine-pod-api-modify-header-via.yaml
+          - -saveName=/tmp/engine-name
+    - name: cleanup-chaos-resources
+      container:
+        name: ""
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+        command:
+          - sh
+          - -c
+        args:
+          - "kubectl delete chaosengine -l 'instance_id in
+            (5c17a888-ae32-4b51-a9f1-bd83898128e8, )' -n
+            {{workflow.parameters.adminModeNamespace}} "
+  entrypoint: custom-chaos
+  arguments:
+    parameters:
+      - name: adminModeNamespace
+        value: litmus
+  serviceAccountName: argo-chaos
+  podGC:
+    strategy: OnWorkflowCompletion
+  securityContext:
+    runAsUser: 1000
+    runAsNonRoot: true

@@ -1,0 +1,30 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: spring-boot-faults
+  version: 0.1.0
+  annotations:
+    categories: spring-boot-faults
+    chartDescription: It targets random pods with a Spring Boot application and allows configuring the assaults to inject faults. It tests the resiliency of the system when some applications are having unexpected faulty behavior.
+spec:
+  displayName: Spring Boot Faults
+  categoryDescription: >
+    It targets random pods with a Spring Boot application and allows configuring the assaults to inject faults. It tests the resiliency of the system when some applications are having unexpected faulty behavior
+  faults:
+    - name: spring-boot-faults
+      description: It targets random pods with a Spring Boot application and allows configuring the assaults to inject faults. It tests the resiliency of the system when some applications are having unexpected faulty behavior
+  keywords:
+    - Spring Boot
+  plan:
+    - free
+  platforms:
+    - GKE
+    - AWS(KOPS)
+    - Packet(Kubeadm)
+    - Konvoy
+    - EKS
+    - AKS
+  icon:
+    - url:
+      mediatype: ""

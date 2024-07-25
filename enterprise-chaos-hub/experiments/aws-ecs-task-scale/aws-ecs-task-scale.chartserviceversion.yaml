@@ -1,0 +1,29 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: aws-ecs-task-scale
+  version: 0.1.0
+  annotations:
+    categories: aws-ecs-task-scale
+    chartDescription: Injects task scale chaos on a target ECS service for a specified duration
+spec:
+  displayName: AWS ECS Task Scale
+  categoryDescription: >
+    Injects task scale chaos on a target ECS service for a specified duration
+  faults:
+    - name: ecs-task-scale
+      description: Injects task scale chaos on a target ECS service for a specified duration
+  keywords:
+    - AWS
+  plan:
+    - team
+  platforms:
+    - GKE
+    - Minikube
+    - Packet(Kubeadm)
+    - EKS
+    - AKS
+  icon:
+    - url:
+      mediatype: ""

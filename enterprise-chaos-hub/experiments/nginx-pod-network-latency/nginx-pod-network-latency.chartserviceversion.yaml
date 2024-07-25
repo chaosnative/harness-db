@@ -1,0 +1,29 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: nginx-pod-network-latency
+  version: 0.1.0
+  annotations:
+    categories: nginx-pod-network-latency
+    chartDescription: Injects network latency on pod(s) identified by the specified labels ("app=nginx" by default)
+spec:
+  displayName: Nginx Pod Network Latency
+  categoryDescription: >
+    Injects network latency on pod(s) identified by the specified labels ("app=nginx" by default)
+  faults:
+    - name: pod-network-latency
+      description: Injects network latency on pod(s) identified by the specified labels ("app=nginx" by default)
+  keywords:
+    - Kubernetes
+  plan:
+    - free
+  platforms:
+    - GKE
+    - Minikube
+    - Packet(Kubeadm)
+    - EKS
+    - AKS
+  icon:
+    - url:
+      mediatype: ""

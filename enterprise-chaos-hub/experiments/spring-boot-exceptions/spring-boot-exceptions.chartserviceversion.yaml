@@ -1,0 +1,30 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: spring-boot-exceptions
+  version: 0.1.0
+  annotations:
+    categories: spring-boot-exceptions
+    chartDescription: It targets random pods with a Spring Boot application and allows configuring the assaults to inject exceptions
+spec:
+  displayName: Spring Boot Exceptions
+  categoryDescription: >
+    It targets random pods with a Spring Boot application and allows configuring the assaults to inject exceptions
+  faults:
+    - name: spring-boot-exceptions
+      description: It targets random pods with a Spring Boot application and allows configuring the assaults to inject exceptions
+  keywords:
+    - Spring Boot
+  plan:
+    - free
+  platforms:
+    - GKE
+    - AWS(KOPS)
+    - Packet(Kubeadm)
+    - Konvoy
+    - EKS
+    - AKS
+  icon:
+    - url:
+      mediatype: ""

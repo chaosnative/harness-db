@@ -1,0 +1,14 @@
+---
+apiVersion: litmuchaos.io/v1alpha1
+kind: LinuxFault
+metadata:
+  name: linux-disk-fill
+  labels:
+    name: disk-fill
+spec:
+  diskFillChaos/inputs:
+    duration: 30s
+    fillPath: ""
+    fillStorage: 50%
+    dataBlockSize: 256k
+    rampTime: ""

@@ -1,0 +1,6 @@
+---
+packageName: kube-resilience
+faults:
+  - name: kubelet-density
+    CSV: kubelet-density.chartserviceversion.yaml
+    desc: "kubelet-density"

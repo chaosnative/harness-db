@@ -1,0 +1,78 @@
+---
+packageName: vmware
+faults:
+  - name: vm-poweroff
+    CSV: vm-poweroff.chartserviceversion.yaml
+    desc: "vm-poweroff"
+  - name: vm-process-kill
+    CSV: vm-process-kill.chartserviceversion.yaml
+    desc: "vm-process-kill"
+  - name: vm-service-stop
+    CSV: vm-service-stop.chartserviceversion.yaml
+    desc: "vm-service-stop"
+  - name: vmware-disk-loss
+    CSV: vmware-disk-loss.chartserviceversion.yaml
+    desc: "vmware-disk-loss"
+  - name: vmware-network-latency
+    CSV: vmware-network-latency.chartserviceversion.yaml
+    desc: "vmware-network-latency"
+  - name: vmware-network-loss
+    CSV: vmware-network-loss.chartserviceversion.yaml
+    desc: "vmware-network-loss"
+  - name: vmware-http-latency
+    CSV: vmware-http-latency.chartserviceversion.yaml
+    desc: "vmware-http-latency"
+  - name: vmware-http-reset-peer
+    CSV: vmware-http-reset-peer.chartserviceversion.yaml
+    desc: "vmware-http-reset-peer"
+  - name: vmware-http-response-modify
+    CSV: vmware-http-response-modify.chartserviceversion.yaml
+    desc: "vmware-http-response-modify"
+  - name: vmware-cpu-hog
+    CSV: vmware-cpu-hog.chartserviceversion.yaml
+    desc: "vmware-cpu-hog"
+  - name: vmware-memory-hog
+    CSV: vmware-memory-hog.chartserviceversion.yaml
+    desc: "vmware-memory-hog"
+  - name: vmware-io-stress
+    CSV: vmware-io-stress.chartserviceversion.yaml
+    desc: "vmware-io-stress"
+  - name: vmware-dns-chaos
+    CSV: vmware-dns-chaos.chartserviceversion.yaml
+    desc: "vmware-dns-chaos"
+  - name: vmware-host-reboot
+    CSV: vmware-host-reboot.chartserviceversion.yaml
+    desc: "vmware-host-reboot"
+  - name: vmware-windows-cpu-hog
+    CSV: vmware-windows-cpu-hog.chartserviceversion.yaml
+    desc: "vmware-windows-cpu-hog"
+  - name: vmware-windows-memory-hog
+    CSV: vmware-windows-memory-hog.chartserviceversion.yaml
+    desc: "vmware-windows-memory-hog"
+  - name: vmware-windows-service-stop
+    CSV: vmware-windows-service-stop.chartserviceversion.yaml
+    desc: "vmware-windows-service-stop"
+  - name: vmware-windows-process-kill
+    CSV: vmware-windows-process-kill.chartserviceversion.yaml
+    desc: "vmware-windows-process-kill"
+  - name: vmware-windows-disk-stress
+    CSV: vmware-windows-disk-stress.chartserviceversion.yaml
+    desc: "vmware-windows-disk-stress"
+  - name: vmware-windows-network-latency
+    CSV: vmware-windows-network-latency.chartserviceversion.yaml
+    desc: "vmware-windows-network-latency"
+  - name: vmware-windows-network-loss
+    CSV: vmware-windows-network-loss.chartserviceversion.yaml
+    desc: "vmware-windows-network-loss"
+  - name: vmware-windows-network-corruption
+    CSV: vmware-windows-network-corruption.chartserviceversion.yaml
+    desc: "vmware-windows-network-corruption"
+  - name: vmware-windows-network-duplication
+    CSV: vmware-windows-network-duplication.chartserviceversion.yaml
+    desc: "vmware-windows-network-duplication"
+  - name: vmware-windows-blackhole-chaos
+    CSV: vmware-windows-blackhole-chaos.chartserviceversion.yaml
+    desc: "vmware-windows-blackhole-chaos"
+  - name: vmware-windows-time-chaos
+    CSV: vmware-windows-time-chaos.chartserviceversion.yaml
+    desc: "vmware-windows-time-chaos"

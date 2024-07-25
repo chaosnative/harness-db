@@ -1,0 +1,79 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChaosEngine
+metadata:
+  name: node-drain
+  namespace: default
+  labels:
+    name: node-drain
+    app.kubernetes.io/part-of: litmus
+    app.kubernetes.io/component: experiment-job
+    app.kubernetes.io/version: ci
+spec:
+  # It can be active/stop
+  engineState: "active"
+  terminationGracePeriodSeconds: 30
+  #ex. values: ns1:name=percona,ns2:run=nginx
+  auxiliaryAppInfo: ""
+  chaosServiceAccount: node-drain-sa
+  experiments:
+    - name: node-drain
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+      imagePullPolicy: Always
+      args:
+        - -c
+        - ./experiments -name node-drain
+      command:
+        - /bin/bash
+      spec:
+        components:
+          # nodeSelector:
+          #   # provide the node labels
+          #   kubernetes.io/hostname: 'node02'
+          env:
+            - name: TARGET_NODES
+              value: ""
+
+            - name: NODE_LABEL
+              value: ""
+
+            - name: TOTAL_CHAOS_DURATION
+              value: "60"
+
+            - name: DRAIN_TIMEOUT
+              value: '60'
+
+            - name: FORCE
+              value: 'true'
+
+            # Period to wait before and after injection of chaos in sec
+            - name: RAMP_TIME
+              value: ""
+
+            - name: DEFAULT_HEALTH_CHECK
+              value: "false"
+
+            - name: NODES_AFFECTED_PERC
+              value: "0"
+
+            - name: SEQUENCE
+              value: "parallel"
+
+        probe:
+          - name: healthcheck
+            type: cmdProbe
+            mode: Edge
+            runProperties:
+              probeTimeout: 180s
+              retry: 0
+              interval: 1s
+              stopOnFailure: false
+            cmdProbe/inputs:
+              command: ./healthcheck -name node-level
+              source:
+                image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                inheritInputs: true
+              comparator:
+                type: string
+                criteria: contains
+                value: "[P000]"
