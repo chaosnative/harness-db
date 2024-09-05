@@ -1,0 +1,6 @@
+---
+packageName: byoc
+faults:
+  - name: byoc-injector
+    CSV: byoc-injector.chartserviceversion.yaml
+    desc: "byoc-injector"

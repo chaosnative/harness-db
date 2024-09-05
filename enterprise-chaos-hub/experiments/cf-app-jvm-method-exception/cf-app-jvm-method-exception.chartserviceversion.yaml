@@ -1,0 +1,29 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: cf-app-jvm-method-exception
+  version: 0.1.0
+  annotations:
+    categories: cf-app-jvm-method-exception
+    chartDescription: Injects app jvm method exception chaos for a CF app.
+spec:
+  displayName: CF App JVM Method Exception
+  categoryDescription: >-
+    This fault injects app jvm method exception chaos in the Cloud Foundry platform.
+
+    - Checks resilience upon receiving an exception from a method call
+
+    - Helps validate the effectiveness of disaster recovery and high availability of the app
+  faults:
+    - name: cf-app-jvm-method-exception
+      description: Injects app jvm method exception chaos for a CF app.
+  keywords:
+    - Cloud Foundry
+  plan:
+    - enterprise
+  platforms:
+    - Cloud Foundry
+  icon:
+    - url:
+      mediatype: ""

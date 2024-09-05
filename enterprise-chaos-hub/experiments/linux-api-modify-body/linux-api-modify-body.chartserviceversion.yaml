@@ -1,0 +1,29 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: linux-api-modify-body
+  version: 0.1.0
+  annotations:
+    categories: linux-api-modify-body
+    chartDescription: Injects API modify body into a Linux machine.
+spec:
+  displayName: Linux API Modify Body
+  categoryDescription: >-
+    This fault injects API modify body into a Linux machine.
+
+    - Causes an API request or response body to be modified to a given value
+  faults:
+    - name: linux-api-modify-body
+      description: Injects API modify body into a Linux machine.
+  keywords:
+    - Linux
+    - GCP
+    - Azure
+  plan:
+    - team
+  platforms:
+    - Linux
+  icon:
+    - url:
+      mediatype: ""

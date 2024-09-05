@@ -13,7 +13,7 @@ spec:
     chaos:
       experiment: pod-delete
       serviceAccountName: litmus-admin
-      image: docker.io/harness/chaos-ddcr-faults:main-latest
+      image: docker.io/harness/chaos-ddcr-faults:1.41.0
       imagePullPolicy: Always
       env:
         - name: TOTAL_CHAOS_DURATION

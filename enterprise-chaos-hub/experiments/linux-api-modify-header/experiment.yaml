@@ -1,0 +1,39 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: LinuxChaosExperiment
+metadata:
+  name: linux-api-modify-header-4ap
+  labels:
+    context: linux-api-modify-header
+    name: linux-api-modify-header-4ap
+spec:
+  steps:
+    - - name: linux-api-modify-header-4ap
+  tasks:
+    - name: linux-api-modify-header-4ap
+      taskType: "chaos"
+      weight: 10
+      definition:
+        chaos:
+          experiment: linux-api-modify-header
+          apiChaos/inputs:
+            networkInterface: ""
+            duration: 30s
+            rampTime: ""
+            targetServicePort: 80
+            proxyPort: 20000
+            pathFilter: ""
+            serviceDirection: ingress
+            httpsEnabled: false
+            destinationPorts: ""
+            httpsRootCertFile: ""
+            customCertificates: ""
+            headersFilters: ""
+            methods: ""
+            queryParams: ""
+            sourceHosts: ""
+            sourceIPs: ""
+            destinationHosts: ""
+            destinationIPs: ""
+            headersMap: ""
+            dataDirection: both

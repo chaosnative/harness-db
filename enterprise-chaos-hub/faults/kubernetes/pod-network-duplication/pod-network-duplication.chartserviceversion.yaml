@@ -11,7 +11,7 @@ spec:
   displayName: Pod Network Duplication
   categoryDescription: |
     Pod-network-duplication fault disrupts network connectivity to kubernetes pods. This fault injects percentage packet duplication on the app replica pods.
-    - Causes lossy access to application replica by injecting packet duplication using Pumba.
+    - Causes lossy access to application replica by injecting packet duplication.
     - The application pod should be healthy once chaos is stopped. Service-requests should be served (say, via alternate replicas) despite chaos.
   keywords:
     - Kubernetes

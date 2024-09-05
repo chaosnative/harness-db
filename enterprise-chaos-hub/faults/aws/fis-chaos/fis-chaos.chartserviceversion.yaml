@@ -1,0 +1,36 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  createdAt: 2024-06-18T10:28:08Z
+  name: fis-chaos
+  version: 0.1.0
+  annotations:
+    categories: Kube AWS
+    vendor: Harness
+spec:
+  displayName: FIS Chaos
+  categoryDescription: |
+    The fault triggers the execution of the FIS chaos experiment using a specified FIS template.
+  keywords:
+    - AWS
+  plan:
+    - team
+  platforms:
+    - GKE
+    - Packet(Kubeadm)
+    - Minikube
+    - EKS
+    - AKS
+  experiments:
+    - aws-fis-chaos
+  minKubeVersion: 1.12.0
+  labels:
+    app.kubernetes.io/component: chartserviceversion
+    app.kubernetes.io/version: ci
+  links:
+    - name: Documentation
+      url: https://docs.harness.io/category/kl0mxwpfw1-hce-category
+  icon:
+    - url:
+      mediatype: ""

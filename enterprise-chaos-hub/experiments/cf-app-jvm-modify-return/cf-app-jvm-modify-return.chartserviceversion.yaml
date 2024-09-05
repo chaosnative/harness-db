@@ -1,0 +1,29 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: cf-app-jvm-modify-return
+  version: 0.1.0
+  annotations:
+    categories: cf-app-jvm-modify-return
+    chartDescription: Injects app jvm modify return chaos for a CF app.
+spec:
+  displayName: CF App JVM Modify Return
+  categoryDescription: >-
+    This fault injects app jvm modify return chaos in the Cloud Foundry platform.
+
+    - Checks resilience upon modifying the return value of a method call
+
+    - Helps validate the effectiveness of disaster recovery and high availability of the app
+  faults:
+    - name: cf-app-jvm-modify-return
+      description: Injects app jvm modify return chaos for a CF app.
+  keywords:
+    - Cloud Foundry
+  plan:
+    - enterprise
+  platforms:
+    - Cloud Foundry
+  icon:
+    - url:
+      mediatype: ""

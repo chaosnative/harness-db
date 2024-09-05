@@ -112,6 +112,51 @@ spec:
       displayName: "Linux JVM Trigger GC"
       plan:
         - team
+    - name: linux-api-block
+      description: It injects api block to a linux VM.
+      displayName: "Linux API Block"
+      plan:
+        - team
+    - name: linux-api-latency
+      description: It injects api latency to a linux VM.
+      displayName: "Linux API Latency"
+      plan:
+        - team
+    - name: linux-api-modify-body
+      description: It injects api modify-body to a linux VM.
+      displayName: "Linux API Modify Body"
+      plan:
+        - team
+    - name: linux-api-modify-header
+      description: It injects api modify-header to a linux VM.
+      displayName: "Linux API Modify Header"
+      plan:
+        - team
+    - name: linux-api-status-code
+      description: It injects api status-code to a linux VM.
+      displayName: "Linux API Status Code"
+      plan:
+        - team
+    - name: redis-cache-expire
+      description: It injects redis cache expire to a linux VM.
+      displayName: "Redis Cache Expire"
+      plan:
+        - team
+    - name: redis-cache-limit
+      description: It injects redis cache limit to a linux VM.
+      displayName: "Redis Cache Limit"
+      plan:
+        - team
+    - name: redis-cache-penetration
+      description: It injects redis cache penetration to a linux VM.
+      displayName: "Redis Cache Penetration"
+      plan:
+        - team
+    - name: redis-sentinel-stop
+      description: It injects redis sentinel stop to a linux VM.
+      displayName: "Redis Sentinel Stop"
+      plan:
+        - team
   keywords:
     - Linux
     - CPU
@@ -126,3 +171,4 @@ spec:
     - GCP
     - Azure
     - Cloud Foundry
+    - Redis

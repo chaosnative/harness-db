@@ -1,0 +1,29 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: linux-api-latency
+  version: 0.1.0
+  annotations:
+    categories: linux-api-latency
+    chartDescription: Injects API latency into a Linux machine.
+spec:
+  displayName: Linux API Latency
+  categoryDescription: >-
+    This fault injects API latency into a Linux machine.
+
+    - Induces API call latency which adds a time delay in the response to be sent
+  faults:
+    - name: linux-api-latency
+      description: Injects API latency into a Linux machine.
+  keywords:
+    - Linux
+    - GCP
+    - Azure
+  plan:
+    - team
+  platforms:
+    - Linux
+  icon:
+    - url:
+      mediatype: ""

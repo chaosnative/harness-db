@@ -15,4 +15,5 @@ spec:
     destinationIPs: ""
     sourcePorts: ""
     destinationPorts: ""
+    whitelistSSH: true
     rampTime: ""

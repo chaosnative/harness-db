@@ -1,0 +1,54 @@
+---
+apiVersion: litmuchaos.io/v1alpha1
+kind: K8sFault
+metadata:
+  name: ec2-io-stress
+spec:
+  definition:
+    chaos:
+      experiment: ec2-io-stress
+      serviceAccountName: litmus-admin
+      image: docker.io/harness/chaos-ddcr-faults:1.41.0
+      imagePullPolicy: Always
+      env:
+        - name: TOTAL_CHAOS_DURATION
+          value: "60" # in seconds
+
+        - name: EC2_INSTANCE_ID
+          value: ""
+
+        - name: EC2_INSTANCE_TAG
+          value: ""
+
+        - name: INSTANCE_AFFECTED_PERC
+          value: ""
+
+        - name: REGION
+          value: ""
+
+        - name: FILESYSTEM_UTILIZATION_BYTES
+          value: ""
+
+        - name: FILESYSTEM_UTILIZATION_PERCENTAGE
+          value: ""
+
+        - name: VOLUME_MOUNT_PATH
+          value: ""
+
+        - name: NUMBER_OF_WORKERS
+          value: "1"
+
+        - name: INSTALL_DEPENDENCIES
+          value: "True"
+
+        - name: AWS_SHARED_CREDENTIALS_FILE
+          value: /tmp/cloud_config.yml
+
+        # time period to wait before and after injection of chaos in sec
+        - name: RAMP_TIME
+          value: ""
+
+        ## it defines the sequence of chaos execution for multiple target pods
+        ## supported values: serial, parallel
+        - name: SEQUENCE
+          value: "parallel"

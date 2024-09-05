@@ -1,0 +1,32 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: redis-sentinel-stop
+  version: 0.1.0
+  annotations:
+    categories: redis-sentinel-stop
+    chartDescription: Injects redis sentinel stop chaos into a Linux machine.
+spec:
+  displayName: Redis Sentinel Stop
+  categoryDescription: >-
+    This fault causes Redis sentinel server to be stopped.
+
+    - Stops and then starts redis sentinel.
+
+    - Determines the resiliency of Redis dependent apps against redis unavailability.
+  faults:
+    - name: redis-sentinel-stop
+      description: Injects redis sentinel stop chaos into a Linux machine.
+  keywords:
+    - Linux
+    - Redis
+    - GCP
+    - Azure
+  plan:
+    - team
+  platforms:
+    - Linux
+  icon:
+    - url:
+      mediatype: ""

@@ -1,0 +1,32 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: redis-cache-limit
+  version: 0.1.0
+  annotations:
+    categories: redis-cache-limit
+    chartDescription: Injects redis cache limit chaos into a Linux machine.
+spec:
+  displayName: Redis Cache Limit
+  categoryDescription: >-
+    This fault causes Redis cache memory to be limited in a Linux machine.
+
+    - Limits maxmemory to a certain value and later restores it.
+
+    - Determines the resiliency of Redis dependent apps against frequent cache miss due to low cache size.
+  faults:
+    - name: redis-cache-limit
+      description: Injects redis cache limit chaos into a Linux machine.
+  keywords:
+    - Linux
+    - Redis
+    - GCP
+    - Azure
+  plan:
+    - team
+  platforms:
+    - Linux
+  icon:
+    - url:
+      mediatype: ""

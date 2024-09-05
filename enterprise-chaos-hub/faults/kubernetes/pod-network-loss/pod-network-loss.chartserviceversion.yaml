@@ -11,7 +11,7 @@ spec:
   displayName: Pod Network Loss
   categoryDescription: |
     Pod-network-loss fault disrupts network connectivity to kubernetes pods. This fault injects percentage packet loss on the app replica pods.
-    - Causes loss of access to application replica by injecting packet loss using Pumba.
+    - Causes loss of access to application replica by injecting packet loss.
     - The application pod should be healthy once chaos is stopped. Service-requests should be served (say, via alternate replicas) despite chaos.
   keywords:
     - Kubernetes

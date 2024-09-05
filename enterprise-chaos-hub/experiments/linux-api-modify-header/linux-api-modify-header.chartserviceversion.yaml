@@ -1,0 +1,29 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: linux-api-modify-header
+  version: 0.1.0
+  annotations:
+    categories: linux-api-modify-header
+    chartDescription: Injects API modify header into a Linux machine.
+spec:
+  displayName: Linux API Modify Header
+  categoryDescription: >-
+    This fault injects API modify header into a Linux machine.
+
+    - Causes an API request or response header to be modified to a given value
+  faults:
+    - name: linux-api-modify-header
+      description: Injects API modify header into a Linux machine.
+  keywords:
+    - Linux
+    - GCP
+    - Azure
+  plan:
+    - team
+  platforms:
+    - Linux
+  icon:
+    - url:
+      mediatype: ""

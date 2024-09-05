@@ -103,6 +103,9 @@ faults:
   - name: pod-io-attribute-override
     CSV: pod-io-attribute-override.chartserviceversion.yaml
     desc: "pod-io-attribute-override"
+  - name: pod-io-mistake
+    CSV: pod-io-mistake.chartserviceversion.yaml
+    desc: "pod-io-mistake"
   - name: pod-api-latency
     CSV: pod-api-latency.chartserviceversion.yaml
     desc: "pod-api-latency"

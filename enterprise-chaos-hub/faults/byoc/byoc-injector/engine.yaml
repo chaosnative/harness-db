@@ -1,0 +1,44 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChaosEngine
+metadata:
+  name: byoc-injector
+  namespace: default
+  labels:
+    name: byoc-injector
+    app.kubernetes.io/part-of: litmus
+    app.kubernetes.io/component: experiment-job
+    app.kubernetes.io/version: ci
+spec:
+  # It can be active/stop
+  engineState: "active"
+  terminationGracePeriodSeconds: 30
+  chaosServiceAccount: byoc-injector-sa
+  experiments:
+    - name: byoc-injector
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.41.0
+      imagePullPolicy: Always
+      args:
+        - -c
+        - ./experiments -name byoc-injector
+      command:
+        - /bin/bash
+      spec:
+        components:
+          env:
+            # Period to wait before and after injection of chaos in sec
+            - name: RAMP_TIME
+              value: ""
+
+            # provide the total chaos duration
+            - name: TOTAL_CHAOS_DURATION
+              value: "20"
+
+            - name: LIB_IMAGE
+              value: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.41.0
+
+            - name: COMMAND
+              value: "/bin/bash"
+
+            - name: ARGS
+              value: "-c,./helpers -name byoc-injector"

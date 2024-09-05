@@ -22,3 +22,21 @@ experiments:
   - name: cf-app-network-duplication
     CSV: cf-app-network-duplication.chartserviceversion.yaml
     desc: "cf-app-network-duplication"
+  - name: cf-app-jvm-method-exception
+    CSV: cf-app-jvm-method-exception.chartserviceversion.yaml
+    desc: "cf-app-jvm-method-exception"
+  - name: cf-app-jvm-method-latency
+    CSV: cf-app-jvm-method-latency.chartserviceversion.yaml
+    desc: "cf-app-jvm-method-latency"
+  - name: cf-app-jvm-modify-return
+    CSV: cf-app-jvm-modify-return.chartserviceversion.yaml
+    desc: "cf-app-jvm-modify-return"
+  - name: cf-app-jvm-cpu-stress
+    CSV: cf-app-jvm-cpu-stress.chartserviceversion.yaml
+    desc: "cf-app-jvm-cpu-stress"
+  - name: cf-app-jvm-memory-stress
+    CSV: cf-app-jvm-memory-stress.chartserviceversion.yaml
+    desc: "cf-app-jvm-memory-stress"
+  - name: cf-app-jvm-trigger-gc
+    CSV: cf-app-jvm-trigger-gc.chartserviceversion.yaml
+    desc: "cf-app-jvm-trigger-gc"

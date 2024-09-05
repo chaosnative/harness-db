@@ -21,7 +21,7 @@ spec:
   chaosServiceAccount: time-chaos-sa
   experiments:
     - name: time-chaos
-      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/harness/chaos-go-runner-time:1.38.2
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner-time:1.41.0
       imagePullPolicy: Always
       args:
         - -c
@@ -51,7 +51,7 @@ spec:
 
             # provide lib image
             - name: LIB_IMAGE
-              value: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/harness/chaos-go-runner-time:1.38.2
+              value: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner-time:1.41.0
 
             # percentage of total pods to target
             - name: PODS_AFFECTED_PERC
@@ -80,22 +80,3 @@ spec:
             ## supported values: serial, parallel
             - name: SEQUENCE
               value: "parallel"
-
-        probe:
-          - name: healthcheck
-            type: cmdProbe
-            mode: Edge
-            runProperties:
-              probeTimeout: 180s
-              retry: 0
-              interval: 1s
-              stopOnFailure: false
-            cmdProbe/inputs:
-              command: ./healthcheck -name pod-level
-              source:
-                image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
-                inheritInputs: true
-              comparator:
-                type: string
-                criteria: contains
-                value: "[P000]"

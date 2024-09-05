@@ -172,3 +172,6 @@ faults:
   - name: fis-dynamodb-replication-pause
     CSV: fis-dynamodb-replication-pause.chartserviceversion.yaml
     desc: "fis-dynamodb-replication-pause"
+  - name: fis-chaos
+    CSV: fis-chaos.chartserviceversion.yaml
+    desc: "fis-chaos"

@@ -39,7 +39,7 @@ spec:
                   chaosServiceAccount: litmus-admin
                   experiments:
                     - name: node-taint
-                      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.41.0
                       imagePullPolicy: Always
                       args:
                         - -c
@@ -61,30 +61,12 @@ spec:
                               value: app.hce.io/chaos=true:NoSchedule
                             - name: DEFAULT_HEALTH_CHECK
                               value: 'false'
-                        probe:
-                          - name: healthcheck
-                            type: cmdProbe
-                            mode: Edge
-                            runProperties:
-                              probeTimeout: 180s
-                              retry: 0
-                              interval: 1s
-                              stopOnFailure: false
-                            cmdProbe/inputs:
-                              command: ./healthcheck -name node-level
-                              source:
-                                image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
-                                inheritInputs: true
-                              comparator:
-                                type: string
-                                criteria: contains
-                                value: "[P000]"
       metadata:
         labels:
           weight: "10"
       container:
         name: ""
-        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.41.0
         command:
           - ./chaos-checker
         args:
@@ -94,7 +76,7 @@ spec:
     - name: cleanup-chaos-resources
       container:
         name: ""
-        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.41.0
         command:
           - sh
           - -c

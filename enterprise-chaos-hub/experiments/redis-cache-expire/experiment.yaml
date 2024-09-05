@@ -1,0 +1,25 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: LinuxChaosExperiment
+metadata:
+  name: redis-cache-expire-4ap
+  labels:
+    context: redis-cache-expire
+    name: redis-cache-expire-4ap
+spec:
+  steps:
+    - - name: redis-cache-expire-4ap
+  tasks:
+    - name: redis-cache-expire-4ap
+      taskType: "chaos"
+      weight: 10
+      definition:
+        chaos:
+          experiment: redis-cache-expire
+          redisChaos/inputs:
+            key: ""
+            database: 0
+            expiration: ""
+            expiryOption: ""
+            duration: 30s
+            rampTime: ""

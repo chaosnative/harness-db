@@ -253,6 +253,13 @@ spec:
         - enterprise
       supportedVersion:
         - v1
+    - name: pod-io-mistake
+      description: It injects pod-io-mistake in a Kubernetes pod.
+      displayName: "Pod IO Mistake"
+      plan:
+        - enterprise
+      supportedVersion:
+        - v1
     - name: pod-api-latency
       description: It injects pod-api-latency in a Kubernetes pod.
       displayName: "Pod API Latency"

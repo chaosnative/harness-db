@@ -28,7 +28,11 @@ executionPlane:
         CSV: load.chartserviceversion.yaml
       - name: ssh
         CSV: ssh.chartserviceversion.yaml
+      - name: byoc
+        CSV: byoc.chartserviceversion.yaml
   - name: KubernetesV2
     category:
       - name: kubernetes
         CSV: kubernetes.chartserviceversion.yaml
+      - name: aws
+        CSV: aws.chartserviceversion.yaml

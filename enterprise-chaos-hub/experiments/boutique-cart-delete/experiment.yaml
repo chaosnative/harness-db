@@ -37,7 +37,7 @@ spec:
                   chaosServiceAccount: litmus-admin
                   experiments:
                     - name: pod-delete
-                      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.41.0
                       imagePullPolicy: Always
                       args:
                         - -c
@@ -61,29 +61,13 @@ spec:
                               value: ""
                             - name: SEQUENCE
                               value: parallel
-                        probe:
-                          - name: http-cartservice-probe
-                            type: httpProbe
-                            mode: Continuous
-                            runProperties:
-                              probeTimeout: 5s
-                              retry: 1
-                              interval: 1s
-                              stopOnFailure: false
-                            httpProbe/inputs:
-                              url: http://frontend/cart
-                              method:
-                                get:
-                                  criteria: ==
-                                  responseCode: "200"
-                              responseTimeout: 15
                   annotationCheck: "false"
       metadata:
         labels:
           weight: "10"
       container:
         name: ""
-        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.41.0
         command:
           - ./chaos-checker
         args:

@@ -1,0 +1,138 @@
+---
+kind: Workflow
+apiVersion: argoproj.io/v1alpha1
+metadata:
+  name: pod-io-mistake-1658939319
+  namespace: litmus
+
+spec:
+  templates:
+    - name: custom-chaos
+      steps:
+        - - name: pod-io-mistake-t3s
+            template: pod-io-mistake-t3s
+        - - name: cleanup-chaos-resources
+            template: cleanup-chaos-resources
+
+    - name: pod-io-mistake-t3s
+      inputs:
+        artifacts:
+          - name: pod-io-mistake-t3s
+            path: /tmp/chaosengine-pod-io-mistake-t3s.yaml
+            raw:
+              data: |
+                apiVersion: litmuschaos.io/v1alpha1
+                kind: ChaosEngine
+                metadata:
+                  namespace: "{{workflow.parameters.adminModeNamespace}}"
+                  generateName: pod-io-mistake-t3s
+                  labels:
+                    name: pod-io-mistake
+                    app.kubernetes.io/part-of: litmus
+                    app.kubernetes.io/component: experiment-job
+                    app.kubernetes.io/version: ci
+                spec:
+                  appinfo:
+                    appns: default
+                    applabel: app=nginx
+                    appkind: deployment
+                  # It can be active/stop
+                  engineState: 'active'
+                  chaosServiceAccount: litmus-admin
+                  experiments:
+                    - name: pod-io-mistake
+                      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.41.0
+                      imagePullPolicy: Always
+                      args:
+                      - -c
+                      - ./experiments -name pod-io-mistake
+                      command:
+                      - /bin/bash
+                      spec:
+                        components:
+                          env:
+                            - name: TOTAL_CHAOS_DURATION
+                              value: '60' # in seconds
+                            # wrong data to be seed
+                            - name: SEED
+                              value: 'zero'
+                            # maximum number of places to seed the wrong data
+                            - name: MAX_TIMES
+                              value: '1'
+                            # maximum size of the data to be seeded
+                            - name: MAX_SIZE
+                              value: '8'
+                            # volume mount path
+                            - name: MOUNT_PATH
+                              value: ''
+                            # path of the file or wildcard path
+                            - name: FILE_PATH
+                              value: ''
+                            # percentage of the i/o requested to be impacted
+                            - name: PERCENTAGE
+                              value: '100'
+                            # type of the method type i.e, read, write
+                            - name: METHOD_TYPES
+                              value: '["read", "write"]'
+                            # time period to wait before and after injection of chaos in sec
+                            - name: RAMP_TIME
+                              value: ''
+                            - name: TARGET_CONTAINER
+                              value: ''
+                            # provide lib image
+                            - name: LIB_IMAGE
+                              value: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner-io:1.41.0
+                            # percentage of total pods to target
+                            - name: PODS_AFFECTED_PERC
+                              value: ''
+                            - name: TARGET_PODS
+                              value: ''
+                            # To select pods on specific node(s)
+                            - name: NODE_LABEL
+                              value: ''
+                            # provide the name of container runtime
+                            # it supports docker, containerd, crio
+                            - name: CONTAINER_RUNTIME
+                              value: 'containerd'
+                            # provide the socket file path
+                            - name: SOCKET_PATH
+                              value: '/run/containerd/containerd.sock'
+                            ## it defines the sequence of chaos execution for multiple target pods
+                            ## supported values: serial, parallel
+                            - name: SEQUENCE
+                              value: 'parallel'
+      metadata:
+        labels:
+          weight: "10"
+      container:
+        name: ""
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.41.0
+        command:
+          - ./chaos-checker
+        args:
+          - -file=/tmp/chaosengine-pod-io-mistake-t3s.yaml
+          - -saveName=/tmp/engine-name
+
+    - name: cleanup-chaos-resources
+      container:
+        name: ""
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.41.0
+        command:
+          - sh
+          - -c
+        args:
+          - "kubectl delete chaosengine -l 'instance_id in
+            (9cf6250c-8173-4c98-b6de-f7147f13e4e2, )' -n
+            {{workflow.parameters.adminModeNamespace}} "
+
+  entrypoint: custom-chaos
+  arguments:
+    parameters:
+      - name: adminModeNamespace
+        value: litmus
+  serviceAccountName: argo-chaos
+  podGC:
+    strategy: OnWorkflowCompletion
+  securityContext:
+    runAsUser: 1000
+    runAsNonRoot: true

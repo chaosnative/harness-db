@@ -1,0 +1,25 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: LinuxChaosExperiment
+metadata:
+  name: redis-sentinel-stop-4ap
+  labels:
+    context: redis-sentinel-stop
+    name: redis-sentinel-stop-4ap
+spec:
+  steps:
+    - - name: redis-sentinel-stop-4ap
+  tasks:
+    - name: redis-sentinel-stop-4ap
+      taskType: "chaos"
+      weight: 10
+      definition:
+        chaos:
+          experiment: redis-sentinel-stop
+          redisChaos/inputs:
+            configFile: ""
+            flushConfig: true
+            redisPath: ""
+            duration: 30s
+            startSentinel: false
+            rampTime: ""

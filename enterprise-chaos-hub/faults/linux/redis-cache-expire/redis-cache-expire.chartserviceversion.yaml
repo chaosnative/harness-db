@@ -1,0 +1,35 @@
+---
+apiVersion: litmuchaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  createdAt: 2023-03-19T10:28:08Z
+  name: redis-cache-expire
+  version: 0.1.0
+  annotations:
+    categories: Linux
+    vendor: Harness
+spec:
+  displayName: redis-cache-expire
+  categoryDescription: |
+    This fault causes Redis cache expiration in a Linux machine.
+    - Expires a given key or all keys.
+    - Determines the resiliency of Redis dependent apps against frequent cache expiration.
+  keywords:
+    - Linux
+    - Redis
+    - Cache
+    - Expire
+  plan:
+    - team
+  maturity: alpha
+  labels:
+    app.kubernetes.io/component: chartserviceversion
+    app.kubernetes.io/version: ci
+  links:
+    - name: Documentation
+      url: https://developer.harness.io/docs/chaos-engineering/technical-reference/chaos-faults/linux/
+  icon:
+    - url:
+      mediatype: ""
+  experiments:
+    - redis-cache-expire

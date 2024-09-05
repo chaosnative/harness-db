@@ -13,7 +13,7 @@ spec:
     chaos:
       experiment: time-chaos
       serviceAccountName: litmus-admin
-      image: docker.io/harness/chaos-ddcr-faults:main-latest
+      image: docker.io/harness/chaos-ddcr-faults:1.41.0
       imagePullPolicy: Always
       env:
         - name: TOTAL_CHAOS_DURATION
@@ -40,7 +40,7 @@ spec:
           value: "/run/containerd/containerd.sock"
 
         - name: LIB_IMAGE
-          value: docker.io/harness/chaos-ddcr-faults:main-latest
+          value: docker.io/harness/chaos-ddcr-faults:1.41.0
 
         # time period to wait before and after injection of chaos in sec
         - name: RAMP_TIME

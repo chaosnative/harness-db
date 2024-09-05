@@ -1,0 +1,29 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: cf-app-jvm-cpu-stress
+  version: 0.1.0
+  annotations:
+    categories: cf-app-jvm-cpu-stress
+    chartDescription: Injects app jvm cpu stress chaos for a CF app.
+spec:
+  displayName: CF App JVM CPU Stress
+  categoryDescription: >-
+    This fault injects app jvm cpu stress chaos in the Cloud Foundry platform.
+
+    - Checks resilience upon limited cpu resource availability
+
+    - Helps validate the effectiveness of disaster recovery and high availability of the app
+  faults:
+    - name: cf-app-jvm-cpu-stress
+      description: Injects app jvm cpu stress chaos for a CF app.
+  keywords:
+    - Cloud Foundry
+  plan:
+    - enterprise
+  platforms:
+    - Cloud Foundry
+  icon:
+    - url:
+      mediatype: ""

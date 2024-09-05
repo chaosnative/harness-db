@@ -68,7 +68,7 @@ spec:
       - apiGroups: ["litmuschaos.io"]
         resources: ["chaosengines", "chaosexperiments", "chaosresults"]
         verbs: ["create", "list", "get", "patch", "update", "delete"]
-    image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+    image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.41.0
     imagePullPolicy: Always
     args:
       - -c
@@ -84,9 +84,6 @@ spec:
 
       - name: TARGET_CONTAINER
         value: ""
-
-      - name: TC_IMAGE
-        value: "gaiadocker/iproute2"
 
       - name: NETWORK_INTERFACE
         value: "eth0"
@@ -106,11 +103,10 @@ spec:
         value: ""
 
       - name: LIB_IMAGE
-        value: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+        value: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.41.0
 
       # provide the name of container runtime
-      # for litmus LIB, it supports docker, containerd, crio
-      # for pumba LIB, it supports docker only
+      # it supports docker, containerd, crio
       - name: CONTAINER_RUNTIME
         value: "containerd"
 

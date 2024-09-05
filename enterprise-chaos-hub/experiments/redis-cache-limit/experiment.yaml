@@ -1,0 +1,22 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: LinuxChaosExperiment
+metadata:
+  name: redis-cache-limit-4ap
+  labels:
+    context: redis-cache-limit
+    name: redis-cache-limit-4ap
+spec:
+  steps:
+    - - name: redis-cache-limit-4ap
+  tasks:
+    - name: redis-cache-limit-4ap
+      taskType: "chaos"
+      weight: 10
+      definition:
+        chaos:
+          experiment: redis-cache-limit
+          redisChaos/inputs:
+            maxMemory: "50%"
+            duration: 30s
+            rampTime: ""

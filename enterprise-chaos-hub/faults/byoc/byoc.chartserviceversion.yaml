@@ -1,0 +1,32 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: byoc
+  version: 0.1.0
+  annotations:
+    categories: BYOC
+    chartDescription: Injects custom chaos experiment
+    executionPlane: "kubernetes"
+spec:
+  displayName: BYOC
+  categoryDescription: >
+    BYOC (Bring Your Own Chaos) is a category of experiments that allows users to inject custom chaos experiments into their Kubernetes cluster.
+  faults:
+    - name: byoc-injector
+      description: It injects custom chaos faults using a specialized helper pod.
+      displayName: "BYOC Injector"
+      plan:
+        - enterprise
+      supportedVersion:
+        - v1
+  keywords:
+    - Kubernetes
+    - BYOC
+  minKubeVersion: 1.12.0
+  links:
+    - name: Kubernetes Website
+      url: https://kubernetes.io
+  icon:
+    - url: https://raw.githubusercontent.com/litmuschaos/charthub.litmuschaos.io/master/public/litmus.ico
+      mediatype: image/png

@@ -1,0 +1,22 @@
+---
+apiVersion: litmuchaos.io/v1alpha1
+kind: LinuxFault
+metadata:
+  name: cf-app-jvm-trigger-gc
+  labels:
+    name: app-jvm-trigger-gc
+spec:
+  cfAppJVMChaos/inputs:
+    duration: 30s
+    faultInjectorLocation: "local"
+    deploymentModel: ""
+    app: ""
+    organization: ""
+    space: ""
+    boshDeployment: ""
+    port: 9091
+    javaHome: ""
+    instanceAffectedPercentage: 0
+    faultInjectorPort: 50320
+    skipSSLValidation: false
+    rampTime: ""

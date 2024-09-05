@@ -1,0 +1,29 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: cf-app-jvm-trigger-gc
+  version: 0.1.0
+  annotations:
+    categories: cf-app-jvm-trigger-gc
+    chartDescription: Injects app jvm trigger gc chaos for a CF app.
+spec:
+  displayName: CF App JVM Trigger GC
+  categoryDescription: >-
+    This fault injects app jvm trigger gc chaos in the Cloud Foundry platform.
+
+    - Checks resilience upon triggering the java garbage collector for the jvm
+
+    - Helps validate the effectiveness of disaster recovery and high availability of the app
+  faults:
+    - name: cf-app-jvm-trigger-gc
+      description: Injects app jvm trigger gc chaos for a CF app.
+  keywords:
+    - Cloud Foundry
+  plan:
+    - enterprise
+  platforms:
+    - Cloud Foundry
+  icon:
+    - url:
+      mediatype: ""

@@ -1,0 +1,36 @@
+---
+apiVersion: litmuchaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  createdAt: 2023-11-03T04:27:08Z
+  name: cf-app-jvm-trigger-gc
+  version: 0.1.0
+  annotations:
+    categories: Cloud-Foundry
+    vendor: Harness
+spec:
+  displayName: cf-app-jvm-trigger-gc
+  categoryDescription: |
+    This fault injects app jvm trigger gc chaos in the Cloud Foundry platform.
+    - Checks resilience upon triggering the java garbage collector for the jvm
+    - Helps validate the effectiveness of disaster recovery and high availability of the app
+  keywords:
+    - Cloud Foundry
+    - CF
+    - App
+    - JVM
+    - GC
+  plan:
+    - enterprise
+  maturity: alpha
+  labels:
+    app.kubernetes.io/component: chartserviceversion
+    app.kubernetes.io/version: ci
+  links:
+    - name: Documentation
+      url: https://developer.harness.io/docs/chaos-engineering/technical-reference/chaos-faults/cloud-foundry/
+  icon:
+    - url:
+      mediatype: ""
+  experiments:
+    - cf-app-jvm-trigger-gc

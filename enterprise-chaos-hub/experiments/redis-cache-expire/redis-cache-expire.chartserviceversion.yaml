@@ -1,0 +1,32 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: redis-cache-expire
+  version: 0.1.0
+  annotations:
+    categories: redis-cache-expire
+    chartDescription: Injects redis cache expire chaos into a Linux machine.
+spec:
+  displayName: Redis Cache Expire
+  categoryDescription: >-
+    This fault causes Redis cache expiration in a Linux machine.
+
+    - Expires a given key or all keys.
+
+    - Determines the resiliency of Redis dependent apps against frequent cache expiration.
+  faults:
+    - name: redis-cache-expire
+      description: Injects redis cache expire chaos into a Linux machine.
+  keywords:
+    - Linux
+    - Redis
+    - GCP
+    - Azure
+  plan:
+    - team
+  platforms:
+    - Linux
+  icon:
+    - url:
+      mediatype: ""

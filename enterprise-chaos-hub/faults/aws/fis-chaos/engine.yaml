@@ -1,0 +1,76 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChaosEngine
+metadata:
+  name: fis-chaos
+  namespace: default
+  labels:
+    name: fis-chaos
+    app.kubernetes.io/part-of: litmus
+    app.kubernetes.io/component: experiment-job
+    app.kubernetes.io/version: ci
+    app.kubernetes.io/enableAWSAccessViaSecrets: disable
+spec:
+  engineState: "active"
+  chaosServiceAccount: litmus-admin
+  experiments:
+    - name: fis-chaos
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.41.0
+      imagePullPolicy: Always
+      args:
+        - -c
+        - ./experiments -name fis-chaos
+      command:
+        - /bin/bash
+      spec:
+        components:
+          env:
+            - name: TOTAL_CHAOS_DURATION
+              value: "60"
+
+            - name: CHAOS_INTERVAL
+              value: "60"
+
+            - name: REGION
+              value: ""
+
+            - name: EXPERIMENT_TEMPLATE_ID
+              value: ''
+
+            - name: RAMP_TIME
+              value: ""
+
+            - name: AWS_SHARED_CREDENTIALS_FILE
+              value: /tmp/cloud_config.yml
+
+        probe:
+          - name: healthcheck
+            type: cmdProbe
+            mode: SOT
+            runProperties:
+              probeTimeout: 5s
+              retry: 0
+              interval: 1s
+              stopOnFailure: false
+            cmdProbe/inputs:
+              command: ./healthcheck -name aws-fis-chaos
+              source:
+                image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.41.0
+                inheritInputs: true
+                volumeMount:
+                  - mountPath: /var/run/secrets/eks.amazonaws.com/serviceaccount
+                    name: aws-iam-token
+                    readOnly: true
+                volumes:
+                  - name: aws-iam-token
+                    projected:
+                      defaultMode: 420
+                      sources:
+                        - serviceAccountToken:
+                            audience: sts.amazonaws.com
+                            expirationSeconds: 86400
+                            path: token
+              comparator:
+                type: string
+                criteria: contains
+                value: "[P000]"

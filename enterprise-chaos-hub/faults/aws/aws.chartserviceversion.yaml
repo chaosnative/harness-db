@@ -58,16 +58,25 @@ spec:
       displayName: "EC2 CPU Hog"
       plan:
         - team
+      supportedVersion:
+        - v1
+        - v2
     - name: ec2-io-stress
       description: It injects IO stress chaos on the AWS EC2 instance.
       displayName: "EC2 IO Stress"
       plan:
         - team
+      supportedVersion:
+        - v1
+        - v2
     - name: ec2-memory-hog
       description: It injects Memory stress chaos on the AWS EC2 instance.
       displayName: "EC2 Memory Hog"
       plan:
         - team
+      supportedVersion:
+        - v1
+        - v2
     - name: ec2-network-loss
       description: It injects Network loss chaos on the AWS EC2 instance.
       displayName: "EC2 Network Loss"
@@ -303,6 +312,11 @@ spec:
     - name: fis-dynamodb-replication-pause
       description: It injects fis-dynamodb-replication-pause using AWS FIS.
       displayName: "FIS DynamoDB Replication Pause"
+      plan:
+        - team
+    - name: fis-chaos
+      description: It injects fis-chaos using AWS FIS templates.
+      displayName: "FIS Chaos"
       plan:
         - team
   keywords:

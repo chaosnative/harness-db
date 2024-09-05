@@ -13,7 +13,7 @@ spec:
   displayName: Pod Network Corruption
   categoryDescription: |
     Pod-network-corruption fault disrupts network connectivity to kubernetes pods. This fault injects percentage packet corruption on the app replica pods.
-    - Causes packet corruption of application replica by injecting packet corruption using Pumba.
+    - Causes packet corruption of application replica by injecting packet corruption.
     - The application pod should be healthy once chaos is stopped. Service-requests should be served (say, via alternate replicas) despite chaos.
   keywords:
     - Kubernetes

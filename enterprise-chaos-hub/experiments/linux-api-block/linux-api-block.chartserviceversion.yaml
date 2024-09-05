@@ -1,0 +1,29 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: linux-api-block
+  version: 0.1.0
+  annotations:
+    categories: linux-api-block
+    chartDescription: Injects API block into a Linux machine.
+spec:
+  displayName: Linux API Block
+  categoryDescription: >-
+    This fault injects API block into a Linux machine.
+
+    - Induces API call block which prevents it from sending a response
+  faults:
+    - name: linux-api-block
+      description: Injects API block into a Linux machine.
+  keywords:
+    - Linux
+    - GCP
+    - Azure
+  plan:
+    - team
+  platforms:
+    - Linux
+  icon:
+    - url:
+      mediatype: ""

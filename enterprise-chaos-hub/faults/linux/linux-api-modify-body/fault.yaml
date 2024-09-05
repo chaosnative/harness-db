@@ -1,0 +1,29 @@
+---
+apiVersion: litmuchaos.io/v1alpha1
+kind: LinuxFault
+metadata:
+  name: linux-api-modify-body
+  labels:
+    name: api-modify-body
+spec:
+  apiChaos/inputs:
+    networkInterface: ""
+    duration: 30s
+    rampTime: ""
+    targetServicePort: 80
+    proxyPort: 20000
+    pathFilter: ""
+    serviceDirection: ingress
+    httpsEnabled: false
+    destinationPorts: ""
+    httpsRootCertFile: ""
+    customCertificates: ""
+    headersFilters: ""
+    methods: ""
+    queryParams: ""
+    sourceHosts: ""
+    sourceIPs: ""
+    destinationHosts: ""
+    destinationIPs: ""
+    responseBody: ""
+    dataDirection: both

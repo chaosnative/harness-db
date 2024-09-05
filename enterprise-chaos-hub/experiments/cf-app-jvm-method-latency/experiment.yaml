@@ -1,0 +1,35 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: LinuxChaosExperiment
+metadata:
+  name: cf-app-jvm-method-latency-a89
+  labels:
+    context: cf-app-jvm-method-latency
+    name: cf-app-jvm-method-latency-a89
+spec:
+  steps:
+    - - name: cf-app-jvm-method-latency-a89
+  tasks:
+    - name: cf-app-jvm-method-latency-a89
+      taskType: "chaos"
+      weight: 10
+      definition:
+        chaos:
+          experiment: cf-app-jvm-method-latency
+          cfAppJVMChaos/inputs:
+            duration: 30s
+            faultInjectorLocation: "local"
+            deploymentModel: ""
+            app: ""
+            organization: ""
+            space: ""
+            boshDeployment: ""
+            class: ""
+            method: ""
+            latency: 2000
+            port: 9091
+            javaHome: ""
+            instanceAffectedPercentage: 0
+            faultInjectorPort: 50320
+            skipSSLValidation: false
+            rampTime: ""

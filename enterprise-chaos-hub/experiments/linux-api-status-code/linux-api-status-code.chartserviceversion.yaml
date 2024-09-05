@@ -1,0 +1,29 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: linux-api-status-code
+  version: 0.1.0
+  annotations:
+    categories: linux-api-status-code
+    chartDescription: Injects API status code into a Linux machine.
+spec:
+  displayName: Linux API Status Code
+  categoryDescription: >-
+    This fault injects API status code into a Linux machine.
+
+    - Causes the status code of an API call to be modified to a given value
+  faults:
+    - name: linux-api-status-code
+      description: Injects API status code into a Linux machine.
+  keywords:
+    - Linux
+    - GCP
+    - Azure
+  plan:
+    - team
+  platforms:
+    - Linux
+  icon:
+    - url:
+      mediatype: ""

@@ -61,3 +61,30 @@ experiments:
   - name: linux-jvm-trigger-gc
     CSV: linux-jvm-trigger-gc.chartserviceversion.yaml
     desc: "linux-jvm-trigger-gc"
+  - name: linux-api-block
+    CSV: linux-api-block.chartserviceversion.yaml
+    desc: "linux-api-block"
+  - name: linux-api-latency
+    CSV: linux-api-latency.chartserviceversion.yaml
+    desc: "linux-api-latency"
+  - name: linux-api-modify-body
+    CSV: linux-api-modify-body.chartserviceversion.yaml
+    desc: "linux-api-modify-body"
+  - name: linux-api-modify-header
+    CSV: linux-api-modify-header.chartserviceversion.yaml
+    desc: "linux-api-modify-header"
+  - name: linux-api-status-code
+    CSV: linux-api-status-code.chartserviceversion.yaml
+    desc: "linux-api-status-code"
+  - name: redis-cache-expire
+    CSV: redis-cache-expire.chartserviceversion.yaml
+    desc: "redis-cache-expire"
+  - name: redis-cache-limit
+    CSV: redis-cache-limit.chartserviceversion.yaml
+    desc: "redis-cache-limit"
+  - name: redis-cache-penetration
+    CSV: redis-cache-penetration.chartserviceversion.yaml
+    desc: "redis-cache-penetration"
+  - name: redis-sentinel-stop
+    CSV: redis-sentinel-stop.chartserviceversion.yaml
+    desc: "redis-sentinel-stop"

@@ -1,0 +1,29 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: aws-fis-chaos
+  version: 0.1.0
+  annotations:
+    categories: aws-fis-chaos
+    chartDescription: Injects AWS FIS experiment on using experiment template ID.
+spec:
+  displayName: AWS FIS Chaos
+  categoryDescription: >
+    Injects FIS chaos experiment execution using the given experiment template.
+  faults:
+    - name: fis-chaos
+      description: Injects FIS chaos experiment execution using the given experiment template
+  keywords:
+    - AWS
+  plan:
+    - team
+  platforms:
+    - GKE
+    - Minikube
+    - Packet(Kubeadm)
+    - EKS
+    - AKS
+  icon:
+    - url:
+      mediatype: ""

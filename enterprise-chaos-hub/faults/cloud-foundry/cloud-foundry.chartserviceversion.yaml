@@ -48,6 +48,36 @@ spec:
       displayName: "CF App Network Duplication"
       plan:
         - enterprise
+    - name: cf-app-jvm-method-exception
+      description: It injects cf-app-jvm-method-exception fault for CF apps.
+      displayName: "CF App JVM Method Exception"
+      plan:
+        - enterprise
+    - name: cf-app-jvm-method-latency
+      description: It injects cf-app-jvm-method-latency fault for CF apps.
+      displayName: "CF App JVM Method Latency"
+      plan:
+        - enterprise
+    - name: cf-app-jvm-modify-return
+      description: It injects cf-app-jvm-modify-return fault for CF apps.
+      displayName: "CF App JVM Modify Return"
+      plan:
+        - enterprise
+    - name: cf-app-jvm-cpu-stress
+      description: It injects cf-app-jvm-cpu-stress fault for CF apps.
+      displayName: "CF App JVM CPU Stress"
+      plan:
+        - enterprise
+    - name: cf-app-jvm-memory-stress
+      description: It injects cf-app-jvm-memory-stress fault for CF apps.
+      displayName: "CF App JVM Memory Stress"
+      plan:
+        - enterprise
+    - name: cf-app-jvm-trigger-gc
+      description: It injects cf-app-jvm-trigger-gc fault for CF apps.
+      displayName: "CF App JVM Trigger GC"
+      plan:
+        - enterprise
   keywords:
     - Cloud Foundry
     - CF

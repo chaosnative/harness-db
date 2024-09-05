@@ -1,0 +1,33 @@
+---
+apiVersion: litmuchaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  createdAt: 2023-03-19T10:28:08Z
+  name: linux-api-latency
+  version: 0.1.0
+  annotations:
+    categories: Linux
+    vendor: Harness
+spec:
+  displayName: linux-api-latency
+  categoryDescription: |
+    This fault injects API latency into a Linux machine.
+    - Induces API call latency which adds a time delay in the response to be sent
+  keywords:
+    - Linux
+    - API
+    - Latency
+  plan:
+    - team
+  maturity: alpha
+  labels:
+    app.kubernetes.io/component: chartserviceversion
+    app.kubernetes.io/version: ci
+  links:
+    - name: Documentation
+      url: https://developer.harness.io/docs/chaos-engineering/technical-reference/chaos-faults/linux/
+  icon:
+    - url:
+      mediatype: ""
+  experiments:
+    - linux-api-latency

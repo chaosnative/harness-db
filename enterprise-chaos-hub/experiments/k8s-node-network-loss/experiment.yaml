@@ -38,7 +38,7 @@ spec:
                   chaosServiceAccount: litmus-admin
                   experiments:
                     - name: node-network-loss
-                      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.41.0
                       imagePullPolicy: Always
                       args:
                         - -c
@@ -47,14 +47,11 @@ spec:
                         - /bin/bash
                       spec:
                         components:
-                          statusCheckTimeouts:
-                            delay: 2
-                            timeout: 240
                           env:
                             - name: TARGET_CONTAINER
                               value: ""
                             - name: LIB_IMAGE
-                              value: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+                              value: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.41.0
                             - name: NETWORK_INTERFACE
                               value: eth0
                             - name: NETWORK_PACKET_LOSS_PERCENTAGE
@@ -67,44 +64,24 @@ spec:
                               value: ""
                             - name: NODES_AFFECTED_PERC
                               value: ""
-                            - name: NODE_LABEL
-                              value: ""
                             - name: CONTAINER_RUNTIME
-                              value: "containerd"
+                              value: 'containerd'
                             - name: DESTINATION_IPS
                               value: ""
                             - name: DESTINATION_HOSTS
                               value: ""
                             - name: SOCKET_PATH
-                              value: "/run/containerd/containerd.sock"
+                              value: '/run/containerd/containerd.sock'
                             - name: SEQUENCE
                               value: parallel
                             - name: DEFAULT_HEALTH_CHECK
-                              value: "false"
-                        probe:
-                          - name: healthcheck
-                            type: cmdProbe
-                            mode: Edge
-                            runProperties:
-                              probeTimeout: 180s
-                              retry: 0
-                              interval: 1s
-                              stopOnFailure: false
-                            cmdProbe/inputs:
-                              command: ./healthcheck -name node-level
-                              source:
-                                image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
-                                inheritInputs: true
-                              comparator:
-                                type: string
-                                criteria: contains
-                                value: "[P000]"
+                              value: 'false'
       metadata:
         labels:
           weight: "10"
       container:
         name: ""
-        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.41.0
         command:
           - ./chaos-checker
         args:
@@ -114,7 +91,7 @@ spec:
     - name: cleanup-chaos-resources
       container:
         name: ""
-        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.38.2
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.41.0
         command:
           - sh
           - -c

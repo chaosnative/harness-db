@@ -1,0 +1,22 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: LinuxChaosExperiment
+metadata:
+  name: redis-cache-penetration-4ap
+  labels:
+    context: redis-cache-penetration
+    name: redis-cache-penetration-4ap
+spec:
+  steps:
+    - - name: redis-cache-penetration-4ap
+  tasks:
+    - name: redis-cache-penetration-4ap
+      taskType: "chaos"
+      weight: 10
+      definition:
+        chaos:
+          experiment: redis-cache-penetration
+          redisChaos/inputs:
+            requestCount: 1000
+            duration: 30s
+            rampTime: ""

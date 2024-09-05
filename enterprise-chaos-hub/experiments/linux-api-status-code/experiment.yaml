@@ -1,0 +1,39 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: LinuxChaosExperiment
+metadata:
+  name: linux-api-status-code-4ap
+  labels:
+    context: linux-api-status-code
+    name: linux-api-status-code-4ap
+spec:
+  steps:
+    - - name: linux-api-status-code-4ap
+  tasks:
+    - name: linux-api-status-code-4ap
+      taskType: "chaos"
+      weight: 10
+      definition:
+        chaos:
+          experiment: linux-api-status-code
+          apiChaos/inputs:
+            networkInterface: ""
+            duration: 30s
+            rampTime: ""
+            targetServicePort: 80
+            proxyPort: 20000
+            pathFilter: ""
+            serviceDirection: ingress
+            httpsEnabled: false
+            destinationPorts: ""
+            httpsRootCertFile: ""
+            customCertificates: ""
+            headersFilters: ""
+            methods: ""
+            queryParams: ""
+            sourceHosts: ""
+            sourceIPs: ""
+            destinationHosts: ""
+            destinationIPs: ""
+            responseBody: ""
+            statusCode: 404

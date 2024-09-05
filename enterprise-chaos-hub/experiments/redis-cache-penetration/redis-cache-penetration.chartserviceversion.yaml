@@ -1,0 +1,32 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: redis-cache-penetration
+  version: 0.1.0
+  annotations:
+    categories: redis-cache-penetration
+    chartDescription: Injects redis cache penetration chaos into a Linux machine.
+spec:
+  displayName: Redis Cache Penetration
+  categoryDescription: >-
+    This fault causes Redis cache penetration in a Linux machine.
+
+    - An inexistent key is attempted to be accessed frequently for a given count value.
+
+    - Determines the resiliency of Redis against frequent cache miss.
+  faults:
+    - name: redis-cache-penetration
+      description: Injects redis cache penetration chaos into a Linux machine.
+  keywords:
+    - Linux
+    - Redis
+    - GCP
+    - Azure
+  plan:
+    - team
+  platforms:
+    - Linux
+  icon:
+    - url:
+      mediatype: ""

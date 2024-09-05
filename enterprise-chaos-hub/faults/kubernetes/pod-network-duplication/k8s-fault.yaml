@@ -13,7 +13,7 @@ spec:
     chaos:
       experiment: pod-network-duplication
       serviceAccountName: litmus-admin
-      image: docker.io/harness/chaos-ddcr-faults:main-latest
+      image: docker.io/harness/chaos-ddcr-faults:1.41.0
       imagePullPolicy: Always
       env:
         - name: TOTAL_CHAOS_DURATION
@@ -32,7 +32,7 @@ spec:
           value: "/run/containerd/containerd.sock"
 
         - name: LIB_IMAGE
-          value: docker.io/harness/chaos-ddcr-faults:main-latest
+          value: docker.io/harness/chaos-ddcr-faults:1.41.0
 
         ## percentage of total pods to target
         - name: POD_AFFECTED_PERCENTAGE
