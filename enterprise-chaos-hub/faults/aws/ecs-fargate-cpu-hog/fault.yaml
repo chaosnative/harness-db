@@ -68,7 +68,7 @@ spec:
       - apiGroups: ["litmuschaos.io"]
         resources: ["chaosengines", "chaosexperiments", "chaosresults"]
         verbs: ["create", "list", "get", "patch", "update", "delete"]
-    image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.41.0
+    image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-go-runner:1.41.0
     imagePullPolicy: Always
     args:
       - -c
@@ -89,7 +89,7 @@ spec:
       - name: CPU_CORE
         value: "2"
       - name: CONTAINER_IMAGE
-        value: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.41.0
+        value: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-go-runner:1.41.0
       - name: REGION
         value: ""
       - name: TASK_REPLICA_AFFECTED_PERC

@@ -41,7 +41,7 @@ spec:
                   chaosServiceAccount: litmus-admin
                   experiments:
                     - name: spring-boot-faults
-                      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.41.0
+                      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-go-runner:1.41.0
                       imagePullPolicy: Always
                       args:
                       - -c
@@ -119,7 +119,7 @@ spec:
           weight: "10"
       container:
         name: ""
-        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.41.0
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-go-runner:1.41.0
         command:
           - ./chaos-checker
         args:
@@ -129,7 +129,7 @@ spec:
     - name: cleanup-chaos-resources
       container:
         name: ""
-        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/harness/chaos-go-runner:1.41.0
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-go-runner:1.41.0
         command:
           - sh
           - -c
