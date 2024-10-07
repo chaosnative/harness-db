@@ -64,6 +64,8 @@ spec:
                               value: ""
                             - name: NODES_AFFECTED_PERC
                               value: ""
+                            - name: NODE_LABEL
+                              value: ""
                             - name: CONTAINER_RUNTIME
                               value: 'containerd'
                             - name: DESTINATION_IPS
