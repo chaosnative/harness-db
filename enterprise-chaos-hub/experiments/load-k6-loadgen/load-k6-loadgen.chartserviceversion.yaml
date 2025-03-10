@@ -1,0 +1,28 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: load-k6-loadgen
+  version: 0.1.0
+  annotations:
+    categories: load-k6-loadgen
+    chartDescription: It execute load on the given host for a specified chaos duration
+spec:
+  displayName: k6 Loadgen
+  categoryDescription: >
+    Injects load on the given target host for a specified chaos duration
+  faults:
+    - name: k6-loadgen-chaos
+      description: Injects load on the given target host for a specified chaos duration
+  keywords:
+    - Load
+  platforms:
+    - GKE
+    - AWS(KOPS)
+    - Packet(Kubeadm)
+    - Konvoy
+    - EKS
+    - AKS
+  icon:
+    - url:
+      mediatype: ""

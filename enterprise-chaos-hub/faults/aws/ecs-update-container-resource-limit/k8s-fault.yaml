@@ -1,0 +1,39 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: K8sFault
+metadata:
+  name: ecs-update-container-resource-limit
+spec:
+  definition:
+    chaos:
+      experiment: ecs-update-container-resource-limit
+      serviceAccountName: litmus-admin
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-ddcr-faults:1.54.0
+      imagePullPolicy: Always
+      env:
+        - name: TOTAL_CHAOS_DURATION
+          value: "30"
+
+        - name: CHAOS_INTERVAL
+          value: "30"
+
+        - name: CLUSTER_NAME
+          value: ""
+
+        - name: SERVICE_NAME
+          value: ""
+
+        - name: REGION
+          value: ""
+
+        - name: CPU_LIMIT
+          value: "250"
+
+        - name: MEMORY_LIMIT
+          value: "250"
+
+        - name: TASK_REPLICA_AFFECTED_PERC
+          value: "100"
+
+        - name: RAMP_TIME
+          value: ""

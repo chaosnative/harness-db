@@ -40,7 +40,7 @@ spec:
                   chaosServiceAccount: litmus-admin
                   experiments:
                     - name: pod-api-status-code
-                      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-go-runner:1.41.0
+                      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-go-runner:1.54.0
                       imagePullPolicy: Always
                       args:
                         - -c
@@ -54,7 +54,7 @@ spec:
                               value: ''
                             # provide lib image
                             - name: LIB_IMAGE
-                              value: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-go-runner:1.41.0
+                              value: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-go-runner:1.54.0
                             # modified status code for the HTTP response
                             # if no value is provided, a random status code from the supported code list will selected
                             # if an invalid status code is provided, the experiment will fail
@@ -112,8 +112,11 @@ spec:
                             # enable the https for ingress and egress traffic
                             - name: HTTPS_ENABLED
                               value: ''
-                            # provide the base64 encoded custom certificates
-                            - name: CUSTOM_CERTIFICATES
+                            # provide the base64 encoded ca.key and ca.crt certificates
+                            - name: CA_CERTIFICATES
+                              value: ''
+                            # provide the base64 encoded server.key and server.crt certificates
+                            - name: SERVER_CERTIFICATES
                               value: ''
                             # provide the default root CA certificate path
                             - name: HTTPS_ROOT_CERT_PATH
@@ -148,7 +151,7 @@ spec:
           weight: "10"
       container:
         name: ""
-        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-go-runner:1.41.0
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-go-runner:1.54.0
         command:
           - ./chaos-checker
         args:
@@ -158,7 +161,7 @@ spec:
     - name: cleanup-chaos-resources
       container:
         name: ""
-        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-go-runner:1.41.0
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-go-runner:1.54.0
         command:
           - sh
           - -c

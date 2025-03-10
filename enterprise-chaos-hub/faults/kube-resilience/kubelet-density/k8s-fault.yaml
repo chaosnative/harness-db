@@ -1,0 +1,47 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: K8sFault
+metadata:
+  name: kubelet-density
+spec:
+  definition:
+    targets:
+      appinfo:
+        applabel: ""
+        appkind: ""
+        appns: ""
+    chaos:
+      experiment: kubelet-density
+      serviceAccountName: litmus-admin
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-ddcr-faults:1.54.0
+      imagePullPolicy: Always
+      env:
+        - name: TOTAL_CHAOS_DURATION
+          value: "60" # in seconds
+
+        - name: POD_COUNT
+          value: "50"
+
+        - name: LIB_IMAGE
+          value: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-ddcr-faults:1.54.0
+
+        - name: RAMP_TIME
+          value: ""
+
+        - name: POD_TEMPLATE_CM
+          value: ""
+
+        - name: TARGET_NAMESPACE
+          value: ""
+
+        - name: POD_TEMPLATE_PATH
+          value: "/templates/pod.yml"
+
+        - name: POD_IMAGE
+          value: "gcr.io/google_containers/pause-amd64:3.0"
+
+        - name: POD_SELECTOR
+          value: "{name: kubelet-density-app}"
+
+        - name: TARGET_NODE
+          value: ""

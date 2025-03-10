@@ -18,81 +18,145 @@ spec:
       displayName: "VMware VM Poweroff"
       plan:
         - free
+      supportedVersion:
+        - v1
     - name: vmware-disk-loss
       description: It injects disk loss chaos for VMware VMs.
       displayName: "VMware Disk Loss"
+      supportedVersion:
+        - v1
     - name: vm-process-kill
       description: It injects process kill chaos on a VMware VM.
       displayName: "VMware VM Process Kill"
+      supportedVersion:
+        - v1
+        - v2
     - name: vm-service-stop
       description: It injects service stop chaos on a VMware VM.
       displayName: "VMware VM Service Stop"
+      supportedVersion:
+        - v1
+        - v2
     - name: vmware-network-latency
       description: It injects network latency chaos on the provided VMware VMs.
       displayName: "VMware Network Latency"
+      supportedVersion:
+        - v1
+        - v2
     - name: vmware-network-loss
       description: It injects network loss chaos on the provided VMware VMs.
       displayName: "VMware Network Loss"
+      supportedVersion:
+        - v1
+        - v2
     - name: vmware-network-rate-limit
       description: It injects network rate limit chaos on the provided VMware VMs.
       displayName: "VMware Network Rate Limit"
+      supportedVersion:
+        - v1
+        - v2
     - name: vmware-http-latency
       description: It injects HTTP latency chaos on the provided VMware VMs.
       displayName: "VMware HTTP Latency"
+      supportedVersion:
+        - v1
+        - v2
     - name: vmware-http-reset-peer
       description: It injects HTTP reset peer chaos on the provided VMware VMs.
       displayName: "VMware HTTP Reset Peer"
+      supportedVersion:
+        - v1
+        - v2
     - name: vmware-http-response-modify
       description: It injects HTTP response modify chaos on the provided VMs.
       displayName: "VMware HTTP Response Modify"
+      supportedVersion:
+        - v1
+        - v2
     - name: vmware-cpu-hog
       description: It injects VMware CPU hog chaos on the provided VMs.
       displayName: "VMware CPU Hog"
+      supportedVersion:
+        - v1
+        - v2
     - name: vmware-memory-hog
       description: It injects VMware memory hog chaos on the provided VMs.
       displayName: "VMware Memory Hog"
+      supportedVersion:
+        - v1
+        - v2
     - name: vmware-io-stress
       description: It injects VMware IO stress chaos on the provided VMs.
       displayName: "VMware IO Stress"
+      supportedVersion:
+        - v1
+        - v2
     - name: vmware-dns-chaos
       description: It injects VMware DNS error chaos on the provided VMs.
       displayName: "VMware DNS Chaos"
+      supportedVersion:
+        - v1
+        - v2
     - name: vmware-host-reboot
       description: It injects VMware host reboot chaos on the provided Hosts.
       displayName: "VMware Host Reboot"
+      supportedVersion:
+        - v1
     - name: vmware-windows-cpu-hog
       description: It injects VMware windows CPU hog chaos on the provided VMs.
       displayName: "VMware Windows CPU Hog"
+      supportedVersion:
+        - v1
     - name: vmware-windows-memory-hog
       description: It injects VMware windows memory hog chaos on the provided VMs.
       displayName: "VMware Windows Memory Hog"
+      supportedVersion:
+        - v1
     - name: vmware-windows-service-stop
       description: It injects VMware windows service stop chaos on the provided VMs.
       displayName: "VMware Windows Service Stop"
+      supportedVersion:
+        - v1
     - name: vmware-windows-process-kill
       description: It injects VMware windows process kill chaos on the provided VMs.
       displayName: "VMware Windows Process kill"
+      supportedVersion:
+        - v1
     - name: vmware-windows-disk-stress
       description: It injects VMware windows disk stress chaos on the provided VMs.
       displayName: "VMware Windows Disk Stress"
+      supportedVersion:
+        - v1
     - name: vmware-windows-network-loss
       description: It injects VMware windows Network loss chaos on the provided VMs.
       displayName: "VMware Windows Network Loss"
+      supportedVersion:
+        - v1
     - name: vmware-windows-network-latency
       description: It injects VMware windows Network Latency chaos on the provided VMs.
       displayName: "VMware Windows Network Latency"
+      supportedVersion:
+        - v1
     - name: vmware-windows-network-corruption
       description: It injects VMware windows Network Corruption chaos on the provided VMs.
       displayName: "VMware Windows Network Corruption"
+      supportedVersion:
+        - v1
     - name: vmware-windows-network-duplication
       description: It injects VMware windows Network Duplication chaos on the provided VMs.
       displayName: "VMware Windows Network Duplication"
+      supportedVersion:
+        - v1
     - name: vmware-windows-blackhole-chaos
       description: It injects VMware windows Blackhole chaos on the provided VMs.
       displayName: "VMware Windows Blackhole Chaos"
+      supportedVersion:
+        - v1
     - name: vmware-windows-time-chaos
       description: It injects VMware windows time chaos on the provided VMs.
       displayName: "VMware Windows Time Chaos"
+      supportedVersion:
+        - v1
   keywords:
     - VMware
   minKubeVersion: 1.12.0

@@ -1,0 +1,34 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  createdAt: 2023-02-02T10:28:08Z
+  name: k6-loadgen-chaos
+  version: 0.1.0
+  annotations:
+    categories: Load
+    vendor: Harness
+spec:
+  displayName: K6 Loadgen Chaos
+  categoryDescription: |
+    K6 loadgen chaos generate a load on the target hosts using k6 which can result is the slowness of the application for a specified chaos duration.
+  keywords:
+    - Load
+  platforms:
+    - AWS
+    - Azure
+    - GCP
+  plan:
+    - team
+  experiments:
+    - load-k6-loadgen
+  minKubeVersion: 1.12.0
+  labels:
+    app.kubernetes.io/component: chartserviceversion
+    app.kubernetes.io/version: ci
+  links:
+    - name: Documentation
+      url: https://docs.harness.io/category/kl0mxwpfw1-hce-category
+  icon:
+    - url:
+      mediatype: ""

@@ -17,6 +17,7 @@ spec:
         chaos:
           experiment: redis-cache-penetration
           redisChaos/inputs:
+            address: ""
             requestCount: 1000
             duration: 30s
             rampTime: ""

@@ -1,0 +1,57 @@
+---
+kind: KubernetesChaosExperiment
+apiVersion: litmuschaos.io/v1alpha1
+metadata:
+  name: gcp-vm-service-kill
+  namespace: litmus
+spec:
+  tasks:
+    - name: gcp-vm-service-kill-qgr2u
+      definition:
+        targets:
+          appinfo:
+          selectors:
+            workloads:
+            pods:
+        chaos:
+          experiment: gcp-vm-service-kill
+          image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-ddcr-faults:1.54.0
+          imagePullPolicy: Always
+          serviceAccountName: litmus-admin
+          defaultHealthCheck: false
+          env:
+            - name: TOTAL_CHAOS_DURATION
+              value: "90"
+            - name: NODE_LABEL
+              value: ""
+            - name: VM_INSTANCE_NAME
+              value: ""
+            - name: LIB_IMAGE
+              value: harness/chaos-ddcr-faults:1.54.0
+            - name: SERVICE_NAME
+              value: 'containerd'
+            - name: MASK
+              value: 'disable'
+            - name: VM_USERNAME
+              value: ''
+            - name: SUDO_ENABLED
+              value: 'true'
+            - name: ZONE
+              value: ""
+            - name: SET_HELPER_DATA
+              value: 'true'
+            - name: GCP_PROJECT_ID
+              value: ""
+            - name: RAMP_TIME
+              value: ""
+          components:
+            secrets:
+              - name: cloud-secret
+                mountPath: /tmp/
+  experimentId: ""
+  experimentRunId: ""
+  steps:
+    - - name: gcp-vm-service-kill-qgr2u
+        status: ""
+  serviceAccountName: litmus
+  cleanupPolicy: "delete"

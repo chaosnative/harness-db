@@ -1,0 +1,56 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: K8sFault
+metadata:
+  name: gcp-vm-instance-stop-by-label
+spec:
+  definition:
+    chaos:
+      experiment: gcp-vm-instance-stop-by-label
+      serviceAccountName: litmus-admin
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-ddcr-faults:1.54.0
+      imagePullPolicy: Always
+      env:
+        - name: TOTAL_CHAOS_DURATION
+          value: "30" # in seconds
+
+        # provide the chaos interval
+        - name: CHAOS_INTERVAL
+          value: "30"
+
+        # enable or disable; shall be set to enable if the target instances are a part of a managed instance group
+        - name: MANAGED_INSTANCE_GROUP
+          value: "disable"
+
+        # set the percentage value of the instances with the given label
+        # which should be targeted as part of the chaos injection
+        - name: INSTANCE_AFFECTED_PERCENTAGE
+          value: ""
+
+        # Instance zone(s) of the target VM instance(s)
+        # If more than one instance is targetted, provide zone for each in the order of their
+        # respective instance name in VM_INSTANCE_NAME as comma separated values ex: zone1,zone2
+        - name: ZONES
+          value: ""
+
+        # GCP project ID to which the VM instances belong
+        - name: GCP_PROJECT_ID
+          value: ""
+
+        # Label of the target VM instance(s)
+        - name: INSTANCE_LABEL
+          value: ""
+
+        ## Period to wait before and after injection of chaos in sec
+        - name: RAMP_TIME
+          value: ""
+
+        ## it defines the sequence of chaos execution for multiple target pods
+        ## supported values: serial, parallel
+        - name: SEQUENCE
+          value: "parallel"
+
+      components:
+        secrets:
+          - name: cloud-secret
+            mountPath: /tmp/

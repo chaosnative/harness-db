@@ -16,6 +16,11 @@ spec:
     - name: kubelet-density
       description: It simulates a pod storm (with a specified count) on the cluster and verifies readiness within a desired timeout.
       displayName: "Kubelet Density"
+      plan:
+        - free
+      supportedVersion:
+        - v1
+        - v2
   keywords:
     - Kube Resilience
     - Pods

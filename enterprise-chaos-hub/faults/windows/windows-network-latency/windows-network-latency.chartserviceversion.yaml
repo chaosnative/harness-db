@@ -1,0 +1,34 @@
+---
+apiVersion: litmuchaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  createdAt: 2024-08-12T10:28:08Z
+  name: windows-network-latency
+  version: 0.1.0
+  annotations:
+    categories: Windows
+    vendor: Harness
+spec:
+  displayName: windows-network-latency
+  categoryDescription: |
+    This fault injects network latency into a windows machine.
+    - Induces network latency on the target hosts or ip addresses.
+    - Simulates a slowness in the network connectivity for the given destination hosts or ip addresses, which can degrade the application performance.
+    - Simulates network slowness, leading to degradation in the performance of processes on the machine.
+  keywords:
+    - Windows
+    - Network
+  plan:
+    - team
+  maturity: alpha
+  labels:
+    app.kubernetes.io/component: chartserviceversion
+    app.kubernetes.io/version: ci
+  links:
+    - name: Documentation
+      url: https://developer.harness.io/docs/chaos-engineering/technical-reference/chaos-faults/windows/
+  icon:
+    - url:
+      mediatype: ""
+  experiments:
+    - windows-network-latency

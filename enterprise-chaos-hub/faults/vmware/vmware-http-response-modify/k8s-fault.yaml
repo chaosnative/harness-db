@@ -1,0 +1,97 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: K8sFault
+metadata:
+  name: vmware-http-response-modify
+spec:
+  definition:
+    chaos:
+      experiment: vmware-http-response-modify
+      serviceAccountName: litmus-admin
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-ddcr-faults:1.54.0
+      imagePullPolicy: Always
+      env:
+        - name: TOTAL_CHAOS_DURATION
+          value: "30" # in seconds
+
+        - name: CHAOS_INTERVAL
+          value: "10"
+
+        - name: RAMP_TIME
+          value: ""
+
+        - name: GOVC_URL
+          valueFrom:
+            secretKeyRef:
+              name: vcenter-secret
+              key: VCENTERSERVER
+
+        - name: GOVC_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: vcenter-secret
+              key: VCENTERUSER
+
+        - name: GOVC_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: vcenter-secret
+              key: VCENTERPASS
+
+        - name: GOVC_INSECURE
+          value: "true"
+
+        - name: VM_NAME
+          value: ""
+
+        - name: VM_USER_NAME
+          value: ""
+
+        - name: VM_PASSWORD
+          value: ""
+
+        - name: NETWORK_INTERFACE
+          value: "ens160"
+
+        # provide the http chaos type for modify response
+        # accepted values are status_code, body, header
+        - name: HTTP_CHAOS_TYPE
+          value: 'status_code'
+
+        # modified status code for the http response
+        # if no value is provided, a random status code from the supported code list will selected
+        # if an invalid status code is provided, the experiment will fail
+        # supported status code list: [200, 201, 202, 204, 300, 301, 302, 304, 307, 400, 401, 403, 404, 500, 501, 502, 503, 504
+        - name: STATUS_CODE
+          value: ''
+
+        #  whether to modify the body as per the status code provided
+        - name: MODIFY_RESPONSE_BODY
+          value: "true"
+
+        # provide the body string to overwrite the response body
+        - name: RESPONSE_BODY
+          value: ''
+
+        # map of headers to modify/add; Eg: {"X-Litmus-Test-Header": "X-Litmus-Test-Value"}
+        # to remove a header, just set the value to ""; Eg: {"X-Litmus-Test-Header": ""}
+        - name: HEADERS_MAP
+          value: '{}'
+
+        # whether to modify response headers or request headers. Accepted values: request, response
+        - name: HEADER_MODE
+          value: 'response'
+
+        # port of the target service
+        - name: TARGET_SERVICE_PORT
+          value: "80"
+
+        # port on which the proxy will listen
+        - name: PROXY_PORT
+          value: "8080"
+
+        - name: TOXICITY
+          value: "100"
+
+        - name: SEQUENCE
+          value: "parallel"

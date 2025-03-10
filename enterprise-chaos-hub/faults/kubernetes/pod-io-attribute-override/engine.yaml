@@ -21,7 +21,7 @@ spec:
   chaosServiceAccount: pod-io-attribute-override-sa
   experiments:
     - name: pod-io-attribute-override
-      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-go-runner-io:1.41.0
+      image: harness/chaos-go-runner-io:1.54.0
       imagePullPolicy: Always
       args:
         - -c
@@ -63,7 +63,7 @@ spec:
               value: ''
 
             - name: LIB_IMAGE
-              value: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/com/db/chaos-hce/thirdparty/artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-go-runner-io:1.41.0
+              value: harness/chaos-go-runner-io:1.54.0
 
             ## provide the cluster runtime
             - name: CONTAINER_RUNTIME

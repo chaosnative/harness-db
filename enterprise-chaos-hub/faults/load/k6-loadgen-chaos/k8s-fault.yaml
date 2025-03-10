@@ -1,0 +1,27 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: K8sFault
+metadata:
+  name: k6-load-generator
+spec:
+  definition:
+    chaos:
+      experiment: k6-load-generator
+      serviceAccountName: litmus-admin
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-ddcr-faults:1.54.0
+      imagePullPolicy: Always
+      env:
+        - name: TOTAL_CHAOS_DURATION
+          value: "60"
+
+        - name: SCRIPT_SECRET_NAME
+          value: "k6-script"
+
+        - name: SCRIPT_SECRET_KEY
+          value: "script.js"
+
+        - name: LOAD_IMAGE
+          value: ghcr.io/grafana/k6-operator:latest-runner
+
+        - name: RAMP_TIME
+          value: ""

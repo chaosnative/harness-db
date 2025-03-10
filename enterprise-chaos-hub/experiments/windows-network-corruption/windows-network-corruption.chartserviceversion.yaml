@@ -1,0 +1,30 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: windows-network-corruption
+  version: 0.1.0
+  annotations:
+    categories: windows-network-corruption
+    chartDescription: Injects network corruption chaos in a Windows machine.
+spec:
+  displayName: Windows Network Corruption
+  categoryDescription: >-
+    This fault injects network chaos into a Windows machine.
+    - Induces sloweness and network tampering in the Windows machines.
+    - Simulates a lack of network connectivity for running application, which degrades their performance.
+    - Simulates slow application traffic, leading to degradation in the performance of processes on the machine.
+  faults:
+    - name: windows-network-corruption
+      description: Injects network corruption into a Windows machine.
+  keywords:
+    - Windows
+    - GCP
+    - Azure
+  plan:
+    - team
+  platforms:
+    - Windows
+  icon:
+    - url:
+      mediatype: ""

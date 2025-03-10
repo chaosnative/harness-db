@@ -1,0 +1,20 @@
+---
+apiVersion: litmuchaos.io/v1alpha1
+kind: MachineFault
+metadata:
+  name: windows-network-loss
+  labels:
+    name: network-loss
+spec:
+  infraType: windows
+  env:
+    - name: NETWORK_PACKET_LOSS_PERCENTAGE
+      value: "100"
+    - name: DESTINATION_HOSTS
+      value: ""
+    - name: DESTINATION_IPS
+      value: ""
+    - name: DURATION
+      value: "60s"
+    - name: RAMP_TIME
+      value: ""

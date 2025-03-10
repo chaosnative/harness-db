@@ -17,6 +17,17 @@ spec:
       displayName: "Locust Loadgen Chaos"
       plan:
         - team
+      supportedVersion:
+        - v1
+        - v2
+    - name: k6-loadgen-chaos
+      description: It injects load on the given target hosts for a specified chaos duration
+      displayName: "K6 Loadgen Chaos"
+      plan:
+        - team
+      supportedVersion:
+        - v1
+        - v2
   keywords:
     - Load
   minKubeVersion: 1.12.0

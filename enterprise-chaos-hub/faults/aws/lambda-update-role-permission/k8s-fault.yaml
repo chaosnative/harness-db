@@ -1,0 +1,45 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: K8sFault
+metadata:
+  name: lambda-update-role-permission
+spec:
+  definition:
+    chaos:
+      experiment: lambda-update-role-permission
+      serviceAccountName: litmus-admin
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-ddcr-faults:1.54.0
+      imagePullPolicy: Always
+      env:
+        - name: TOTAL_CHAOS_DURATION
+          value: "30"
+
+        - name: CHAOS_INTERVAL
+          value: "30"
+
+        # Period to wait before and after injection of chaos in sec
+        - name: RAMP_TIME
+          value: ""
+
+        # Name of the function to update
+        - name: FUNCTION_NAME
+          value: ""
+
+        - name: POLICY_ARN
+          value: ""
+
+        - name: ROLE_ARN
+          value: ""
+
+        - name: REGION
+          value: ""
+
+        - name: SEQUENCE
+          value: "parallel"
+
+        # Provide the path of AWS credentials mounted from secret
+        - name: AWS_SHARED_CREDENTIALS_FILE
+          value: "/tmp/cloud_config.yml"
+
+        - name: SEQUENCE
+          value: "parallel"

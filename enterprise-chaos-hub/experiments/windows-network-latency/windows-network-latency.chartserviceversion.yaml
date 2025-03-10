@@ -1,0 +1,30 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: windows-network-latency
+  version: 0.1.0
+  annotations:
+    categories: windows-network-latency
+    chartDescription: Injects network latency chaos in a Windows machine.
+spec:
+  displayName: Windows Network Latency
+  categoryDescription: >-
+    This fault injects network chaos on a Windows machine.
+    - Induces sloweness in network connectivity on the Windows machines.
+    - Simulates a lack of network connectivity for running application, which degrades their performance.
+    - Simulates slow application traffic, leading to degradation in the performance of processes on the machine.
+  faults:
+    - name: windows-network-latency
+      description: Injects network latency on a Windows machine.
+  keywords:
+    - Windows
+    - GCP
+    - Azure
+  plan:
+    - team
+  platforms:
+    - Windows
+  icon:
+    - url:
+      mediatype: ""

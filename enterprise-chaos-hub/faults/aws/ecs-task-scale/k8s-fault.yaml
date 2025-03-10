@@ -1,0 +1,33 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: K8sFault
+metadata:
+  name: ecs-task-scale
+spec:
+  definition:
+    chaos:
+      experiment: ecs-task-scale
+      serviceAccountName: litmus-admin
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-ddcr-faults:1.54.0
+      imagePullPolicy: Always
+      env:
+        - name: TOTAL_CHAOS_DURATION
+          value: "60"
+
+        - name: CLUSTER_NAME
+          value: ""
+
+        - name: SERVICE_NAMES
+          value: ""
+
+        - name: REGION
+          value: ""
+
+        - name: REPLICAS
+          value: ""
+
+        - name: SEQUENCE
+          value: "parallel"
+
+        - name: RAMP_TIME
+          value: ""

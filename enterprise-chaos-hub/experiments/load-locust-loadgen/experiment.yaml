@@ -29,7 +29,7 @@ spec:
         args:
           - -file=/tmp/chaosengine-locust-loadgen-us4.yaml
           - -saveName=/tmp/engine-name
-        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-go-runner:1.41.0
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-go-runner:1.54.0
         command:
           - ./chaos-checker
         name: ""
@@ -56,7 +56,7 @@ spec:
                   chaosServiceAccount: litmus-admin
                   experiments:
                     - name: locust-loadgen
-                      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-go-runner:1.41.0
+                      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-go-runner:1.54.0
                       imagePullPolicy: Always
                       args:
                         - -c
@@ -105,7 +105,7 @@ spec:
         command:
           - sh
           - -c
-        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-go-runner:1.41.0
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-go-runner:1.54.0
         name: ""
         resources: {}
       inputs: {}

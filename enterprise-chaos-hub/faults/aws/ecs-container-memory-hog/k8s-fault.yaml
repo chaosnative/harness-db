@@ -1,0 +1,48 @@
+---
+apiVersion: litmuchaos.io/v1alpha1
+kind: K8sFault
+metadata:
+  name: ecs-container-memory-hog
+spec:
+  definition:
+    chaos:
+      experiment: ecs-container-memory-hog
+      serviceAccountName: litmus-admin
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-ddcr-faults:1.54.0
+      imagePullPolicy: Always
+      env:
+        - name: TOTAL_CHAOS_DURATION
+          value: "60"
+
+        - name: RAMP_TIME
+          value: ""
+
+        - name: CLUSTER_NAME
+          value: ""
+
+        - name: SERVICE_NAME
+          value: ""
+
+        - name: MEMORY_CONSUMPTION
+          value: "100"
+
+        - name: MEMORY_PERCENTAGE
+          value: "0"
+
+        - name: NUMBER_OF_WORKERS
+          value: "1"
+
+        - name: REGION
+          value: ""
+
+        - name: INSTALL_DEPENDENCIES
+          value: "true"
+
+        - name: DEFAULT_HEALTH_CHECK
+          value: "false"
+
+        - name: AWS_SHARED_CREDENTIALS_FILE
+          value: "/tmp/cloud_config.yml"
+
+        - name: SEQUENCE
+          value: "parallel"

@@ -25,3 +25,4 @@ spec:
             exception: ""
             startupCommand: ""
             rampTime: ""
+            javaHome: ""

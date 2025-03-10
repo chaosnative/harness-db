@@ -1,0 +1,38 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: fs-fill
+  version: 0.1.0
+  annotations:
+    categories: Kubernetes
+    vendor: Harness
+    support: https://slack.kubernetes.io/
+spec:
+  displayName: FS Fill
+  categoryDescription: |
+    FS fill fault disrupts state of kubernetes resources.
+    - Causes (forced/graceful) Disk Stress by filling up the Ephemeral Storage of the target container.
+    - Causes Pod to get Evicted if the Pod exceeds it Ephemeral Storage Limit.
+    - Tests the Ephemeral Storage Limits, to ensure those parameters are sufficient.
+  keywords:
+    - Kubernetes
+  plan:
+    - free
+  platforms:
+    - GKE
+    - EKS
+    - AKS
+  experiments:
+    - nginx-fs-fill
+  chaosType: infra
+  minKubeVersion: 1.12.0
+  labels:
+    app.kubernetes.io/component: chartserviceversion
+    app.kubernetes.io/version: ci
+  links:
+    - name: Documentation
+      url: https://docs.harness.io/category/kl0mxwpfw1-hce-category
+  icon:
+    - url:
+      mediatype: ""

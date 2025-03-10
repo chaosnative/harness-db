@@ -1,0 +1,41 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: K8sFault
+metadata:
+  name: node-drain
+spec:
+  definition:
+    chaos:
+      experiment: node-drain
+      serviceAccountName: litmus-admin
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-ddcr-faults:1.54.0
+      imagePullPolicy: Always
+      env:
+        - name: TOTAL_CHAOS_DURATION
+          value: "60"
+
+        - name: DRAIN_TIMEOUT
+          value: '60'
+
+        - name: FORCE
+          value: 'true'
+
+        ## enter the comma separated target nodes name
+        - name: TARGET_NODES
+          value: ""
+
+        - name: NODE_LABEL
+          value: ""
+
+        ## percentage of total nodes to target
+        - name: NODES_AFFECTED_PERCENTAGE
+          value: ""
+
+        # Period to wait before and after injection of chaos in sec
+        - name: RAMP_TIME
+          value: ""
+
+        ## it defines the sequence of chaos execution for multiple target nodes
+        ## supported values: serial, parallel
+        - name: SEQUENCE
+          value: "parallel"

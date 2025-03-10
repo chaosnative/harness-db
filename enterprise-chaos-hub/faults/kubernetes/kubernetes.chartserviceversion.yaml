@@ -28,6 +28,7 @@ spec:
         - free
       supportedVersion:
         - v1
+        - v2
     - name: pod-cpu-hog
       description: It injects cpu-hog chaos in a Kubernetes pod.
       displayName: "Pod CPU Hog"
@@ -63,38 +64,48 @@ spec:
     - name: node-drain
       description: It injects node-drain chaos in a Kubernetes node.
       displayName: "Node Drain"
+      chaosType: infra
       plan:
         - free
       supportedVersion:
         - v1
+        - v2
     - name: node-network-loss
       description: It injects network loss chaos in a Kubernetes node.
       displayName: "Node Network Loss"
+      chaosType: infra
       plan:
         - free
       supportedVersion:
         - v1
+        - v2
     - name: node-cpu-hog
       description: It injects node-cpu-hog chaos in a Kubernetes node.
       displayName: "Node CPU Hog"
+      chaosType: infra
       plan:
         - free
       supportedVersion:
         - v1
+        - v2
     - name: node-network-latency
       description: It injects node-network-latency chaos in a Kubernetes node.
       displayName: "Node Network Latency"
+      chaosType: infra
       plan:
         - free
       supportedVersion:
         - v1
+        - v2
     - name: node-restart
       description: It injects node-restart chaos in a Kubernetes node.
       displayName: "Node Restart"
+      chaosType: infra
       plan:
         - free
       supportedVersion:
         - v1
+        - v2
     - name: disk-fill
       description: It injects disk-fill chaos in a Kubernetes node.
       displayName: "Disk Fill"
@@ -102,13 +113,24 @@ spec:
         - free
       supportedVersion:
         - v1
-    - name: node-memory-hog
-      description: It injects node-memory-hog chaos in a Kubernetes node.
-      displayName: "Node Memory Hog"
+        - v2
+    - name: fs-fill
+      description: It injects fs-fill chaos in a Kubernetes node.
+      displayName: "FS Fill"
       plan:
         - free
       supportedVersion:
         - v1
+        - v2
+    - name: node-memory-hog
+      description: It injects node-memory-hog chaos in a Kubernetes node.
+      displayName: "Node Memory Hog"
+      chaosType: infra
+      plan:
+        - free
+      supportedVersion:
+        - v1
+        - v2
     - name: pod-memory-hog
       description: It injects pod-memory-hog chaos in a Kubernetes pod.
       displayName: "Pod Memory Hog"
@@ -120,8 +142,10 @@ spec:
     - name: kubelet-service-kill
       description: It injects kubelet-service-kill chaos in a Kubernetes node.
       displayName: "Kubelet Service Kill"
+      chaosType: infra
       supportedVersion:
         - v1
+        - v2
     - name: pod-network-duplication
       description: It injects pod-network-duplication chaos in a Kubernetes pod.
       displayName: "Pod Network Duplication"
@@ -131,8 +155,10 @@ spec:
     - name: node-taint
       description: It injects node-taint chaos in a Kubernetes node.
       displayName: "Node Taint"
+      chaosType: infra
       supportedVersion:
         - v1
+        - v2
     - name: pod-autoscaler
       description: It injects pod-autoscaler chaos in a Kubernetes pod.
       displayName: "Pod Autoscaler"
@@ -140,13 +166,16 @@ spec:
         - free
       supportedVersion:
         - v1
+        - v2
     - name: node-io-stress
       description: It injects node-io-stress chaos in a Kubernetes node.
       displayName: "Node IO Stress"
+      chaosType: infra
       plan:
         - free
       supportedVersion:
         - v1
+        - v2
     - name: pod-io-stress
       description: It injects pod-io-stress chaos in a Kubernetes pod.
       displayName: "Pod IO Stress"
@@ -154,6 +183,7 @@ spec:
         - free
       supportedVersion:
         - v1
+        - v2
     - name: pod-dns-error
       description: It injects pod-dns-error chaos in a Kubernetes pod.
       displayName: "Pod DNS Error"
@@ -161,6 +191,7 @@ spec:
         - free
       supportedVersion:
         - v1
+        - v2
     - name: pod-dns-spoof
       description: It injects pod-dns-spoof chaos in a Kubernetes pod.
       displayName: "Pod DNS Spoof"
@@ -168,6 +199,7 @@ spec:
         - free
       supportedVersion:
         - v1
+        - v2
     - name: pod-cpu-hog-exec
       description: It injects pod-cpu-hog-exec chaos in a Kubernetes pod.
       displayName: "Pod CPU Hog Exec"
@@ -189,6 +221,7 @@ spec:
         - free
       supportedVersion:
         - v1
+        - v2
     - name: pod-http-latency
       description: It injects pod-http-latency chaos in a Kubernetes pod.
       displayName: "Pod HTTP Latency"
@@ -196,6 +229,7 @@ spec:
         - free
       supportedVersion:
         - v1
+        - v2
     - name: pod-http-status-code
       description: It injects pod-http-status-code chaos in a Kubernetes pod.
       displayName: "Pod HTTP Status Code"
@@ -203,6 +237,7 @@ spec:
         - free
       supportedVersion:
         - v1
+        - v2
     - name: pod-http-modify-header
       description: It injects pod-http-modify-header chaos in a Kubernetes pod.
       displayName: "Pod HTTP Modify Header"
@@ -210,6 +245,7 @@ spec:
         - free
       supportedVersion:
         - v1
+        - v2
     - name: pod-http-modify-body
       description: It injects pod-http-modify-body chaos in a Kubernetes pod.
       displayName: "Pod HTTP Modify Body"
@@ -217,6 +253,7 @@ spec:
         - free
       supportedVersion:
         - v1
+        - v2
     - name: pod-http-reset-peer
       description: It injects pod-http-reset-peer chaos in a Kubernetes pod.
       displayName: "Pod HTTP Reset Peer"
@@ -224,6 +261,7 @@ spec:
         - free
       supportedVersion:
         - v1
+        - v2
     - name: time-chaos
       description: It injects time-chaos in a Kubernetes pod.
       displayName: "Time Chaos"
@@ -239,6 +277,7 @@ spec:
         - enterprise
       supportedVersion:
         - v1
+        - v2
     - name: pod-io-error
       description: It injects pod-io-error in a Kubernetes pod.
       displayName: "Pod IO Error"
@@ -246,6 +285,7 @@ spec:
         - enterprise
       supportedVersion:
         - v1
+        - v2
     - name: pod-io-attribute-override
       description: It injects pod-io-attribute-override in a Kubernetes pod.
       displayName: "Pod IO Attribute Override"
@@ -253,6 +293,7 @@ spec:
         - enterprise
       supportedVersion:
         - v1
+        - v2
     - name: pod-io-mistake
       description: It injects pod-io-mistake in a Kubernetes pod.
       displayName: "Pod IO Mistake"
@@ -260,6 +301,7 @@ spec:
         - enterprise
       supportedVersion:
         - v1
+        - v2
     - name: pod-api-latency
       description: It injects pod-api-latency in a Kubernetes pod.
       displayName: "Pod API Latency"
@@ -267,6 +309,7 @@ spec:
         - enterprise
       supportedVersion:
         - v1
+        - v2
     - name: pod-api-status-code
       description: It injects pod-api-status-code in a Kubernetes pod.
       displayName: "Pod API Status Code"
@@ -274,6 +317,7 @@ spec:
         - enterprise
       supportedVersion:
         - v1
+        - v2
     - name: pod-api-modify-header
       description: It injects pod-api-modify-header in a Kubernetes pod.
       displayName: "Pod API Modify Header"
@@ -281,6 +325,7 @@ spec:
         - enterprise
       supportedVersion:
         - v1
+        - v2
     - name: pod-api-modify-body
       description: It injects pod-api-modify-body in a Kubernetes pod.
       displayName: "Pod API Modify Body"
@@ -288,6 +333,7 @@ spec:
         - enterprise
       supportedVersion:
         - v1
+        - v2
     - name: pod-api-block
       description: It injects pod-api-block in a Kubernetes pod.
       displayName: "Pod API Block"
@@ -295,6 +341,7 @@ spec:
         - enterprise
       supportedVersion:
         - v1
+        - v2
     - name: pod-network-rate-limit
       description: It injects pod-network-rate-limit in a Kubernetes pod.
       displayName: "Pod Network Rate Limit"
@@ -303,8 +350,81 @@ spec:
       supportedVersion:
         - v1
         - v2
+    - name: pod-jvm-method-exception
+      description: It injects pod-jvm-method-exception in a Kubernetes pod.
+      displayName: "Pod JVM Method Exception"
+      plan:
+        - enterprise
+      supportedVersion:
+        - v2
+    - name: pod-jvm-method-latency
+      description: It injects pod-jvm-method-latency in a Kubernetes pod.
+      displayName: "Pod JVM Method Latency"
+      plan:
+        - enterprise
+      supportedVersion:
+        - v2
+    - name: pod-jvm-modify-return
+      description: It injects pod-jvm-modify-return in a Kubernetes pod.
+      displayName: "Pod JVM Modify Return"
+      plan:
+        - enterprise
+      supportedVersion:
+        - v2
+    - name: pod-jvm-cpu-stress
+      description: It injects pod-jvm-cpu-stress in a Kubernetes pod.
+      displayName: "Pod JVM CPU Stress"
+      plan:
+        - enterprise
+      supportedVersion:
+        - v2
+    - name: pod-jvm-trigger-gc
+      description: It injects pod-jvm-trigger-gc in a Kubernetes pod.
+      displayName: "Pod JVM Trigger GC"
+      plan:
+        - enterprise
+      supportedVersion:
+        - v2
+    - name: pod-jvm-sql-exception
+      description: It injects pod-jvm-sql-exception in a Kubernetes pod.
+      displayName: "Pod JVM SQL Exception"
+      plan:
+        - enterprise
+      supportedVersion:
+        - v2
+    - name: pod-jvm-sql-latency
+      description: It injects pod-jvm-sql-latency in a Kubernetes pod.
+      displayName: "Pod JVM SQL Latency"
+      plan:
+        - enterprise
+      supportedVersion:
+        - v2
+    - name: redis-cache-expire
+      description: It injects redis-cache-expire for a Redis instance.
+      displayName: "Redis Cache Expire"
+      plan:
+        - enterprise
+      supportedVersion:
+        - v2
+    - name: redis-cache-penetration
+      description: It injects redis-cache-penetration for a Redis instance.
+      displayName: "Redis Cache Penetration"
+      plan:
+        - enterprise
+      supportedVersion:
+        - v2
+    - name: redis-cache-limit
+      description: It injects redis-cache-limit for a Redis instance.
+      displayName: "Redis Cache Limit"
+      plan:
+        - enterprise
+      supportedVersion:
+        - v2
   keywords:
     - Kubernetes
+    - Azure
+    - AWS
+    - GCP
   minKubeVersion: 1.12.0
   links:
     - name: Kubernetes Website

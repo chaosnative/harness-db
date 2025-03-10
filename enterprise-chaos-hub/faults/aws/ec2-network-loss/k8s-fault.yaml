@@ -1,0 +1,54 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: K8sFault
+metadata:
+  name: ec2-network-loss
+spec:
+  definition:
+    chaos:
+      experiment: ec2-network-loss
+      serviceAccountName: litmus-admin
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-ddcr-faults:1.54.0
+      imagePullPolicy: Always
+      env:
+        - name: TOTAL_CHAOS_DURATION
+          value: "30" # in seconds
+
+        - name: REGION
+          value: ""
+
+        - name: EC2_INSTANCE_ID
+          value: ""
+
+        - name: EC2_INSTANCE_TAG
+          value: ""
+
+        - name: INSTANCE_AFFECTED_PERC
+          value: ""
+
+        - name: NETWORK_INTERFACE
+          value: eth0
+
+        - name: NETWORK_PACKET_LOSS_PERCENTAGE
+          value: "100"
+
+        - name: DESTINATION_HOSTS
+          value: ""
+
+        - name: DESTINATION_IPS
+          value: ""
+
+        - name: INSTALL_DEPENDENCIES
+          value: "True"
+
+        - name: AWS_SHARED_CREDENTIALS_FILE
+          value: /tmp/cloud_config.yml
+
+        # time period to wait before and after injection of chaos in sec
+        - name: RAMP_TIME
+          value: ""
+
+        ## it defines the sequence of chaos execution for multiple target instances
+        ## supported values: serial, parallel
+        - name: SEQUENCE
+          value: "parallel"

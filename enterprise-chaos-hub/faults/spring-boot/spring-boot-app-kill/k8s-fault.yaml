@@ -1,0 +1,55 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: K8sFault
+metadata:
+  name: spring-boot-app-kill
+spec:
+  definition:
+    targets:
+      appinfo:
+        applabel: ""
+        appkind: ""
+        appns: ""
+    chaos:
+      experiment: spring-boot-app-kill
+      serviceAccountName: litmus-admin
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-ddcr-faults:1.54.0
+      imagePullPolicy: Always
+      env:
+        - name: TOTAL_CHAOS_DURATION
+          value: "60" # in seconds
+
+        # port of the spring boot application
+        - name: CM_PORT
+          value: ""
+
+        #it contains number of requests are to be attacked
+        # n value means nth request will be affected
+        - name: CM_LEVEL
+          value: "1"
+
+        # it limits watched packages/classes/methods
+        - name: CM_WATCHED_CUSTOM_SERVICES
+          value: ""
+
+        # provide name of watcher
+        # it supports controller, restController, service, repository, component, webClient
+        - name: CM_WATCHERS
+          value: "restController"
+
+        ## percentage of total pods to target
+        - name: POD_AFFECTED_PERCENTAGE
+          value: ""
+
+        ## Period to wait before and after injection of chaos
+        - name: RAMP_TIME
+          value: ""
+
+        # To select pods on specific node(s)
+        - name: NODE_LABEL
+          value: ""
+
+        ## it defines the sequence of chaos execution for multiple target pods
+        ## supported values: serial, parallel
+        - name: SEQUENCE
+          value: "parallel"

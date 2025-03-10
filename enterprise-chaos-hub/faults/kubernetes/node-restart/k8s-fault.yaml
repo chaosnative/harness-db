@@ -1,0 +1,39 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: K8sFault
+metadata:
+  name: node-restart
+spec:
+  definition:
+    chaos:
+      experiment: node-restart
+      serviceAccountName: litmus-admin
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-ddcr-faults:1.54.0
+      imagePullPolicy: Always
+      env:
+        - name: TOTAL_CHAOS_DURATION
+          value: "60"
+
+        # Period to wait before and after injection of chaos in sec
+        - name: RAMP_TIME
+          value: ""
+
+        - name: SSH_USER
+          value: "root"
+
+        # ENTER THE TARGET NODE IP
+        - name: TARGET_NODE_IP
+          value: ""
+
+        - name: REBOOT_COMMAND
+          value: "sudo systemctl reboot; true"
+
+        - name: TARGET_NODE
+          value: ""
+
+        - name: NODE_LABEL
+          value: ""
+
+        # provide lib image
+        - name: LIB_IMAGE
+          value: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-ddcr-faults:1.54.0

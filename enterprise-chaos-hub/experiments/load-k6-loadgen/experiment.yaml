@@ -1,0 +1,100 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  name: load-k6-loadgen
+  namespace: litmus
+spec:
+  arguments:
+    parameters:
+      - name: adminModeNamespace
+        value: litmus
+  entrypoint: custom-chaos
+  podGC:
+    strategy: OnWorkflowCompletion
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 1000
+  serviceAccountName: argo-chaos
+  templates:
+    - inputs: {}
+      metadata: {}
+      name: custom-chaos
+      outputs: {}
+      steps:
+        - - arguments: {}
+            name: k6-loadgen-us4
+            template: k6-loadgen-us4
+    - container:
+        args:
+          - -file=/tmp/chaosengine-k6-loadgen-us4.yaml
+          - -saveName=/tmp/engine-name
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-go-runner:1.54.0
+        command:
+          - ./chaos-checker
+        name: ""
+        resources: {}
+      inputs:
+        artifacts:
+          - name: k6-loadgen-us4
+            path: /tmp/chaosengine-k6-loadgen-us4.yaml
+            raw:
+              data: |
+                apiVersion: litmuschaos.io/v1alpha1
+                kind: ChaosEngine
+                metadata:
+                  namespace: "{{workflow.parameters.adminModeNamespace}}"
+                  generateName: k6-loadgen-us4
+                  labels:
+                    name: k6-loadgen
+                    app.kubernetes.io/part-of: litmus
+                    app.kubernetes.io/component: experiment-job
+                    app.kubernetes.io/version: ci
+                spec:
+                  engineState: active
+                  auxiliaryAppInfo: ""
+                  chaosServiceAccount: litmus-admin
+                  experiments:
+                    - name: k6-loadgen
+                      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-go-runner:1.54.0
+                      imagePullPolicy: Always
+                      args:
+                        - -c
+                        - ./experiments -name k6-load-generator
+                      command:
+                        - /bin/bash
+                      spec:
+                        components:
+                          env:
+                            - name: TOTAL_CHAOS_DURATION
+                              value: "60"
+                            - name: RAMP_TIME
+                              value: ""
+                            - name: SCRIPT_SECRET_NAME
+                              value: "k6-script"
+                            - name: SCRIPT_SECRET_KEY
+                              value: "script.js"
+                            - name: LOAD_IMAGE
+                              value: ghcr.io/grafana/k6-operator:latest-runner
+      metadata:
+        labels:
+          weight: "10"
+      name: k6-loadgen-us4
+      outputs: {}
+    - container:
+        args:
+          - "kubectl delete chaosengine -l 'instance_id in (500508d9-4623-4e33-b4b1-095f12173a57,
+            )' -n {{workflow.parameters.adminModeNamespace}} "
+        command:
+          - sh
+          - -c
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-go-runner:1.54.0
+        name: ""
+        resources: {}
+      inputs: {}
+      metadata: {}
+      name: cleanup-chaos-resources
+      outputs: {}
+status:
+  finishedAt: null
+  startedAt: null

@@ -1,0 +1,48 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: K8sFault
+metadata:
+  name: locust-load-generator
+spec:
+  definition:
+    chaos:
+      experiment: locust-load-generator
+      serviceAccountName: litmus-admin
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-ddcr-faults:1.54.0
+      imagePullPolicy: Always
+      env:
+        - name: TOTAL_CHAOS_DURATION
+          value: "60"
+
+        - name: CHAOS_INTERVAL
+          value: "60"
+
+        - name: USERS
+          value: "300"
+
+        - name: SPAWN_RATE
+          value: "300"
+
+        - name: HOST
+          value: https://google.com
+
+        - name: LOAD_TYPE
+          value: load
+
+        - name: GRANT_TYPE
+          value: client_credentials
+
+        - name: NODE_NAMES
+          value: ""
+
+        - name: REPLICA
+          value: "3"
+
+        - name: CONFIG_MAP_FILE
+          value: /tmp/load/config.py
+
+        - name: RAMP_TIME
+          value: ""
+
+        - name: LOAD_IMAGE
+          value: chaosnative/locust-loadgen:latest

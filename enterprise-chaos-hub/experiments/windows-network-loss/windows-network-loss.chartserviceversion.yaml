@@ -1,0 +1,30 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: windows-network-loss
+  version: 0.1.0
+  annotations:
+    categories: windows-network-loss
+    chartDescription: Injects network loss chaos in a Windows machine.
+spec:
+  displayName: Windows Network Loss
+  categoryDescription: >-
+    This fault injects network chaos on a Windows machine.
+    - Induces blockage in network connectivity on the Windows machines.
+    - Simulates a lack of network connectivity for running application, which degrades their performance.
+    - Simulates slow application traffic, leading to degradation in the performance of processes on the machine.
+  faults:
+    - name: windows-network-loss
+      description: Injects network loss on a Windows machine.
+  keywords:
+    - Windows
+    - GCP
+    - Azure
+  plan:
+    - team
+  platforms:
+    - Windows
+  icon:
+    - url:
+      mediatype: ""

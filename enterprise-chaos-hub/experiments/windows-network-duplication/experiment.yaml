@@ -1,0 +1,31 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: MachineChaosExperiment
+metadata:
+  name: windows-network-duplication-4ap
+  labels:
+    context: windows-network-duplication
+    name: windows-network-duplication-4ap
+spec:
+  infraType: "windows"
+  steps:
+    - - name: windows-network-duplication-4ap
+  tasks:
+    - name: windows-network-duplication-4ap
+      infraId: ""
+      definition:
+        chaos:
+          fault: windows-network-duplication
+          env:
+            - name: NETWORK_PACKET_DUPLICATION_PERCENTAGE
+              value: "100"
+            - name: DESTINATION_HOSTS
+              value: ""
+            - name: DESTINATION_IPS
+              value: ""
+            - name: DURATION
+              value: "60s"
+            - name: COUNT
+              value: '20'
+            - name: RAMP_TIME
+              value: ""

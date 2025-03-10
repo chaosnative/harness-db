@@ -1,0 +1,36 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: K8sFault
+metadata:
+  name: clb-az-down
+spec:
+  definition:
+    chaos:
+      experiment: clb-az-down
+      serviceAccountName: litmus-admin
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-ddcr-faults:1.54.0
+      imagePullPolicy: Always
+      env:
+        - name: TOTAL_CHAOS_DURATION
+          value: "60"
+
+        - name: CHAOS_INTERVAL
+          value: "30"
+
+        - name: LOAD_BALANCER_NAME
+          value: ""
+
+        - name: REGION
+          value: ""
+
+        - name: ZONES
+          value: ""
+
+        - name: SEQUENCE
+          value: "parallel"
+
+        - name: AWS_SHARED_CREDENTIALS_FILE
+          value: /tmp/cloud_config.yml
+
+        - name: RAMP_TIME
+          value: ""

@@ -1,0 +1,36 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: K8sFault
+metadata:
+  name: resource-access-restrict
+spec:
+  definition:
+    chaos:
+      experiment: resource-access-restrict
+      serviceAccountName: litmus-admin
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-ddcr-faults:1.54.0
+      imagePullPolicy: Always
+      env:
+        - name: TOTAL_CHAOS_DURATION
+          value: "30"
+
+        - name: CHAOS_INTERVAL
+          value: "30"
+
+        - name: RULE_TYPE
+          value: ""
+
+        - name: SECURITY_GROUP_IDS
+          value: ""
+
+        - name: REGION
+          value: ""
+
+        - name: SEQUENCE
+          value: "parallel"
+
+        - name: AWS_SHARED_CREDENTIALS_FILE
+          value: /tmp/cloud_config.yml
+
+        - name: RAMP_TIME
+          value: ""

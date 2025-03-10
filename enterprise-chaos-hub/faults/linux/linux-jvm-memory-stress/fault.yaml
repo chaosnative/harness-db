@@ -13,3 +13,4 @@ spec:
     memoryType: "heap"
     startupCommand: ""
     rampTime: ""
+    javaHome: ""

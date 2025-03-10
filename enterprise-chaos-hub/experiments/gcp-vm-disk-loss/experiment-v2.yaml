@@ -1,0 +1,49 @@
+---
+kind: KubernetesChaosExperiment
+apiVersion: litmuschaos.io/v1alpha1
+metadata:
+  name: gcp-vm-disk-loss
+  namespace: litmus
+spec:
+  tasks:
+    - name: gcp-vm-disk-loss-qgr2u
+      definition:
+        targets:
+          appinfo:
+          selectors:
+            workloads:
+            pods:
+        chaos:
+          experiment: gcp-vm-disk-loss
+          image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-ddcr-faults:1.54.0
+          imagePullPolicy: Always
+          serviceAccountName: litmus-admin
+          defaultHealthCheck: false
+          env:
+            - name: TOTAL_CHAOS_DURATION
+              value: "30"
+            - name: CHAOS_INTERVAL
+              value: "10"
+            - name: RAMP_TIME
+              value: ""
+            - name: SEQUENCE
+              value: parallel
+            - name: GCP_PROJECT_ID
+              value: ""
+            - name: DISK_VOLUME_NAMES
+              value: ""
+            - name: ZONES
+              value: ""
+            - name: DEFAULT_HEALTH_CHECK
+              value: 'false'
+          components:
+            secrets:
+              - name: cloud-secret
+                mountPath: /tmp/
+  experimentId: ""
+  experimentRunId: ""
+  steps:
+    - - name: gcp-vm-disk-loss-qgr2u
+        status: ""
+  serviceAccountName: litmus
+  cleanupPolicy: "delete"

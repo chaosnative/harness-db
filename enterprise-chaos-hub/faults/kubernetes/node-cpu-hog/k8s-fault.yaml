@@ -1,0 +1,49 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: K8sFault
+metadata:
+  name: node-cpu-hog
+spec:
+  definition:
+    chaos:
+      experiment: node-cpu-hog
+      serviceAccountName: litmus-admin
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-ddcr-faults:1.54.0
+      imagePullPolicy: Always
+      env:
+        - name: TOTAL_CHAOS_DURATION
+          value: "60"
+
+        # Period to wait before and after injection of chaos in sec
+        - name: RAMP_TIME
+          value: ""
+
+        ## ENTER THE NUMBER OF CORES OF CPU FOR CPU HOGGING
+        ## OPTIONAL VALUE IN CASE OF EMPTY VALUE IT WILL TAKE NODE CPU CAPACITY
+        - name: NODE_CPU_CORE
+          value: ""
+
+        ## LOAD CPU WITH GIVEN PERCENT LOADING FOR THE CPU STRESS WORKERS.
+        ## 0 IS EFFECTIVELY A SLEEP (NO LOAD) AND 100 IS FULL LOADING
+        - name: CPU_LOAD
+          value: "100"
+
+        # ENTER THE COMMA SEPARATED TARGET NODES NAME
+        - name: TARGET_NODES
+          value: ""
+
+        - name: NODE_LABEL
+          value: ""
+
+        ## percentage of total nodes to target
+        - name: NODES_AFFECTED_PERCENTAGE
+          value: ""
+
+        # provide lib image
+        - name: LIB_IMAGE
+          value: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-ddcr-faults:1.54.0
+
+        ## it defines the sequence of chaos execution for multiple target nodes
+        ## supported values: serial, parallel
+        - name: SEQUENCE
+          value: "parallel"

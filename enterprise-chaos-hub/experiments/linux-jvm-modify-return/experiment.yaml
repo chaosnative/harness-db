@@ -25,3 +25,4 @@ spec:
             return: ""
             startupCommand: ""
             rampTime: ""
+            javaHome: ""

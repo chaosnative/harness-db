@@ -1,0 +1,28 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: windows-process-kill
+  version: 0.1.0
+  annotations:
+    categories: windows-process-kill
+    chartDescription: Injects process kill chaos in a Windows machine.
+spec:
+  displayName: Windows Process Kill
+  categoryDescription: >-
+    This fault injects process kill on a Windows machine.
+    - Induces loss of processes on the Windows machines.
+    - Simulates process loss, leading to degradation in the performance of the application on the machine.
+  faults:
+    - name: windows-process-kill
+      description: Injects process loss on a Windows machine.
+  keywords:
+    - Windows
+    - Process
+  plan:
+    - team
+  platforms:
+    - Windows
+  icon:
+    - url:
+      mediatype: ""

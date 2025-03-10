@@ -1,0 +1,36 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: K8sFault
+metadata:
+  name: ssh-chaos
+spec:
+  definition:
+    targets:
+      appinfo:
+        applabel: ""
+        appkind: ""
+        appns: ""
+    chaos:
+      experiment: ssh-chaos
+      serviceAccountName: litmus-admin
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-ddcr-faults:1.54.0
+      imagePullPolicy: Always
+      env:
+        - name: PRIVATE_KEY
+          value: ''
+        - name: CHAOS_SCRIPT_PATH
+          value: '/tmp/chaos-script/script.sh'
+        - name: ABORT_SCRIPT_PATH
+          value: '/tmp/abort-script/abort-script.sh'
+        - name: HOST
+          value: ""
+        - name: USERNAME
+          value: ""
+        - name: PASSWORD
+          value: ""
+        - name: CHAOS_PARAMETER
+          value: ""
+        - name: ABORT_PARAMETER
+          value: ""
+        - name: RAMP_TIME
+          value: ""

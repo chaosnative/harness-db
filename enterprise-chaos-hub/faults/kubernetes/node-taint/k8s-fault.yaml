@@ -1,0 +1,40 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: K8sFault
+metadata:
+  name: node-taint
+spec:
+  definition:
+    chaos:
+      experiment: node-taint
+      serviceAccountName: litmus-admin
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-ddcr-faults:1.54.0
+      imagePullPolicy: Always
+      env:
+        - name: TOTAL_CHAOS_DURATION
+          value: "60"
+
+        # Period to wait before and after injection of chaos in sec
+        - name: RAMP_TIME
+          value: ""
+
+        # set taint label & effect
+        # key=value:effect or key:effect
+        - name: TAINTS
+          value: ""
+
+        # ENTER THE COMMA SEPARATED TARGET NODES NAME
+        - name: TARGET_NODES
+          value: ""
+
+        - name: NODE_LABEL
+          value: ""
+
+        ## percentage of total nodes to target
+        - name: NODES_AFFECTED_PERCENTAGE
+          value: ""
+
+        ## it defines the sequence of chaos execution for multiple target nodes
+        ## supported values: serial, parallel
+        - name: SEQUENCE
+          value: "parallel"

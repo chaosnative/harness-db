@@ -1,0 +1,36 @@
+---
+apiVersion: litmuchaos.io/v1alpha1
+kind: K8sFault
+metadata:
+  name: ebs-loss-by-id
+spec:
+  definition:
+    chaos:
+      experiment: ebs-loss-by-id
+      serviceAccountName: litmus-admin
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-ddcr-faults:1.54.0
+      imagePullPolicy: Always
+      env:
+        - name: TOTAL_CHAOS_DURATION
+          value: "30"
+
+        - name: CHAOS_INTERVAL
+          value: "30"
+
+        - name: EBS_VOLUME_ID
+          value: ""
+
+        - name: REGION
+          value: ""
+
+        - name: DEFAULT_HEALTH_CHECK
+          value: "false"
+
+        - name: RAMP_TIME
+          value: ""
+
+        - name: SEQUENCE
+          value: "parallel"
+
+        - name: AWS_SHARED_CREDENTIALS_FILE
+          value: /tmp/cloud_config.yml

@@ -1,0 +1,33 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: linux-fs-fill
+  version: 0.1.0
+  annotations:
+    categories: linux-fs-fill
+    chartDescription: Injects fs fill chaos into a Linux machine.
+spec:
+  displayName: Linux fs Fill
+  categoryDescription: >-
+    This fault injects fs fill chaos into a Linux machine.
+
+    - Induces heavy fs usage scenario on the target Linux machines.
+
+    - Simulates a lack of storage space for the underlying applications in the system.
+
+    - Validates application failover and data resiliency in the scenario of low fs space.
+  faults:
+    - name: linux-fs-fill
+      description: Injects fs fill chaos into a Linux machine.
+  keywords:
+    - Linux
+    - GCP
+    - Azure
+  plan:
+    - team
+  platforms:
+    - Linux
+  icon:
+    - url:
+      mediatype: ""

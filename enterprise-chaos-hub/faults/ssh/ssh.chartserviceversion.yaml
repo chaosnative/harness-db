@@ -17,6 +17,9 @@ spec:
       displayName: "SSH Chaos"
       plan:
         - team
+      supportedVersion:
+        - v1
+        - v2
   keywords:
     - SSH
   minKubeVersion: 1.12.0

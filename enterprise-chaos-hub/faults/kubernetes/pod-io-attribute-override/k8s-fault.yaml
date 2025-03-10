@@ -1,0 +1,74 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: K8sFault
+metadata:
+  name: pod-io-attribute-override
+spec:
+  definition:
+    targets:
+      appinfo:
+        applabel: ""
+        appkind: ""
+        appns: ""
+    chaos:
+      experiment: pod-io-attribute-override
+      serviceAccountName: litmus-admin
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-ddcr-faults:1.54.0
+      imagePullPolicy: Always
+      env:
+        - name: TOTAL_CHAOS_DURATION
+          value: "60" # in seconds
+
+        # file attributes and their values which needs to be overridden
+        - name: ATTRIBUTES
+          value: '{"perm": 72}'
+
+        # volume mount path
+        - name: MOUNT_PATH
+          value: ''
+
+        # path of the file or wildcard path
+        - name: FILE_PATH
+          value: ''
+
+        # percentage of the i/o requested to be impacted
+        - name: PERCENTAGE
+          value: '100'
+
+        # type of the method type i.e, read, write, open
+        - name: METHOD_TYPES
+          value: ''
+
+        ## Percentage of total pods to target
+        - name: POD_AFFECTED_PERCENTAGE
+          value: ""
+
+        ## provide the cluster runtime
+        - name: CONTAINER_RUNTIME
+          value: "containerd"
+
+        # provide the socket file path
+        - name: SOCKET_PATH
+          value: "/run/containerd/containerd.sock"
+
+        - name: LIB_IMAGE
+          value: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-ddcr-faults:1.54.0
+
+        ## Period to wait before and after injection of chaos in sec
+        - name: RAMP_TIME
+          value: ""
+
+        - name: TARGET_CONTAINER
+          value: ""
+
+        - name: TARGET_PODS
+          value: ""
+
+        # To select pods on specific node(s)
+        - name: NODE_LABEL
+          value: ""
+
+        ## it defines the sequence of chaos execution for multiple target pods
+        ## supported values: serial, parallel
+        - name: SEQUENCE
+          value: "parallel"

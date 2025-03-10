@@ -4,3 +4,6 @@ faults:
   - name: locust-loadgen-chaos
     CSV: locust-loadgen-chaos.chartserviceversion.yaml
     desc: "locust-loadgen-chaos"
+  - name: k6-loadgen-chaos
+    CSV: k6-loadgen-chaos.chartserviceversion.yaml
+    desc: "k6-loadgen-chaos"

@@ -1,0 +1,69 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: K8sFault
+metadata:
+  name: pod-jvm-method-exception
+spec:
+  definition:
+    targets:
+      appinfo:
+        applabel: ""
+        appkind: ""
+        appns: ""
+    chaos:
+      experiment: pod-jvm-method-exception
+      serviceAccountName: litmus-admin
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-ddcr-faults:1.54.0
+      imagePullPolicy: Always
+      env:
+        - name: TOTAL_CHAOS_DURATION
+          value: "60" # in seconds
+
+        ## Percentage of total pods to target
+        - name: POD_AFFECTED_PERCENTAGE
+          value: ""
+
+        - name: BYTEMAN_PORT
+          value: "9091"
+
+        - name: JAVA_HOME
+          value: ""
+
+        - name: METHOD
+          value: ""
+
+        - name: CLASS
+          value: ""
+
+        - name: EXCEPTION
+          value: ""
+
+        ## provide the cluster runtime
+        - name: CONTAINER_RUNTIME
+          value: "containerd"
+
+        # provide the socket file path
+        - name: SOCKET_PATH
+          value: "/run/containerd/containerd.sock"
+
+        - name: LIB_IMAGE
+          value: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-ddcr-faults:1.54.0
+
+        ## Period to wait before and after injection of chaos in sec
+        - name: RAMP_TIME
+          value: ""
+
+        ## it defines the sequence of chaos execution for multiple target pods
+        ## supported values: serial, parallel
+        - name: SEQUENCE
+          value: "parallel"
+
+        - name: TARGET_CONTAINER
+          value: ""
+
+        - name: TARGET_PODS
+          value: ""
+
+        # To select pods on specific node(s)
+        - name: NODE_LABEL
+          value: ""

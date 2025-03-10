@@ -36,3 +36,17 @@ executionPlane:
         CSV: kubernetes.chartserviceversion.yaml
       - name: aws
         CSV: aws.chartserviceversion.yaml
+      - name: load
+        CSV: load.chartserviceversion.yaml
+      - name: byoc
+        CSV: byoc.chartserviceversion.yaml
+      - name: ssh
+        CSV: ssh.chartserviceversion.yaml
+      - name: kube-resilience
+        CSV: kube-resilience.chartserviceversion.yaml
+      - name: spring-boot
+        CSV: spring-boot.chartserviceversion.yaml
+      - name: gcp
+        CSV: gcp.chartserviceversion.yaml
+      - name: vmware
+        CSV: vmware.chartserviceversion.yaml

@@ -1,0 +1,90 @@
+apiVersion: litmuschaos.io/v1alpha2
+kind: TemplateVersion
+metadata:
+  name: pod-delete
+  revision: 1
+variables:
+  - name: TOTAL_CHAOS_DURATION
+    catagory: FaultTunable
+    type: Integer
+    description: Total duration(in seconds) of the fault
+    required: false
+    value: <+input>
+    default: 30
+  - name: CHAOS_INTERVAL
+    catagory: FaultTunable
+    type: Integer
+    description: Delay between each iteration(in seconds)
+    required: false
+    value: <+input>
+    default: 10
+  - name: FORCE
+    catagory: FaultTunable
+    type: Boolean
+    description: Specifies if the target pod is deleted forcefully or gracefully
+    required: false
+    value: <+input>
+    default: false
+  - name: RAMP_TIME
+    catagory: FaultTunable
+    type: Integer
+    description: Duration(in seconds) to wait before and after injecting chaos
+    required: false
+    value: <+input>
+    default: 0
+  - name: POD_AFFECTED_PERCENTAGE
+    catagory: FaultTunable
+    type: Integer
+    description: Percentage of total pods to target, 0% = 1 pod
+    required: false
+    value: <+input>
+    default: 0
+  - name: TARGET_PODS
+    catagory: FaultTunable
+    type: String
+    description: Comma separated pod names subject to chaos
+    required: false
+    value: <+input>
+    default: ""
+  - name: NODE_LABEL
+    catagory: FaultTunable
+    type: String
+    description: Node label used to filter the pods running on target node
+    required: false
+    value: <+input>
+    default: ""
+  - name: SEQUENCE
+    catagory: FaultTunable
+    type: String
+    description: Sequence of chaos execution for multiple target pods
+    required: false
+    value: <+input>
+    default: parallel
+  - name: TARGET_WORKLOAD_KIND
+    catagory: FaultTarget
+    type: String
+    description: Target workload kind
+    required: false
+    value: <+input>
+    default: ""
+  - name: TARGET_WORKLOAD_NAMESPACE
+    catagory: FaultTarget
+    type: String
+    description: Target workload namespace
+    required: false
+    value: <+input>
+    default: ""
+  - name: TARGET_WORKLOAD_NAMES
+    catagory: FaultTarget
+    type: String
+    description: Target workload names
+    required: false
+    value: <+input>
+    default: ""
+  - name: TARGET_WORKLOAD_LABELS
+    catagory: FaultTarget
+    type: String
+    description: Target workload labels
+    required: false
+    value: <+input>
+    default: ""

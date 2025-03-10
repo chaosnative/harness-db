@@ -1,0 +1,22 @@
+---
+apiVersion: litmuchaos.io/v1alpha1
+kind: MachineFault
+metadata:
+  name: windows-network-duplication
+  labels:
+    name: network-duplication
+spec:
+  infraType: windows
+  env:
+    - name: NETWORK_PACKET_DUPLICATION_PERCENTAGE
+      value: "100"
+    - name: DESTINATION_HOSTS
+      value: ""
+    - name: DESTINATION_IPS
+      value: ""
+    - name: DURATION
+      value: "60s"
+    - name: COUNT
+      value: '20'
+    - name: RAMP_TIME
+      value: ""

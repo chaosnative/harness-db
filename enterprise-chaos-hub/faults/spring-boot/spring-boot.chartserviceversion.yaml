@@ -17,31 +17,49 @@ spec:
       displayName: "Spring Boot App Kill"
       plan:
         - free
+      supportedVersion:
+        - v1
+        - v2
     - name: spring-boot-cpu-stress
       description: It injects cpu-stress chaos in a spring-boot application.
       displayName: "Spring Boot CPU Stress"
       plan:
         - free
+      supportedVersion:
+        - v1
+        - v2
     - name: spring-boot-memory-stress
       description: It injects memory-stress chaos in a spring-boot application.
       displayName: "Spring Boot Memory Stress"
       plan:
         - free
+      supportedVersion:
+        - v1
+        - v2
     - name: spring-boot-latency
       description: It injects network-latency chaos in a spring-boot application.
       displayName: "Spring Boot Latency"
       plan:
         - free
+      supportedVersion:
+        - v1
+        - v2
     - name: spring-boot-exceptions
       description: It injects exceptions chaos in a spring-boot application.
       displayName: "Spring Boot Exceptions"
       plan:
         - free
+      supportedVersion:
+        - v1
+        - v2
     - name: spring-boot-faults
       description: It injects faults in a spring-boot application.
       displayName: "Spring Boot Faults"
       plan:
         - free
+      supportedVersion:
+        - v1
+        - v2
   keywords:
     - Kubernetes
     - Spring Boot

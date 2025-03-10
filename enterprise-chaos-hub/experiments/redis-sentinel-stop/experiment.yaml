@@ -17,6 +17,7 @@ spec:
         chaos:
           experiment: redis-sentinel-stop
           redisChaos/inputs:
+            address: ""
             configFile: ""
             flushConfig: true
             redisPath: ""

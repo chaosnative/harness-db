@@ -27,6 +27,36 @@ spec:
       displayName: "Windows Blackhole Chaos"
       plan:
         - team
+    - name: windows-network-latency
+      description: It injects network latency to a windows VM.
+      displayName: "Windows Network Latency"
+      plan:
+        - team
+    - name: windows-network-loss
+      description: It injects network loss to a windows VM.
+      displayName: "Windows Network Loss"
+      plan:
+        - team
+    - name: windows-network-corruption
+      description: It injects network corruption to a windows VM.
+      displayName: "Windows Network Corruption"
+      plan:
+        - team
+    - name: windows-network-duplication
+      description: It injects network duplication to a windows VM.
+      displayName: "Windows Network Duplication"
+      plan:
+        - team
+    - name: windows-process-kill
+      description: It injects process kill to a windows VM.
+      displayName: "Windows Process Kill"
+      plan:
+        - team
+    - name: windows-disk-stress
+      description: It injects disk stress to a windows VM.
+      displayName: "Windows Disk Stress"
+      plan:
+        - team
   keywords:
     - Windows
     - CPU
@@ -34,3 +64,4 @@ spec:
     - Network
     - GCP
     - Azure
+    - Disk

@@ -1,0 +1,29 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: MachineChaosExperiment
+metadata:
+  name: windows-process-kill-4ap
+  labels:
+    context: windows-process-kill
+    name: windows-process-kill-4ap
+spec:
+  infraType: "windows"
+  steps:
+    - - name: windows-process-kill-4ap
+  tasks:
+    - name: windows-process-kill-4ap
+      infraId: ""
+      definition:
+        chaos:
+          fault: windows-process-kill
+          env:
+            - name: PROCESS_IDS
+              value: ""
+            - name: PROCESS_NAMES
+              value: ""
+            - name: FORCE
+              value: "disable"
+            - name: DURATION
+              value: "60s"
+            - name: RAMP_TIME
+              value: ""

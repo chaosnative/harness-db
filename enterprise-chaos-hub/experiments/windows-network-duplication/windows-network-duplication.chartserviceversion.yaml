@@ -1,0 +1,30 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: windows-network-duplication
+  version: 0.1.0
+  annotations:
+    categories: windows-network-duplication
+    chartDescription: Injects network duplication chaos in a Windows machine.
+spec:
+  displayName: Windows Network Duplication
+  categoryDescription: >-
+    This fault injects network chaos on a Windows machine.
+    - Induces sloweness and network tampering in the Windows machines.
+    - Simulates a lack of network connectivity for running application, which degrades their performance.
+    - Simulates slow application traffic, leading to degradation in the performance of processes on the machine.
+  faults:
+    - name: windows-network-duplication
+      description: Injects network duplication on a Windows machine.
+  keywords:
+    - Windows
+    - GCP
+    - Azure
+  plan:
+    - team
+  platforms:
+    - Windows
+  icon:
+    - url:
+      mediatype: ""

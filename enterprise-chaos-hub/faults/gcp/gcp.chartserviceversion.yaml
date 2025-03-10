@@ -18,26 +18,49 @@ spec:
       displayName: "GCP VM Instance Stop"
       plan:
         - free
+      supportedVersion:
+        - v1
+        - v2
     - name: gcp-vm-instance-stop-by-label
       description: It injects gcp-vm-instance-stop-by-label fault into GCP VMs.
       displayName: "GCP VM Instance Stop By Label"
       plan:
         - free
+      supportedVersion:
+        - v1
+        - v2
     - name: gcp-vm-disk-loss-by-label
       description: It injects gcp-vm-disk-loss-by-label fault into GCP VMs.
       displayName: "GCP VM Disk Loss By Label"
       plan:
         - free
+      supportedVersion:
+        - v1
+        - v2
     - name: gcp-vm-disk-loss
       description: It injects gcp-vm-disk-loss fault into GCP VMs.
       displayName: "GCP VM Disk Loss"
       plan:
         - free
+      supportedVersion:
+        - v1
+        - v2
     - name: gcp-vm-service-kill
       description: It injects gcp-vm-service-kill on node VM instance.
       displayName: "GCP VM Service Kill"
       plan:
         - free
+      supportedVersion:
+        - v1
+        - v2
+    - name: gcp-sql-instance-failover
+      description: It injects gcp-sql-instance-failover on Cloud SQL instance.
+      displayName: "GCP SQL Instance Failover"
+      plan:
+        - free
+      supportedVersion:
+        - v1
+        - v2
   keywords:
     - GCP
   minKubeVersion: 1.12.0

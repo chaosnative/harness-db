@@ -1,0 +1,29 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: MachineChaosExperiment
+metadata:
+  name: windows-network-loss-4ap
+  labels:
+    context: windows-network-loss
+    name: windows-network-loss-4ap
+spec:
+  infraType: "windows"
+  steps:
+    - - name: windows-network-loss-4ap
+  tasks:
+    - name: windows-network-loss-4ap
+      infraId: ""
+      definition:
+        chaos:
+          fault: windows-network-loss
+          env:
+            - name: NETWORK_PACKET_LOSS_PERCENTAGE
+              value: "100"
+            - name: DESTINATION_HOSTS
+              value: ""
+            - name: DESTINATION_IPS
+              value: ""
+            - name: DURATION
+              value: "60s"
+            - name: RAMP_TIME
+              value: ""

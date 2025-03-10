@@ -1,0 +1,61 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: K8sFault
+metadata:
+  name: node-io-stress
+spec:
+  definition:
+    chaos:
+      experiment: node-io-stress
+      serviceAccountName: litmus-admin
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-ddcr-faults:1.54.0
+      imagePullPolicy: Always
+      env:
+        - name: TOTAL_CHAOS_DURATION
+          value: "120"
+
+        ## specify the size as percentage of free space on the file system
+        ## default value 90 (in percentage)
+        - name: FILESYSTEM_UTILIZATION_PERCENTAGE
+          value: "10"
+
+        ## we can specify the size in Gigabyte (Gb) also in place of percentage of free space
+        ## NOTE: for selecting this option FILESYSTEM_UTILIZATION_PERCENTAGE should be empty
+        - name: FILESYSTEM_UTILIZATION_BYTES
+          value: ""
+
+        ## Number of core of CPU
+        - name: CPU
+          value: "1"
+
+        ## Total number of workers default value is 4
+        - name: NUMBER_OF_WORKERS
+          value: "4"
+
+        ## Total number of VM workers
+        - name: VM_WORKERS
+          value: "1"
+
+        ## enter the comma separated target nodes name
+        - name: TARGET_NODES
+          value: ""
+
+        - name: NODE_LABEL
+          value: ""
+
+        ## percentage of total nodes to target
+        - name: NODES_AFFECTED_PERCENTAGE
+          value: ""
+
+        # Period to wait before and after injection of chaos in sec
+        - name: RAMP_TIME
+          value: ""
+
+        # provide lib image
+        - name: LIB_IMAGE
+          value: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-ddcr-faults:1.54.0
+
+        ## it defines the sequence of chaos execution for multiple target nodes
+        ## supported values: serial, parallel
+        - name: SEQUENCE
+          value: "parallel"

@@ -1,0 +1,36 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: redis-cache-limit
+  version: 0.1.0
+  annotations:
+    categories: Kubernetes
+    vendor: Harness
+spec:
+  displayName: Redis Cache Limit
+  categoryDescription: |
+    This fault causes Redis cache memory to be limited.
+    - Limits maxmemory to a certain value and later restores it.
+    - Determines the resiliency of Redis dependent apps against frequent cache miss due to low cache size.
+  keywords:
+    - Redis
+  plan:
+    - free
+  platforms:
+    - GKE
+    - Packet(Kubeadm)
+    - Minikube
+    - EKS
+    - AKS
+    - OpenShift(OKD)
+  minKubeVersion: 1.12.0
+  labels:
+    app.kubernetes.io/component: chartserviceversion
+    app.kubernetes.io/version: ci
+  links:
+    - name: Documentation
+      url: https://docs.harness.io/category/kl0mxwpfw1-hce-category
+  icon:
+    - base64data: ""
+      mediatype: ""

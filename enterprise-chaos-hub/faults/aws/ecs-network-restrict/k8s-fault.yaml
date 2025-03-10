@@ -1,0 +1,54 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: K8sFault
+metadata:
+  name: ecs-network-restrict
+spec:
+  definition:
+    chaos:
+      experiment: ecs-network-restrict
+      serviceAccountName: litmus-admin
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-ddcr-faults:1.54.0
+      imagePullPolicy: Always
+      env:
+        - name: TOTAL_CHAOS_DURATION
+          value: "30"
+
+        - name: CHAOS_INTERVAL
+          value: "30"
+
+        - name: RAMP_TIME
+          value: ""
+
+        - name: CLUSTER_NAME
+          value: ""
+
+        - name: SERVICE_NAMES
+          value: ""
+
+        - name: REGION
+          value: ""
+
+        - name: IP_ADDRESS
+          value: ""
+
+        - name: PROTOCOL
+          value: "tcp"
+
+        - name: FROM_PORT
+          value: "80"
+
+        - name: TO_PORT
+          value: "80"
+
+        - name: RULE_TYPE
+          value: "outbound"
+
+        - name: RULE_MODE
+          value: "remove"
+
+        - name: SEQUENCE
+          value: "parallel"
+
+        - name: AWS_SHARED_CREDENTIALS_FILE
+          value: "/tmp/cloud_config.yml"

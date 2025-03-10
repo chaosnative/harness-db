@@ -1,5 +1,5 @@
 ---
-apiVersion: litmuchaos.io/v1alpha1
+apiVersion: litmuschaos.io/v1alpha1
 kind: K8sFault
 metadata:
   name: pod-network-loss
@@ -13,7 +13,7 @@ spec:
     chaos:
       experiment: pod-network-loss
       serviceAccountName: litmus-admin
-      image: docker.io/harness/chaos-ddcr-faults:1.41.0
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-ddcr-faults:1.54.0
       imagePullPolicy: Always
       env:
         - name: TOTAL_CHAOS_DURATION
@@ -21,6 +21,9 @@ spec:
 
         - name: NETWORK_PACKET_LOSS_PERCENTAGE
           value: "100"
+
+        - name: CORRELATION
+          value: ""
 
         # provide the name of container runtime
         # for litmus LIB, it supports docker, containerd, crio
@@ -31,7 +34,7 @@ spec:
         - name: SOCKET_PATH
           value: "/run/containerd/containerd.sock"
         - name: LIB_IMAGE
-          value: docker.io/harness/chaos-ddcr-faults:1.41.0
+          value: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-ddcr-faults:1.54.0
 
         ## percentage of total pods to target
         - name: POD_AFFECTED_PERCENTAGE

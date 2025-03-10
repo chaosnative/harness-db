@@ -1,0 +1,42 @@
+---
+apiVersion: litmuchaos.io/v1alpha1
+kind: K8sFault
+metadata:
+  name: rds-instance-delete
+spec:
+  definition:
+    chaos:
+      experiment: rds-instance-delete
+      serviceAccountName: litmus-admin
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-ddcr-faults:1.54.0
+      imagePullPolicy: Always
+      env:
+        - name: TOTAL_CHAOS_DURATION
+          value: "30"
+
+        - name: RAMP_TIME
+          value: ""
+
+        - name: CHAOS_INTERVAL
+          value: "10"
+
+        - name: CLUSTER_NAME
+          value: ""
+
+        - name: RDS_INSTANCE_IDENTIFIER
+          value: ""
+
+        - name: REGION
+          value: ""
+
+        - name: INSTANCE_AFFECTED_PERC
+          value: ""
+
+        - name: AWS_SHARED_CREDENTIALS_FILE
+          value: "/tmp/cloud_config.yml"
+
+        - name: DEFAULT_HEALTH_CHECK
+          value: "false"
+
+        - name: SEQUENCE
+          value: "parallel"

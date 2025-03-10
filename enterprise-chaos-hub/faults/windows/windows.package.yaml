@@ -10,3 +10,21 @@ experiments:
   - name: windows-blackhole-chaos
     CSV: windows-blackhole-chaos.chartserviceversion.yaml
     desc: "windows-blackhole-chaos"
+  - name: windows-network-latency
+    CSV: windows-network-latency.chartserviceversion.yaml
+    desc: "windows-network-latency"
+  - name: windows-network-loss
+    CSV: windows-network-loss.chartserviceversion.yaml
+    desc: "windows-network-loss"
+  - name: windows-network-corruption
+    CSV: windows-network-corruption.chartserviceversion.yaml
+    desc: "windows-network-corruption"
+  - name: windows-network-duplication
+    CSV: windows-network-duplication.chartserviceversion.yaml
+    desc: "windows-network-duplication"
+  - name: windows-process-kill
+    CSV: windows-process-kill.chartserviceversion.yaml
+    desc: "windows-process-kill"
+  - name: windows-disk-stress
+    CSV: windows-disk-stress.chartserviceversion.yaml
+    desc: "windows-disk-stress"

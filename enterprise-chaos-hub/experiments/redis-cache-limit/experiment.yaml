@@ -17,6 +17,7 @@ spec:
         chaos:
           experiment: redis-cache-limit
           redisChaos/inputs:
+            address: ""
             maxMemory: "50%"
             duration: 30s
             rampTime: ""

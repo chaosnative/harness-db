@@ -1,0 +1,23 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: LinuxChaosExperiment
+metadata:
+  name: linux-fs-fill-4ap
+  labels:
+    context: linux-fs-fill
+    name: linux-fs-fill-4ap
+spec:
+  steps:
+    - - name: linux-fs-fill-4ap
+  tasks:
+    - name: linux-fs-fill-4ap
+      taskType: "chaos"
+      weight: 10
+      definition:
+        chaos:
+          experiment: linux-fs-fill
+          fsFillChaos/inputs:
+            duration: 30s
+            fillPath: "/tmp"
+            fillStorage: 500M
+            rampTime: ""

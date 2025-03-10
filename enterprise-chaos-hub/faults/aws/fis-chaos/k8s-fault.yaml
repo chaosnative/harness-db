@@ -1,0 +1,30 @@
+---
+apiVersion: litmuchaos.io/v1alpha1
+kind: K8sFault
+metadata:
+  name: fis-generic-chaos
+spec:
+  definition:
+    chaos:
+      experiment: fis-generic-chaos
+      serviceAccountName: litmus-admin
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-ddcr-faults:1.54.0
+      imagePullPolicy: Always
+      env:
+        - name: TOTAL_CHAOS_DURATION
+          value: "30"
+
+        - name: CHAOS_INTERVAL
+          value: "30"
+
+        - name: EXPERIMENT_TEMPLATE_ID
+          value: ""
+
+        - name: REGION
+          value: ""
+
+        - name: TASK_REPLICA_AFFECTED_PERC
+          value: "100"
+
+        - name: RAMP_TIME
+          value: ""

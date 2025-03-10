@@ -15,3 +15,4 @@ spec:
     latency: 2000
     startupCommand: ""
     rampTime: ""
+    javaHome: ""

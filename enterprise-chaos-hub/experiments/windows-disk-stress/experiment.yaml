@@ -1,0 +1,33 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: MachineChaosExperiment
+metadata:
+  name: windows-disk-stress-4ap
+  labels:
+    context: windows-disk-stress
+    name: windows-disk-stress-4ap
+spec:
+  infraType: "windows"
+  steps:
+    - - name: windows-disk-stress-4ap
+  tasks:
+    - name: windows-disk-stress-4ap
+      infraId: ""
+      definition:
+        chaos:
+          fault: windows-disk-stress
+          env:
+            - name: MEMORY_CONSUMPTION
+              value: "1024"
+            - name: BLOCK_SIZE_IN_KILOBYTES
+              value: "128"
+            - name: WRITE_PERCENTAGE
+              value: "100"
+            - name: NUMBER_OF_WORKERS
+              value: "2"
+            - name: DISK_PATH
+              value: "C:\\"
+            - name: DURATION
+              value: "30s"
+            - name: RAMP_TIME
+              value: ""

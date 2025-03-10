@@ -1,0 +1,25 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: gcp-sql-instance-failover
+  version: 0.1.0
+  annotations:
+    categories: gcp-sql-instance-failover
+    chartDescription: Injects failover on the given target sql instance
+spec:
+  displayName: GCP SQL Instance Failover
+  categoryDescription: >
+    Injects failover on the given target sql instance
+  faults:
+    - name: gcp-sql-instance-failover
+      description: Injects failover on the given target sql instance
+  keywords:
+    - Kubernetes
+  plan:
+    - free
+  platforms:
+    - GKE
+  icon:
+    - url:
+      mediatype: ""

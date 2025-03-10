@@ -1,0 +1,45 @@
+---
+apiVersion: litmuchaos.io/v1alpha1
+kind: K8sFault
+metadata:
+  name: ecs-container-network-loss
+spec:
+  definition:
+    chaos:
+      experiment: ecs-container-network-loss
+      serviceAccountName: litmus-admin
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-ddcr-faults:1.54.0
+      imagePullPolicy: Always
+      env:
+        - name: TOTAL_CHAOS_DURATION
+          value: "30"
+
+        - name: RAMP_TIME
+          value: ""
+
+        - name: CLUSTER_NAME
+          value: ""
+
+        - name: SERVICE_NAME
+          value: ""
+
+        - name: REGION
+          value: ""
+
+        - name: NETWORK_PACKET_LOSS_PERCENTAGE
+          value: "100"
+
+        - name: INSTALL_DEPENDENCIES
+          value: "true"
+
+        - name: NETWORK_INTERFACE
+          value: "eth0"
+
+        - name: DEFAULT_HEALTH_CHECK
+          value: "false"
+
+        - name: AWS_SHARED_CREDENTIALS_FILE
+          value: "/tmp/cloud_config.yml"
+
+        - name: SEQUENCE
+          value: "parallel"

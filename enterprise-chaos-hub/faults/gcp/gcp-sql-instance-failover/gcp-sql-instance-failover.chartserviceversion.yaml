@@ -1,0 +1,31 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: gcp-sql-instance-failover
+  version: 0.1.0
+  annotations:
+    categories: GCP
+    vendor: Harness
+spec:
+  displayName: GCP SQL Instance Failover
+  categoryDescription: >
+    Causes failover of provided GCP managed Cloud SQL Instance.
+  keywords:
+    - GCP
+  plan:
+    - free
+  platforms:
+    - GCP
+  experiments:
+    - gcp-sql-instance-failover
+  minKubeVersion: 1.12.0
+  labels:
+    app.kubernetes.io/component: chartserviceversion
+    app.kubernetes.io/version: ci
+  links:
+    - name: Documentation
+      url: https://docs.harness.io/category/kl0mxwpfw1-hce-category
+  icon:
+    - url:
+      mediatype: ""

@@ -22,7 +22,7 @@ spec:
   chaosServiceAccount: pod-dns-spoof-sa
   experiments:
     - name: pod-dns-spoof
-      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-go-runner:1.41.0
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-go-runner:1.54.0
       imagePullPolicy: Always
       args:
         - -c
@@ -37,7 +37,7 @@ spec:
 
             # provide lib image
             - name: LIB_IMAGE
-              value: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-go-runner:1.41.0
+              value: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-go-runner:1.54.0
 
             - name: DEFAULT_HEALTH_CHECK
               value: "false"
@@ -72,3 +72,7 @@ spec:
             # map of the target hostnames eg. '{"abc.com":"spoofabc.com"}' . If empty no queries will be spoofed
             - name: SPOOF_MAP
               value: '{"google.com":"fakegoogle.com"}'
+
+            # percentage of DNS queries to be affected
+            - name: TRANSACTION_PERCENTAGE
+              value: ""

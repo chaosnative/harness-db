@@ -1,0 +1,41 @@
+---
+kind: KubernetesChaosExperiment
+apiVersion: litmuschaos.io/v1alpha1
+metadata:
+  name: gcp-sql-instance-failover
+  namespace: litmus
+spec:
+  tasks:
+    - name: gcp-sql-instance-failover-qgr2u
+      definition:
+        targets:
+          appinfo:
+          selectors:
+            workloads:
+            pods:
+        chaos:
+          experiment: gcp-sql-instance-failover
+          image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-ddcr-faults:1.54.0
+          imagePullPolicy: Always
+          serviceAccountName: litmus-admin
+          defaultHealthCheck: false
+          env:
+            - name: RAMP_TIME
+              value: ""
+            - name: GCP_PROJECT_ID
+              value: ""
+            - name: SQL_INSTANCE_NAME
+              value: ""
+            - name: DEFAULT_HEALTH_CHECK
+              value: 'false'
+          components:
+            secrets:
+              - name: cloud-secret
+                mountPath: /tmp/
+  experimentId: ""
+  experimentRunId: ""
+  steps:
+    - - name: gcp-sql-instance-failover-qgr2u
+        status: ""
+  serviceAccountName: litmus
+  cleanupPolicy: "delete"

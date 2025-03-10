@@ -1,5 +1,5 @@
 ---
-apiVersion: litmuchaos.io/v1alpha1
+apiVersion: litmuschaos.io/v1alpha2
 kind: K8sFault
 metadata:
   name: pod-delete
@@ -12,8 +12,7 @@ spec:
         appns: ""
     chaos:
       experiment: pod-delete
-      serviceAccountName: litmus-admin
-      image: docker.io/harness/chaos-ddcr-faults:1.41.0
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-ddcr-faults:1.54.0
       imagePullPolicy: Always
       env:
         - name: TOTAL_CHAOS_DURATION

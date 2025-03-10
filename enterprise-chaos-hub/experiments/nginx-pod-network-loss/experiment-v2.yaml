@@ -19,7 +19,7 @@ spec:
         chaos:
           cleanupPolicy: ''
           experiment: pod-network-loss
-          image: docker.io/harness/chaos-ddcr-faults:1.41.0
+          image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-ddcr-faults:1.54.0
           imagePullPolicy: Always
           labels: null
           annotations: null
@@ -37,7 +37,7 @@ spec:
             - name: SOCKET_PATH
               value: /run/containerd/containerd.sock
             - name: LIB_IMAGE
-              value: docker.io/harness/chaos-ddcr-faults:1.41.0
+              value: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-ddcr-faults:1.54.0
             - name: PODS_AFFECTED_PERC
           probes: null
           components:

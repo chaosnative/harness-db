@@ -1,5 +1,5 @@
 ---
-apiVersion: litmuchaos.io/v1alpha1
+apiVersion: litmuschaos.io/v1alpha1
 kind: K8sFault
 metadata:
   name: time-chaos
@@ -13,7 +13,7 @@ spec:
     chaos:
       experiment: time-chaos
       serviceAccountName: litmus-admin
-      image: docker.io/harness/chaos-ddcr-faults:1.41.0
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-ddcr-faults:1.54.0
       imagePullPolicy: Always
       env:
         - name: TOTAL_CHAOS_DURATION
@@ -40,7 +40,7 @@ spec:
           value: "/run/containerd/containerd.sock"
 
         - name: LIB_IMAGE
-          value: docker.io/harness/chaos-ddcr-faults:1.41.0
+          value: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-ddcr-faults:1.54.0
 
         # time period to wait before and after injection of chaos in sec
         - name: RAMP_TIME

@@ -1,0 +1,34 @@
+---
+apiVersion: litmuchaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  createdAt: 2024-07-17T10:28:08Z
+  name: linux-fs-fill
+  version: 0.1.0
+  annotations:
+    categories: Linux
+    vendor: Harness
+spec:
+  displayName: linux-fs-fill
+  categoryDescription: |
+    This fault injects fs fill chaos into a Linux machine.
+    - Induces heavy fs usage scenario on the target Linux machines.
+    - Simulates a lack of storage space for the underlying applications in the system.
+    - Validates application failover and data resiliency in the scenario of low fs space.
+  keywords:
+    - Linux
+    - fs
+  plan:
+    - team
+  maturity: alpha
+  labels:
+    app.kubernetes.io/component: chartserviceversion
+    app.kubernetes.io/version: ci
+  links:
+    - name: Documentation
+      url: https://developer.harness.io/docs/chaos-engineering/technical-reference/chaos-faults/linux/
+  icon:
+    - url:
+      mediatype: ""
+  experiments:
+    - linux-fs-fill

@@ -1,0 +1,34 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: K8sFault
+metadata:
+  name: kubelet-service-kill
+spec:
+  definition:
+    chaos:
+      experiment: kubelet-service-kill
+      serviceAccountName: litmus-admin
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-ddcr-faults:1.54.0
+      imagePullPolicy: Always
+      env:
+        - name: TOTAL_CHAOS_DURATION
+          value: "60"
+
+        # Period to wait before and after injection of chaos in sec
+        - name: RAMP_TIME
+          value: ""
+
+        - name: TARGET_NODE
+          value: ""
+
+        - name: NODE_LABEL
+          value: ""
+
+        # provide lib image
+        - name: LIB_IMAGE
+          value: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-ddcr-faults:1.54.0
+
+        ## it defines the sequence of chaos execution for multiple target nodes
+        ## supported values: serial, parallel
+        - name: SEQUENCE
+          value: "parallel"

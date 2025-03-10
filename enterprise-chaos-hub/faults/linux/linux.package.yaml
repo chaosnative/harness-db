@@ -43,6 +43,9 @@ experiments:
   - name: linux-disk-fill
     CSV: linux-disk-fill.chartserviceversion.yaml
     desc: "linux-disk-fill"
+  - name: linux-fs-fill
+    CSV: linux-fs-fill.chartserviceversion.yaml
+    desc: "linux-fs-fill"
   - name: linux-jvm-cpu-stress
     CSV: linux-jvm-cpu-stress.chartserviceversion.yaml
     desc: "linux-jvm-cpu-stress"

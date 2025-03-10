@@ -1,0 +1,34 @@
+---
+apiVersion: litmuchaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  createdAt: 2024-10-16T10:28:08Z
+  name: windows-disk-stress
+  version: 0.1.0
+  annotations:
+    categories: Windows
+    vendor: Harness
+spec:
+  displayName: windows-disk-stress
+  categoryDescription: |
+    This fault injects Disk stress into a windows machine.
+    - Induces Disk consumption and exhaustion on the target windows machines.
+    - Simulates a lack of disk for processes running on the application, which degrades their performance.
+    - Simulates slow application traffic or exhaustion of the resources, leading to degradation in the performance of processes on the machine.
+  keywords:
+    - Windows
+    - Disk
+  plan:
+    - team
+  maturity: alpha
+  labels:
+    app.kubernetes.io/component: chartserviceversion
+    app.kubernetes.io/version: ci
+  links:
+    - name: Documentation
+      url: https://developer.harness.io/docs/chaos-engineering/technical-reference/chaos-faults/windows/
+  icon:
+    - url:
+      mediatype: ""
+  experiments:
+    - windows-disk-stress

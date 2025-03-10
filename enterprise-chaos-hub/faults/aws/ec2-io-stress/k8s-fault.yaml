@@ -1,5 +1,5 @@
 ---
-apiVersion: litmuchaos.io/v1alpha1
+apiVersion: litmuschaos.io/v1alpha1
 kind: K8sFault
 metadata:
   name: ec2-io-stress
@@ -8,7 +8,7 @@ spec:
     chaos:
       experiment: ec2-io-stress
       serviceAccountName: litmus-admin
-      image: docker.io/harness/chaos-ddcr-faults:1.41.0
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-ddcr-faults:1.54.0
       imagePullPolicy: Always
       env:
         - name: TOTAL_CHAOS_DURATION
@@ -48,7 +48,7 @@ spec:
         - name: RAMP_TIME
           value: ""
 
-        ## it defines the sequence of chaos execution for multiple target pods
+        ## it defines the sequence of chaos execution for multiple target instances
         ## supported values: serial, parallel
         - name: SEQUENCE
           value: "parallel"

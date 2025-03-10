@@ -12,3 +12,4 @@ spec:
     pid: 0
     startupCommand: ""
     rampTime: ""
+    javaHome: ""

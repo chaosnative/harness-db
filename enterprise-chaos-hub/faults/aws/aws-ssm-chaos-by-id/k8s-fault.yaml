@@ -1,0 +1,49 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: K8sFault
+metadata:
+  name: ssm-chaos-by-id
+spec:
+  definition:
+    chaos:
+      experiment: ssm-chaos-by-id
+      serviceAccountName: litmus-admin
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-ddcr-faults:1.54.0
+      imagePullPolicy: Always
+      env:
+        - name: TOTAL_CHAOS_DURATION
+          value: "60"
+
+        - name: CHAOS_INTERVAL
+          value: "60"
+
+        # Period to wait before and after injection of chaos in sec
+        - name: RAMP_TIME
+          value: ""
+
+        # Instance ID of the target EC2 instance
+        # Multiple IDs can also be provided as comma separated values ex: id1,id2
+        - name: EC2_INSTANCE_ID
+          value: ""
+
+        - name: REGION
+          value: ""
+
+        # Provide the name of SSM doc
+        - name: DOCUMENT_NAME
+          value: ""
+
+        - name: PLUGIN_NAME
+          value: ""
+
+        - name: PARAMETERS
+          value: ""
+
+        # it defines the sequence of chaos execution for multiple target instances
+        # supported values: serial, parallel
+        - name: SEQUENCE
+          value: "parallel"
+
+        # Provide the path of AWS credentials mounted from secret
+        - name: AWS_SHARED_CREDENTIALS_FILE
+          value: "/tmp/cloud_config.yml"

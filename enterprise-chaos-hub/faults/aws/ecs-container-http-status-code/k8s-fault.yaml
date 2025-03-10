@@ -1,0 +1,54 @@
+---
+apiVersion: litmuchaos.io/v1alpha1
+kind: K8sFault
+metadata:
+  name: ecs-container-http-status-code
+spec:
+  definition:
+    chaos:
+      experiment: ecs-container-http-status-code
+      serviceAccountName: litmus-admin
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-ddcr-faults:1.54.0
+      imagePullPolicy: Always
+      env:
+        - name: TOTAL_CHAOS_DURATION
+          value: "60"
+
+        - name: CLUSTER_NAME
+          value: ""
+
+        - name: SERVICE_NAME
+          value: ""
+
+        - name: RAMP_TIME
+          value: ""
+
+        - name: REGION
+          value: ""
+
+        - name: TASK_REPLICA_ID
+          value: ""
+
+        - name: TASK_REPLICA_AFFECTED_PERC
+          value: "100"
+
+        - name: NETWORK_INTERFACE
+          value: eth0
+
+        - name: TARGET_SERVICE_PORT
+          value: "80"
+
+        - name: STATUS_CODE
+          value: "503"
+
+        - name: MODIFY_RESPONSE_BODY
+          value: "true"
+
+        - name: SEQUENCE
+          value: "parallel"
+
+        - name: PROXY_PORT
+          value: "20000"
+
+        - name: AWS_SHARED_CREDENTIALS_FILE
+          value: /tmp/cloud_config.yml

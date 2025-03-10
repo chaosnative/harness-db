@@ -1,0 +1,51 @@
+---
+kind: KubernetesChaosExperiment
+apiVersion: litmuschaos.io/v1alpha1
+metadata:
+  name: gcp-vm-instance-stop-by-label
+  namespace: litmus
+spec:
+  tasks:
+    - name: gcp-vm-instance-stop-by-label-qgr2u
+      definition:
+        targets:
+          appinfo:
+          selectors:
+            workloads:
+            pods:
+        chaos:
+          experiment: gcp-vm-instance-stop-by-label
+          image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-ddcr-faults:1.54.0
+          imagePullPolicy: Always
+          serviceAccountName: litmus-admin
+          defaultHealthCheck: false
+          env:
+            - name: TOTAL_CHAOS_DURATION
+              value: "30"
+            - name: CHAOS_INTERVAL
+              value: "30"
+            - name: MANAGED_INSTANCE_GROUP
+              value: "disable"
+            - name: INSTANCE_AFFECTED_PERCENTAGE
+              value: ""
+            - name: ZONES
+              value: ""
+            - name: GCP_PROJECT_ID
+              value: ""
+            - name: INSTANCE_LABEL
+              value: ""
+            - name: RAMP_TIME
+              value: ""
+            - name: SEQUENCE
+              value: "parallel"
+          components:
+            secrets:
+              - name: cloud-secret
+                mountPath: /tmp/
+  experimentId: ""
+  experimentRunId: ""
+  steps:
+    - - name: gcp-vm-instance-stop-by-label-qgr2u
+        status: ""
+  serviceAccountName: litmus
+  cleanupPolicy: "delete"

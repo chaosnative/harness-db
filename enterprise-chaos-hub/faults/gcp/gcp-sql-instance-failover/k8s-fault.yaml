@@ -1,0 +1,29 @@
+---
+apiVersion: litmuchaos.io/v1alpha1
+kind: K8sFault
+metadata:
+  name: gcp-sql-instance-failover
+spec:
+  definition:
+    chaos:
+      experiment: gcp-sql-instance-failover
+      serviceAccountName: litmus-admin
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-ddcr-faults:1.54.0
+      imagePullPolicy: Always
+      env:
+        # Set the SQL Instance Name
+        - name: SQL_INSTANCE_NAME
+          value: ""
+
+        # Set the GCP Project ID
+        - name: GCP_PROJECT_ID
+          value: ""
+
+        ## Period to wait before and after injection of chaos in sec
+        - name: RAMP_TIME
+          value: ""
+
+      components:
+        secrets:
+          - name: cloud-secret
+            mountPath: /tmp/

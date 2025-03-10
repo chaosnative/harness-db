@@ -1,0 +1,27 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: nginx-fs-fill
+  version: 0.1.0
+  annotations:
+    categories: nginx-fs-fill
+    chartDescription: Injects fs fill (ephemeral storage) on pod(s) identified by the specified label ("app=nginx" by default)
+spec:
+  displayName: Nginx FS Fill
+  categoryDescription: >
+    Injects fs fill (ephemeral storage) on pod(s) identified by the specified label ("app=nginx" by default)
+  faults:
+    - name: fs-fill
+      description: Injects fs fill (ephemeral storage) on pod(s) identified by the specified label ("app=nginx" by default)
+  keywords:
+    - Kubernetes
+  plan:
+    - free
+  platforms:
+    - GKE
+    - EKS
+    - AKS
+  icon:
+    - url:
+      mediatype: ""

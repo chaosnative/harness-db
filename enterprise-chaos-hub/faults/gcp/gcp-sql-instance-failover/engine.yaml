@@ -1,0 +1,51 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChaosEngine
+metadata:
+  namespace: default
+  name: gcp-sql-instance-failover
+  labels:
+    name: gcp-sql-instance-failover
+    app.kubernetes.io/part-of: litmus
+    app.kubernetes.io/component: experiment-job
+    app.kubernetes.io/version: ci
+spec:
+  # It can be active/stop
+  engineState: active
+  terminationGracePeriodSeconds: 30
+  chaosServiceAccount: litmus-admin
+  experiments:
+    - name: gcp-sql-instance-failover
+      image: docker.io/artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-go-runner:1.54.0
+      imagePullPolicy: Always
+      args:
+        - -c
+        - ./experiments -name gcp-sql-instance-failover
+      command:
+        - /bin/bash
+      spec:
+        components:
+          env:
+            - name: TOTAL_CHAOS_DURATION
+              value: "30"
+
+            - name: CHAOS_INTERVAL
+              value: "30"
+
+            # Period to wait before and after injection of chaos in sec
+            - name: RAMP_TIME
+              value: ""
+
+            # Set the SQL Instance Name
+            - name: SQL_INSTANCE_NAME
+              value: ""
+
+            # Set the GCP Project ID
+            - name: GCP_PROJECT_ID
+              value: ""
+
+            - name: DEFAULT_HEALTH_CHECK
+              value: "false"
+          secrets:
+            - name: cloud-secret
+              mountPath: /tmp/

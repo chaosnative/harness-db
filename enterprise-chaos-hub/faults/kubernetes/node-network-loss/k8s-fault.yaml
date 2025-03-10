@@ -1,0 +1,49 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: K8sFault
+metadata:
+  name: node-network-loss
+spec:
+  definition:
+    chaos:
+      experiment: node-network-loss
+      serviceAccountName: litmus-admin
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-ddcr-faults:1.54.0
+      imagePullPolicy: Always
+      components:
+        statusCheckTimeouts:
+          timeout: 240
+          delay: 2
+      env:
+        - name: TOTAL_CHAOS_DURATION
+          value: "60"
+
+        - name: NETWORK_PACKET_LOSS_PERCENTAGE
+          value: "100"
+
+        - name: LIB_IMAGE
+          value: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-ddcr-faults:1.54.0
+
+        - name: NETWORK_INTERFACE
+          value: eth0
+
+        - name: RAMP_TIME
+          value: ""
+
+        - name: TARGET_NODES
+          value: ""
+
+        - name: NODES_AFFECTED_PERC
+          value: ""
+
+        - name: NODE_LABEL
+          value: ""
+
+        - name: DESTINATION_IPS
+          value: ""
+
+        - name: DESTINATION_HOSTS
+          value: ""
+
+        - name: SEQUENCE
+          value: parallel

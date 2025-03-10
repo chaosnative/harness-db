@@ -175,3 +175,15 @@ faults:
   - name: fis-chaos
     CSV: fis-chaos.chartserviceversion.yaml
     desc: "fis-chaos"
+  - name: lambda-inject-exception
+    CSV: lambda-inject-exception.chartserviceversion.yaml
+    desc: "lambda-inject-exception"
+  - name: lambda-inject-status-code
+    CSV: lambda-inject-status-code.chartserviceversion.yaml
+    desc: "lambda-inject-status-code"
+  - name: lambda-inject-latency
+    CSV: lambda-inject-latency.chartserviceversion.yaml
+    desc: "lambda-inject-latency"
+  - name: lambda-modify-response-body
+    CSV: lambda-modify-response-body.chartserviceversion.yaml
+    desc: "lambda-modify-response-body"

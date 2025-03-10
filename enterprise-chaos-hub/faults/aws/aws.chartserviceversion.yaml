@@ -23,36 +23,57 @@ spec:
       displayName: "CLB AZ Down"
       plan:
         - team
+      supportedVersion:
+        - v1
+        - v2
     - name: alb-az-down
       description: It injects AZ down chaos on ALB for a certain chaos duration.
       displayName: "ALB AZ Down"
       plan:
         - team
+      supportedVersion:
+        - v1
+        - v2
     - name: ecs-container-network-loss
       description: It injects ecs-container-network-loss chaos on a AWS ECS cluster.
       displayName: "ECS Container Network Loss"
       plan:
         - team
+      supportedVersion:
+        - v1
+        - v2
     - name: ecs-container-network-latency
       description: It injects ecs-container-network-latency chaos on a AWS ECS cluster.
       displayName: "ECS Container Network Latency"
       plan:
         - team
+      supportedVersion:
+        - v1
+        - v2
     - name: ecs-container-cpu-hog
       description: It injects ecs-container-cpu-hog chaos on the task container of ECS cluster.
       displayName: "ECS Container CPU Hog"
       plan:
         - team
+      supportedVersion:
+        - v1
+        - v2
     - name: ecs-container-io-stress
       description: It injects ecs-container-io-stress chaos on the task container of ECS cluster.
       displayName: "ECS Container IO Stress"
       plan:
         - team
+      supportedVersion:
+        - v1
+        - v2
     - name: ecs-container-memory-hog
       description: It injects ecs-container-memory-hog chaos on the task container of ECS cluster.
       displayName: "ECS Container Memory Hog"
       plan:
         - team
+      supportedVersion:
+        - v1
+        - v2
     - name: ec2-cpu-hog
       description: It injects CPU stress chaos on AWS EC2 instance.
       displayName: "EC2 CPU Hog"
@@ -82,11 +103,17 @@ spec:
       displayName: "EC2 Network Loss"
       plan:
         - team
+      supportedVersion:
+        - v1
+        - v2
     - name: ec2-network-latency
       description: It injects Network latency chaos on the AWS EC2 instance.
       displayName: "EC2 Network Latency"
       plan:
         - team
+      supportedVersion:
+        - v1
+        - v2
     - name: ecs-agent-stop
       description: It stops all the ECS agent container running on the container instances of ECS cluster.
       displayName: "ECS Agent Stop"
@@ -97,106 +124,177 @@ spec:
       displayName: "AWS SSM Chaos By ID"
       plan:
         - team
+      supportedVersion:
+        - v1
+        - v2
     - name: aws-ssm-chaos-by-tag
       description: It allow to perform in-VM chaos using AWS SSM service and EC2 instance tag.
       displayName: "AWS SSM Chaos By Tag"
       plan:
         - team
+      supportedVersion:
+        - v1
+        - v2
     - name: ec2-stop-by-id
       description: It stops the AWS EC2 instance identified by ID for a certain chaos duration.
       displayName: "EC2 Stop By ID"
       plan:
         - team
+      supportedVersion:
+        - v1
+        - v2
     - name: ec2-stop-by-tag
       description: It stops the AWS EC2 instance identified by Tag for a certain chaos duration.
       displayName: "EC2 Stop By Tag"
       plan:
         - team
+      supportedVersion:
+        - v1
+        - v2
     - name: ec2-http-latency
       description: It injects ec2-http-latency chaos on AWS EC2 instance.
       displayName: "EC2 HTTP Latency"
       plan:
         - team
+      supportedVersion:
+        - v1
+        - v2
     - name: ec2-http-modify-body
       description: It injects ec2-http-modify-body chaos on AWS EC2 instance.
       displayName: "EC2 HTTP Modify Body"
       plan:
         - team
+      supportedVersion:
+        - v1
+        - v2
+    - name: ec2-http-modify-header
+      description: It injects ec2-http-modify-header chaos on AWS EC2 instance.
+      displayName: "EC2 HTTP Modify Header"
+      plan:
+        - team
+      supportedVersion:
+        - v1
+        - v2
     - name: ec2-http-status-code
       description: It injects ec2-http-status-code chaos on AWS EC2 instance.
       displayName: "EC2 HTTP Status Code"
       plan:
         - team
+      supportedVersion:
+        - v1
+        - v2
     - name: ec2-http-reset-peer
       description: It injects ec2-http-reset-peer chaos on AWS EC2 instance.
       displayName: "EC2 HTTP Reset Peer"
       plan:
         - team
+      supportedVersion:
+        - v1
+        - v2
     - name: ebs-loss-by-id
       description: It detach the EBS volume from AWS EC2 instance identified by ID for a certain chaos duration.
       displayName: "EBS Loss By ID"
       plan:
         - free
+      supportedVersion:
+        - v1
+        - v2
     - name: ebs-loss-by-tag
       description: It detach the EBS volume from AWS EC2 instance identified by Tag for a certain chaos duration.
       displayName: "EBS Loss By Tag"
       plan:
         - free
+      supportedVersion:
+        - v1
+        - v2
     - name: rds-instance-delete
       description: It injects the rds-instance-delete chaos on the RDS instances/cluster.
       displayName: "RDS Instance Delete"
       plan:
         - team
+      supportedVersion:
+        - v1
+        - v2
     - name: rds-instance-reboot
       description: It injects the rds-instance-reboot chaos on the RDS instances/cluster.
       displayName: "RDS Instance Reboot"
       plan:
         - team
+      supportedVersion:
+        - v1
+        - v2
     - name: ec2-dns-chaos
       description: It injects the DNS chaos into EC2 instances for a certain chaos duration.
       displayName: "EC2 DNS Chaos"
       plan:
         - team
+      supportedVersion:
+        - v1
+        - v2
     - name: ec2-process-kill
       description: It injects the process-kill chaos into EC2 instances for a certain chaos duration.
       displayName: "EC2 Process Kill"
       plan:
         - team
+      supportedVersion:
+        - v1
+        - v2
     - name: lambda-delete-function-concurrency
       description: It injects lambda-delete-function-concurrency to the lambda function for a certain chaos duration
       displayName: "Lambda Delete Function Concurrency"
       plan:
         - enterprise
+      supportedVersion:
+        - v1
+        - v2
     - name: lambda-toggle-event-mapping-state
       description: It injects chaos to toggle event source mapping state for a certain chaos duration.
       displayName: "Lambda Toggle Event Mapping State"
       plan:
         - enterprise
+      supportedVersion:
+        - v1
+        - v2
     - name: lambda-delete-event-source-mapping
       description: It injects deletion of event source mapping for a certain chaos duration.
       displayName: "Lambda Delete Event Source Mapping"
       plan:
         - enterprise
+      supportedVersion:
+        - v1
+        - v2
     - name: lambda-update-function-memory
       description: It updates the memory of the lambda function for a certain chaos duration.
       displayName: "Lambda Update Function Memory"
       plan:
         - enterprise
+      supportedVersion:
+        - v1
+        - v2
     - name: lambda-update-function-timeout
       description: It updates the timeout of the lambda function for a certain chaos duration.
       displayName: "Lambda Update Function Timeout"
       plan:
         - enterprise
+      supportedVersion:
+        - v1
+        - v2
     - name: lambda-function-layer-detach
       description: It updates the layers of the lambda function to detach for a certain chaos duration.
       displayName: "Lambda Function Layer Detach"
       plan:
         - enterprise
+      supportedVersion:
+        - v1
+        - v2
     - name: lambda-update-role-permission
       description: It updates the role of the lambda function to detach/update for a certain chaos duration.
       displayName: "Lambda Update Role Permission"
       plan:
         - enterprise
+      supportedVersion:
+        - v1
+        - v2
     - name: ecs-task-stop
       description: It injects the ecs-task-stop chaos to ecs tasks/service for a certain chaos duration.
       displayName: "ECS Task Stop"
@@ -207,13 +305,18 @@ spec:
       displayName: "ECS Task Scale"
       plan:
         - team
+      supportedVersion:
+        - v1
+        - v2
 
     - name: resource-access-restrict
       description: It injects the resource-access-restrict chaos in the given AWS region for a specified chaos duration.
       displayName: "Resource Access Restrict"
       plan:
         - team
-
+      supportedVersion:
+        - v1
+        - v2
     - name: windows-ec2-blackhole-chaos
       description: It injects blackhole chaos on AWS Windows EC2 instance.
       displayName: "Windows EC2 Blackhole Chaos"
@@ -234,71 +337,105 @@ spec:
       displayName: "ECS Container HTTP Latency"
       plan:
         - team
+      supportedVersion:
+        - v1
+        - v2
     - name: ecs-container-http-modify-body
       description: It injects http modify body chaos on AWS ECS instance.
       displayName: "ECS Container HTTP Modify Body"
       plan:
         - team
-    - name: ecs-container-http-modify-header
-      description: It injects http header chaos on AWS ECS instance.
-      displayName: "ECS Container Modify Header"
-      plan:
-        - team
+      supportedVersion:
+        - v1
+        - v2
     - name: ecs-container-http-reset-peer
       description: It injects http reset peer chaos on AWS ECS instance.
       displayName: "ECS Container HTTP Reset Peer"
       plan:
         - team
+      supportedVersion:
+        - v1
+        - v2
     - name: ecs-container-http-status-code
       description: It injects http status code chaos on AWS ECS instance.
       displayName: "ECS Container HTTP Status Code"
       plan:
         - team
+      supportedVersion:
+        - v1
+        - v2
     - name: ecs-invalid-container-image
       description: It injects the ecs-invalid-container-image chaos to ecs service for a specified chaos duration.
       displayName: "ECS Invalid Container Image"
       plan:
         - team
+      supportedVersion:
+        - v1
+        - v2
     - name: ecs-update-container-timeout
       description: It injects the ecs-update-container-timeout chaos to ecs service for a specified chaos duration.
       displayName: "ECS Update Container Timeout"
       plan:
         - team
+      supportedVersion:
+        - v1
+        - v2
     - name: ecs-update-container-resource-limit
       description: It injects the ecs-update-container-resource-limit chaos to ecs service for a specified chaos duration.
       displayName: "ECS Update Container Resource Limit"
       plan:
         - team
+      supportedVersion:
+        - v1
+        - v2
     - name: ecs-update-task-role
       description: It injects the ecs-update-task-role chaos to ecs service for a specified chaos duration.
       displayName: "ECS Update Task Role"
       plan:
         - team
+      supportedVersion:
+        - v1
+        - v2
     - name: ecs-network-restrict
       description: It injects ecs network restrict chaos on AWS ECS service.
       displayName: "ECS Network Restrict"
       plan:
         - team
+      supportedVersion:
+        - v1
+        - v2
     - name: ecs-fargate-cpu-hog
       description: It injects ecs fargate cpu hog chaos on AWS ECS service.
       displayName: "ECS Fargate CPU Hog"
       plan:
         - team
+      supportedVersion:
+        - v1
+        - v2
     - name: ecs-fargate-memory-hog
       description: It injects ecs fargate memory hog chaos on AWS ECS service.
       displayName: "ECS Fargate Memory Hog"
       plan:
         - team
+      supportedVersion:
+        - v1
+        - v2
     - name: ecs-container-volume-detach
       description: It injects ecs container volume detach chaos on AWS ECS service.
       displayName: "ECS Container Volume Detach"
       plan:
         - team
+      supportedVersion:
+        - v1
+        - v2
     - name: nlb-az-down
       description: It injects nlb-az-down chaos on AWS network load balancer.
       displayName: "NLB AZ Down"
       plan:
         - team
+      supportedVersion:
+        - v1
+        - v2
     - name: windows-ec2-network-latency
       description: It injects windows-ec2-network-latency chaos on AWS windows EC2 instance.
       displayName: "Windows EC2 Network Latency"
@@ -314,11 +451,47 @@ spec:
       displayName: "FIS DynamoDB Replication Pause"
       plan:
         - team
+      supportedVersion:
+        - v1
+        - v2
     - name: fis-chaos
       description: It injects fis-chaos using AWS FIS templates.
       displayName: "FIS Chaos"
       plan:
         - team
+      supportedVersion:
+        - v1
+        - v2
+    - name: lambda-inject-exception
+      description: It injects runtime injection of exception in lambda function.
+      displayName: "Lambda Inject Exception"
+      plan:
+        - team
+      supportedVersion:
+        - v1
+    - name: lambda-modify-response-body
+      description: It injects runtime injection to modify response body of the lambda function.
+      displayName: "Lambda Modify Response Body"
+      plan:
+        - team
+      supportedVersion:
+        - v2
+    - name: lambda-inject-status-code
+      description: It injects runtime injection of status code in lambda function.
+      displayName: "Lambda Inject Status Code"
+      plan:
+        - team
+      supportedVersion:
+        - v1
+        - v2
+    - name: lambda-inject-latency
+      description: It injects runtime injection of latency.
+      displayName: "Lambda Inject Latency"
+      plan:
+        - team
+      supportedVersion:
+        - v1
+        - v2
   keywords:
     - AWS
   minKubeVersion: 1.12.0

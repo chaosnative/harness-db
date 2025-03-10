@@ -1,0 +1,29 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: MachineChaosExperiment
+metadata:
+  name: windows-network-latency-4ap
+  labels:
+    context: windows-network-latency
+    name: windows-network-latency-4ap
+spec:
+  infraType: "windows"
+  steps:
+    - - name: windows-network-latency-4ap
+  tasks:
+    - name: windows-network-latency-4ap
+      infraId: ""
+      definition:
+        chaos:
+          fault: windows-network-latency
+          env:
+            - name: NETWORK_LATENCY
+              value: "2000"
+            - name: DESTINATION_HOSTS
+              value: ""
+            - name: DESTINATION_IPS
+              value: ""
+            - name: DURATION
+              value: "60s"
+            - name: RAMP_TIME
+              value: ""

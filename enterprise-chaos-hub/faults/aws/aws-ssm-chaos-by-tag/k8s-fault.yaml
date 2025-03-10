@@ -1,0 +1,56 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: K8sFault
+metadata:
+  name: ssm-chaos-by-tag
+spec:
+  definition:
+    chaos:
+      experiment: ssm-chaos-by-tag
+      serviceAccountName: litmus-admin
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-ddcr-faults:1.54.0
+      imagePullPolicy: Always
+      env:
+        - name: TOTAL_CHAOS_DURATION
+          value: "60"
+
+        - name: CHAOS_INTERVAL
+          value: "60"
+
+        # Period to wait before and after injection of chaos in sec
+        - name: RAMP_TIME
+          value: ""
+
+          # provide tag of the target EC2 instances
+          # ex: team:devops (key:value)
+        - name: EC2_INSTANCE_TAG
+          value: ""
+
+        - name: REGION
+          value: ""
+
+        - name: PLUGIN_NAME
+          value: ""
+
+        - name: PARAMETERS
+          value: ""
+
+        # it defines the sequence of chaos execution for multiple target instances
+        # supported values: serial, parallel
+        - name: SEQUENCE
+          value: "parallel"
+
+        # Provide the path of AWS credentials mounted from secret
+        - name: AWS_SHARED_CREDENTIALS_FILE
+          value: "/tmp/cloud_config.yml"
+
+        # percentage of total instance to target
+        - name: INSTANCE_AFFECTED_PERC
+          value: ""
+
+        - name: DEFAULT_HEALTH_CHECK
+          value: "false"
+
+        # Provide the name of SSM doc
+        - name: DOCUMENT_NAME
+          value: ""

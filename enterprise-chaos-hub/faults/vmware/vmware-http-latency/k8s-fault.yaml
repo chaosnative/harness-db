@@ -1,0 +1,71 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: K8sFault
+metadata:
+  name: vmware-http-latency
+spec:
+  definition:
+    chaos:
+      experiment: vmware-http-latency
+      serviceAccountName: litmus-admin
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-ddcr-faults:1.54.0
+      imagePullPolicy: Always
+      env:
+        - name: TOTAL_CHAOS_DURATION
+          value: "30" # in seconds
+
+        - name: CHAOS_INTERVAL
+          value: "10"
+
+        - name: RAMP_TIME
+          value: ""
+
+        - name: GOVC_URL
+          valueFrom:
+            secretKeyRef:
+              name: vcenter-secret
+              key: VCENTERSERVER
+
+        - name: GOVC_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: vcenter-secret
+              key: VCENTERUSER
+
+        - name: GOVC_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: vcenter-secret
+              key: VCENTERPASS
+
+        - name: GOVC_INSECURE
+          value: "true"
+
+        - name: VM_NAME
+          value: ""
+
+        - name: VM_USER_NAME
+          value: ""
+
+        - name: VM_PASSWORD
+          value: ""
+
+        - name: NETWORK_INTERFACE
+          value: "ens160"
+
+        - name: LATENCY
+          value: "2000" #in ms
+
+        # port of the target service
+        - name: TARGET_SERVICE_PORT
+          value: "80"
+
+        # port on which the proxy will listen
+        - name: PROXY_PORT
+          value: "8080"
+
+        - name: TOXICITY
+          value: "100"
+
+        - name: SEQUENCE
+          value: "parallel"

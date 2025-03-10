@@ -22,6 +22,9 @@ faults:
   - name: disk-fill
     CSV: disk-fill.chartserviceversion.yaml
     desc: "disk-fill"
+  - name: fs-fill
+    CSV: fs-fill.chartserviceversion.yaml
+    desc: "fs-fill"
   - name: node-drain
     CSV: node-drain.chartserviceversion.yaml
     desc: "node-drain"
@@ -124,3 +127,33 @@ faults:
   - name: pod-network-rate-limit
     CSV: pod-network-rate-limit.chartserviceversion.yaml
     desc: "pod-network-rate-limit"
+  - name: pod-jvm-method-exception
+    CSV: pod-jvm-method-exception.chartserviceversion.yaml
+    desc: "pod-jvm-method-exception"
+  - name: pod-jvm-method-latency
+    CSV: pod-jvm-method-latency.chartserviceversion.yaml
+    desc: "pod-jvm-method-latency"
+  - name: pod-jvm-modify-return
+    CSV: pod-jvm-modify-return.chartserviceversion.yaml
+    desc: "pod-jvm-modify-return"
+  - name: pod-jvm-cpu-stress
+    CSV: pod-jvm-cpu-stress.chartserviceversion.yaml
+    desc: "pod-jvm-cpu-stress"
+  - name: pod-jvm-trigger-gc
+    CSV: pod-jvm-trigger-gc.chartserviceversion.yaml
+    desc: "pod-jvm-trigger-gc"
+  - name: pod-jvm-sql-exception
+    CSV: pod-jvm-sql-exception.chartserviceversion.yaml
+    desc: "pod-jvm-sql-exception"
+  - name: pod-jvm-sql-latency
+    CSV: pod-jvm-sql-latency.chartserviceversion.yaml
+    desc: "pod-jvm-sql-latency"
+  - name: redis-cache-expire
+    CSV: redis-cache-expire.chartserviceversion.yaml
+    desc: "redis-cache-expire"
+  - name: redis-cache-penetration
+    CSV: redis-cache-penetration.chartserviceversion.yaml
+    desc: "redis-cache-penetration"
+  - name: redis-cache-limit
+    CSV: redis-cache-limit.chartserviceversion.yaml
+    desc: "redis-cache-limit"

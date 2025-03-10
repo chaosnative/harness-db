@@ -1,0 +1,25 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: ChartServiceVersion
+metadata:
+  name: aws-lambda-inject-status-code
+  version: 0.1.0
+  annotations:
+    categories: aws-lambda-inject-status-code
+    chartDescription: Causes the runtime injection of status code in lambda function for specified duration.
+spec:
+  displayName: AWS Lambda Inject Status Code
+  categoryDescription: |
+    This fault causes the runtime injection of status code in a lambda function.
+  keywords:
+    - AWS
+  plan:
+    - enterprise
+  platforms:
+    - AWS
+  faults:
+    - name: lambda-inject-status-code
+      description: This fault causes the runtime injection of status code in a lambda function for a specified duration.
+  icon:
+    - url:
+      mediatype: ""

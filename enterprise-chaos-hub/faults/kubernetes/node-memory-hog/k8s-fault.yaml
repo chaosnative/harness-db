@@ -1,0 +1,52 @@
+---
+apiVersion: litmuschaos.io/v1alpha1
+kind: K8sFault
+metadata:
+  name: node-memory-hog
+spec:
+  definition:
+    chaos:
+      experiment: node-memory-hog
+      serviceAccountName: litmus-admin
+      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-ddcr-faults:1.54.0
+      imagePullPolicy: Always
+      env:
+        - name: TOTAL_CHAOS_DURATION
+          value: "120"
+
+        ## Specify the size as percent of total node capacity Ex: '30'
+        ## NOTE: for selecting this option keep MEMORY_CONSUMPTION_MEBIBYTES empty
+        - name: MEMORY_CONSUMPTION_PERCENTAGE
+          value: ""
+
+        ## Specify the amount of memory to be consumed in mebibytes
+        ## NOTE: for selecting this option keep MEMORY_CONSUMPTION_PERCENTAGE empty
+        - name: MEMORY_CONSUMPTION_MEBIBYTES
+          value: ""
+
+        - name: NUMBER_OF_WORKERS
+          value: "1"
+
+        # ENTER THE COMMA SEPARATED TARGET NODES NAME
+        - name: TARGET_NODES
+          value: ""
+
+        - name: NODE_LABEL
+          value: ""
+
+        ## percentage of total nodes to target
+        - name: NODES_AFFECTED_PERCENTAGE
+          value: ""
+
+        # Period to wait before and after injection of chaos in sec
+        - name: RAMP_TIME
+          value: ""
+
+        # provide lib image
+        - name: LIB_IMAGE
+          value: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-ddcr-faults:1.54.0
+
+        ## it defines the sequence of chaos execution for multiple target nodes
+        ## supported values: serial, parallel
+        - name: SEQUENCE
+          value: "parallel"

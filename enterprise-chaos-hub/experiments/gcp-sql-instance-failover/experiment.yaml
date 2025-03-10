@@ -1,0 +1,94 @@
+---
+kind: Workflow
+apiVersion: argoproj.io/v1alpha1
+metadata:
+  name: gcp-sql-instance-failover
+  namespace: litmus
+
+spec:
+  templates:
+    - name: custom-chaos
+      steps:
+        - - name: gcp-sql-instance-failover-7h6
+            template: gcp-sql-instance-failover-7h6
+        - - name: cleanup-chaos-resources
+            template: cleanup-chaos-resources
+    - name: gcp-sql-instance-failover-7h6
+      inputs:
+        artifacts:
+          - name: gcp-sql-instance-failover-7h6
+            path: /tmp/chaosengine-gcp-sql-instance-failover-7h6.yaml
+            raw:
+              data: |
+                apiVersion: litmuschaos.io/v1alpha1
+                kind: ChaosEngine
+                metadata:
+                  namespace: "{{workflow.parameters.adminModeNamespace}}"
+                  generateName: gcp-sql-instance-failover-7h6
+                  labels:
+                    name: gcp-sql-instance-failover
+                    app.kubernetes.io/part-of: litmus
+                    app.kubernetes.io/component: experiment-job
+                    app.kubernetes.io/version: ci
+                spec:
+                  engineState: active
+                  chaosServiceAccount: litmus-admin
+                  experiments:
+                    - name: gcp-sql-instance-failover
+                      image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-go-runner:1.54.0
+                      imagePullPolicy: Always
+                      args:
+                        - -c
+                        - ./experiments -name gcp-sql-instance-failover
+                      command:
+                        - /bin/bash
+                      spec:
+                        components:
+                          env:
+                            - name: TOTAL_CHAOS_DURATION
+                              value: "60"
+                            - name: CHAOS_INTERVAL
+                              value: "30"
+                            - name: RAMP_TIME
+                              value: ""
+                            - name: SQL_INSTANCE_NAME
+                              value: ""
+                            - name: GCP_PROJECT_ID
+                              value: ""
+                            - name: DEFAULT_HEALTH_CHECK
+                              value: "false"
+                          secrets:
+                            - name: cloud-secret
+                              mountPath: /tmp/
+      metadata:
+        labels:
+          weight: "10"
+      container:
+        name: ""
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-go-runner:1.54.0
+        command:
+          - ./chaos-checker
+        args:
+          - -file=/tmp/chaosengine-gcp-sql-instance-failover-7h6.yaml
+          - -saveName=/tmp/engine-name
+
+    - name: cleanup-chaos-resources
+      container:
+        name: ""
+        image: artifactory.sdlc.ctl.gcp.db.com/dkr-public-local/dkr-io/harness/chaos-go-runner:1.54.0
+        command:
+          - sh
+          - -c
+        args:
+          - kubectl delete chaosengine -l workflow_run_id={{workflow.uid}} -n {{workflow.parameters.adminModeNamespace}}
+  entrypoint: custom-chaos
+  arguments:
+    parameters:
+      - name: adminModeNamespace
+        value: litmus
+  serviceAccountName: argo-chaos
+  podGC:
+    strategy: OnWorkflowCompletion
+  securityContext:
+    runAsUser: 1000
+    runAsNonRoot: true

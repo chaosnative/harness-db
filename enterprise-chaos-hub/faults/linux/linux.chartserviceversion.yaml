@@ -82,6 +82,11 @@ spec:
       displayName: "Linux Disk Fill"
       plan:
         - team
+    - name: linux-fs-fill
+      description: It injects fs fill to a linux VM.
+      displayName: "Linux FS Fill"
+      plan:
+        - team
     - name: linux-jvm-cpu-stress
       description: It injects jvm cpu stress into a Java process executing on a linux VM.
       displayName: "Linux JVM CPU Stress"

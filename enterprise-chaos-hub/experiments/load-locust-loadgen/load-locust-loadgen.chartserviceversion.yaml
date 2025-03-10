@@ -12,7 +12,7 @@ spec:
   categoryDescription: >
     Injects load on the given target host for a specified chaos duration
   faults:
-    - name: node-taint
+    - name: locust-loadgen-chaos
       description: Injects load on the given target host for a specified chaos duration
   keywords:
     - Load
