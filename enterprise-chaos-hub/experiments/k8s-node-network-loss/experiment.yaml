@@ -47,7 +47,7 @@ spec:
                         - /bin/bash
                       spec:
                         components:
-                         statusCheckTimeouts:
+                          statusCheckTimeouts:
                             delay: 2
                             timeout: 240
                           env:
