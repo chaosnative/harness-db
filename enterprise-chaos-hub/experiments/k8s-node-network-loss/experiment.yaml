@@ -49,8 +49,10 @@ spec:
                         components:
                           statusCheckTimeouts:
                             delay: 2
-                            timeout: 240
+                            timeout: 600
                           env:
+                            - name: NODE_LABEL
+                              value: ""
                             - name: TARGET_CONTAINER
                               value: ""
                             - name: LIB_IMAGE

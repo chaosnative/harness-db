@@ -12,7 +12,7 @@ spec:
       imagePullPolicy: Always
       components:
         statusCheckTimeouts:
-          timeout: 240
+          timeout: 600
           delay: 2
       env:
         - name: TOTAL_CHAOS_DURATION
